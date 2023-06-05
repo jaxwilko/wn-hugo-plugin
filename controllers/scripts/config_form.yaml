@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: 'jaxwilko.hugo::lang.models.script.label'
+
+# Model Form Field configuration
+form: $/jaxwilko/hugo/models/sitescript/fields.yaml
+
+# Model Class name
+modelClass: JaxWilko\Hugo\Models\Script
+
+# Default redirect location
+defaultRedirect: jaxwilko/hugo/scripts
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: jaxwilko/hugo/scripts/update/:id
+    redirectClose: jaxwilko/hugo/scripts
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: jaxwilko/hugo/scripts
+    redirectClose: jaxwilko/hugo/scripts
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

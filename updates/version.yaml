@@ -1,0 +1,7 @@
+'1.0.0':
+    - 'First version of Hugo'
+    - v1.0.0/create_sites_table.php
+    - v1.0.0/create_lighthouse_urls_table.php
+    - v1.0.0/create_lighthouse_reports_table.php
+    - v1.0.0/create_scripts_table.php
+    - v1.0.0/create_health_checks_table.php

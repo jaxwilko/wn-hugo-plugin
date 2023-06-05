@@ -1,0 +1,5 @@
+# Model Form Field configuration
+form: $/jaxwilko/hugo/models/lighthousereport/fields.yaml
+
+# Model Class name
+modelClass: JaxWilko\Hugo\Models\LighthouseReport

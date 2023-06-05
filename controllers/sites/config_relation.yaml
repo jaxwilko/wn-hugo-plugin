@@ -1,0 +1,29 @@
+urls:
+    label: 'Lighthouse Urls'
+    view:
+        list: $/jaxwilko/hugo/controllers/sites/lighthouseurl/columns.yaml
+        toolbarButtons:
+            create: "Create"
+            delete: "Delete"
+        recordsPerPage: 15
+        showSearch: true
+    manage:
+        list: $/jaxwilko/hugo/controllers/sites/lighthouseurl/columns.yaml
+        form: $/jaxwilko/hugo/controllers/sites/lighthouseurl/fields.yaml
+        recordsPerPage: 15
+        showSearch: true
+
+healthChecks:
+    label: 'Health Checks'
+    view:
+        list: $/jaxwilko/hugo/controllers/sites/healthchecks/columns.yaml
+        toolbarButtons:
+            create: "Create"
+            delete: "Delete"
+        recordsPerPage: 15
+        showSearch: true
+    manage:
+        list: $/jaxwilko/hugo/controllers/sites/healthchecks/columns.yaml
+        form: $/jaxwilko/hugo/controllers/sites/healthchecks/fields.yaml
+        recordsPerPage: 15
+        showSearch: true

@@ -1,0 +1,51 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    updated_at:
+        label: 'Timestamp'
+        type: datetime
+        searchable: true
+        sortable: true
+        format: 'd-m-Y H:i:s'
+    performance:
+        label: 'Score'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    fcp_score:
+        label: 'FCP'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    lcp_score:
+        label: 'LCP'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    fmp_score:
+        label: 'FMP'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    si_score:
+        label: 'SI'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    cls_score:
+        label: 'CLS'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    srt_score:
+        label: 'SRT'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    fid_score:
+        label: 'FID'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    int_score:
+        label: 'INT'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+    ds_score:
+        label: 'DS'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php

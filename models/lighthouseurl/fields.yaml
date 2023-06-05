@@ -1,0 +1,26 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    site[name]:
+        label: Site
+        type: text
+        disabled: true
+        span: auto
+    url:
+        label: 'Url'
+        type: text
+        placeholder: '/example/test'
+        disabled: true
+        span: auto
+    _averages:
+        type: partial
+        context: [update, preview]
+
+tabs:
+    fields:
+        _reports:
+            type: partial
+            tab: Lighthouse Reports
+            context: [update, preview]

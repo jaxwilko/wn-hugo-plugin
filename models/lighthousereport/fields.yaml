@@ -1,0 +1,339 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    performance:
+        label: 'Performance'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+        span: auto
+    updated_at:
+        label: 'Timestamp'
+        type: text
+        disabled: true
+        span: auto
+    finished:
+        label: 'Page Render'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_finished.php
+        span: auto
+    timeline:
+        label: 'Timeline'
+        type: partial
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_timeline.php
+        span: auto
+
+tabs:
+    fields:
+        fcp_score:
+            label: 'First Contentful Paint'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'FCP'
+        fcp_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FCP'
+        fcp_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FCP'
+        fcp_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FCP'
+
+        lcp_score:
+            label: 'Largest Contentful Paint'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'LCP'
+        lcp_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'LCP'
+        lcp_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'LCP'
+        lcp_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'LCP'
+
+        fmp_score:
+            label: 'First Meaningful Paint'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'FMP'
+        fmp_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FMP'
+        fmp_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FMP'
+        fmp_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FMP'
+
+        cls_score:
+            label: 'Cumulative Layout Shift'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'CLS'
+        cls_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'CLS'
+        cls_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'CLS'
+        cls_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'CLS'
+
+        si_score:
+            label: 'Speed Index'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'SI'
+        si_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'SI'
+        si_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'SI'
+        si_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'SI'
+
+        srt_score:
+            label: 'Server Response Time (TTFB)'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'SRT'
+        srt_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'SRT'
+        srt_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'SRT'
+        srt_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'SRT'
+
+        fid_score:
+            label: 'First Input Delay'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'FID'
+        fid_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FID'
+        fid_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FID'
+        fid_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'FID'
+
+        int_score:
+            label: 'Interactive'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'INT'
+        int_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'INT'
+        int_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'INT'
+        int_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'INT'
+
+        nsl_score:
+            label: 'Network Server Latency'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'NSL'
+        nsl_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'NSL'
+        nsl_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'NSL'
+        nsl_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'NSL'
+
+        ucr_score:
+            label: 'Unused CSS Rules'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'UCR'
+        ucr_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'UCR'
+        ucr_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'UCR'
+        ucr_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'UCR'
+
+        ujc_score:
+            label: 'Unused Javascript'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'UJC'
+        ujc_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'UJC'
+        ujc_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'UJC'
+        ujc_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'UJC'
+
+        ds_score:
+            label: 'DOM Size'
+            type: partial
+            path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+            span: auto
+            disabled: true
+            tab: 'DS'
+        ds_value:
+            label: 'Value'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'DS'
+        ds_unit:
+            label: 'Display Unit'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'DS'
+        ds_display:
+            label: 'Result Label'
+            type: text
+            span: auto
+            disabled: true
+            tab: 'DS'

@@ -1,0 +1,32 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    url:
+        label: 'Url'
+        type: text
+        placeholder: '/example/test'
+    _averages:
+        label: Averages
+        type: partial
+        context: [update, preview]
+    _sevenDayAverages:
+        label: Last 7 Day Averages
+        type: partial
+        path: '~/plugins/jaxwilko/hugo/controllers/sites/__averages.php'
+        context: [update, preview]
+
+tabs:
+    fields:
+        _graph:
+            type: partial
+            tab: Details
+            context: [update, preview]
+        _reports:
+            type: lighthouseresults
+            tab: Details
+            context: [update, preview]
+
+
+

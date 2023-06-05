@@ -1,0 +1,24 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    url:
+        label: 'Url'
+        searchable: true
+    _sevenDayAverages:
+        label: Last 7 Day Averages
+        type: partial
+        path: '~/plugins/jaxwilko/hugo/controllers/sites/__averages.php'
+        sortable: false
+    created_at:
+        label: 'jaxwilko.hugo::lang.models.general.created_at'
+        type: datetime
+        searchable: true
+        sortable: true
+        invisible: true
+    updated_at:
+        label: 'jaxwilko.hugo::lang.models.general.updated_at'
+        type: datetime
+        searchable: true
+        sortable: true

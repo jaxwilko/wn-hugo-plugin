@@ -1,0 +1,11 @@
+{
+  "name": "jaxwilko.hugo",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Jack Wilkinson <me@jackwilky.com>",
+  "license": "MIT",
+  "dependencies": {
+    "apexcharts": "^3.40.0",
+    "lighthouse": "^10.0.2"
+  }
+}

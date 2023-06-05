@@ -1,0 +1,55 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    created_at:
+        label: 'Checked At'
+        type: text
+        span: left
+        readOnly: true
+    status_code:
+        label: 'Status Code'
+        type: text
+        span: right
+        readOnly: true
+    http_version:
+        label: 'HTTP Version'
+        type: text
+        span: left
+        readOnly: true
+    protocol:
+        label: 'Connection Protocol'
+        type: text
+        span: right
+        readOnly: true
+    content_length:
+        label: 'Content Length'
+        type: text
+        span: left
+        readOnly: true
+    size_download:
+        label: 'Download Size'
+        type: text
+        span: right
+        readOnly: true
+    total_time:
+        label: 'Total Time'
+        type: text
+        span: left
+        readOnly: true
+    ssl_serial_number:
+        label: 'SSL Serial Number'
+        type: text
+        span: right
+        readOnly: true
+    ssl_start_date:
+        label: 'SSL Valid From'
+        type: text
+        span: left
+        readOnly: true
+    ssl_expire_date:
+        label: 'SSL Expires'
+        type: text
+        span: right
+        readOnly: true

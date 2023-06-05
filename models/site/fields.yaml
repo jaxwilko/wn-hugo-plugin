@@ -1,0 +1,44 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    image:
+        label: 'Site Logo'
+        type: fileupload
+        span: right
+        imageWidth: 140
+        required: false
+    name:
+        label: 'Site Name'
+        type: text
+        span: left
+        required: true
+    base_url:
+        label: 'Site Base Url'
+        type: text
+        span: left
+        required: true
+    performance_testing:
+        label: 'Enable Performance Testing'
+        type: switch
+        span: left
+        required: true
+    health_testing:
+        label: 'Enable Health Testing'
+        type: switch
+        span: left
+        required: true
+
+tabs:
+    fields:
+        _urls@update:
+            tab: 'Lighthouse'
+            type: partial
+        _healthCheckGraph@update:
+            label: Last 7 Day Health Checks
+            tab: 'Health Checks'
+            type: partial
+        _healthChecks@update:
+            tab: 'Health Checks'
+            type: partial

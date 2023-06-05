@@ -1,0 +1,31 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    image:
+        label: 'Site Logo'
+        type: partial
+        searchable: false
+        sortable: false
+    name:
+        label: 'Site Name'
+        type: text
+        searchable: true
+        sortable: true
+    base_url:
+        label: 'Url'
+        type: text
+        searchable: true
+        sortable: true
+    created_at:
+        label: 'jaxwilko.hugo::lang.models.general.created_at'
+        type: datetime
+        searchable: true
+        sortable: true
+        invisible: true
+    updated_at:
+        label: 'jaxwilko.hugo::lang.models.general.updated_at'
+        type: datetime
+        searchable: true
+        sortable: true

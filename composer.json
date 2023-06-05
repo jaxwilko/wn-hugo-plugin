@@ -1,7 +1,7 @@
 {
     "name": "jaxwilko/wn-hugo-plugin",
     "type": "winter-plugin",
-    "description": "Playground for Winter CMS",
+    "description": "Automated performance and health checking for Winter CMS",
     "homepage": "https://github.com/jaxwilko/wn-hugo-plugin",
     "keywords": ["winter", "wintercms", "laravel", "lighthouse", "health check"],
     "license": "MIT",

@@ -51,6 +51,22 @@ class Plugin extends PluginBase
             'hugo' => 'jaxwilko.hugo::mail.layout-default',
         ];
     }
+    
+    public function registerPermissions(): array
+    {
+        return [
+            'jaxwilko.hugo.sites' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access sites',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+            'jaxwilko.hugo.scripts' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access scripts',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+        ];
+    }
 
     /**
      * Registers backend navigation items for this plugin.
@@ -81,7 +97,7 @@ class Plugin extends PluginBase
                 'label' => 'Scripts',
                 'icon' => 'icon-code',
                 'url' => Backend::url('jaxwilko/hugo/scripts'),
-                'permissions' => ['jaxwilko.hugo.lighthouseUrls']
+                'permissions' => ['jaxwilko.hugo.scripts']
             ];
         }
 

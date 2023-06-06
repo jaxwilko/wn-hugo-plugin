@@ -5,7 +5,7 @@ namespace Winter\User\Updates;
 use Schema;
 use Winter\Storm\Database\Updates\Migration;
 
-class CreateScriptsTable extends Migration
+class CreateHealthChecksTable extends Migration
 {
     public function up()
     {

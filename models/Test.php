@@ -8,6 +8,7 @@ use Model;
 class Test extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
+    use \Winter\Storm\Database\Traits\SoftDelete;
 
     /**
      * @var string The database table used by the model.
@@ -93,7 +94,7 @@ class Test extends Model
 
     public function getTargetAttribute(): string
     {
-        return $this->site->base_url . $this->url;
+        return rtrim($this->site->base_url . $this->url, '/');
     }
 
     public function getTestConfigAttribute(): array

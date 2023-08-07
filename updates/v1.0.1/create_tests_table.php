@@ -17,6 +17,7 @@ class CreateTestsTable extends Migration
             $table->string('url');
             $table->longText('config');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('site_id')->references('id')->on('jaxwilko_hugo_sites');
         });

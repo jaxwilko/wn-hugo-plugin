@@ -2,6 +2,12 @@
 
 Hugo is a plugin for WinterCMS that allows for automated lighthouse and health checks.
 
+### Install
+
+```shell
+composer require jaxwilko/wn-hugo-plugin
+```
+
 ### Commands
 
 - `./artisan hugo:lighthouse` - Run lighthouse tests

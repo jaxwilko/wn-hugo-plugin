@@ -56,6 +56,22 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerPermissions(): array
+    {
+        return [
+            'jaxwilko.hugo.sites' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access sites',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+            'jaxwilko.hugo.scripts' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access tests',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+        ];
+    }
+
     /**
      * Registers backend navigation items for this plugin.
      */

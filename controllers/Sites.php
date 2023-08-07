@@ -1,4 +1,6 @@
-<?php namespace JaxWilko\Hugo\Controllers;
+<?php
+
+namespace JaxWilko\Hugo\Controllers;
 
 use BackendMenu;
 use Backend\Classes\Controller;

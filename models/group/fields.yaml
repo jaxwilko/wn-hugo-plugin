@@ -1,0 +1,66 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: 'jaxwilko.hugo::lang.models.general.name'
+        type: text
+
+tabs:
+    fields:
+        strategy:
+            label: 'Run Strategy'
+            type: dropdown
+            span: left
+            tab: 'Settings'
+            options:
+                manual: 'Manual'
+                cron: 'Schedule'
+                webhook: 'Webhook'
+
+        cron:
+            label: 'Schedule'
+            type: text
+            span: right
+            placeholder: '5 4 * * *'
+            tab: 'Settings'
+            trigger:
+                action: show
+                field: strategy
+                condition: value[cron]
+
+        _webhook:
+            label: 'Webhook URL'
+            type: text
+            readOnly: true
+            span: right
+            tab: 'Settings'
+            trigger:
+                action: show
+                field: strategy
+                condition: value[webhook]
+
+        _scheduleButton:
+            type: partial
+            value: 'eeee'
+            span: right
+            tab: 'Settings'
+            trigger:
+                action: show
+                field: strategy
+                condition: value[manual]
+
+        tests:
+            label: 'Tests'
+            type: relation
+            tab: 'Settings'
+
+        _scheduled@update:
+            label: 'Schedule'
+            type: partial
+            tab: 'Settings'
+
+        _reports@update:
+            type: partial
+            tab: 'Reports'

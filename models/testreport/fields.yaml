@@ -1,0 +1,26 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    status:
+        label: Status
+        type: dropdown
+        span: left
+        options:
+            0: 'Okay'
+            1: 'General Error'
+            2: 'Uncaught Error'
+            3: 'Exit Error'
+        disabled: true
+    updated_at:
+        label: 'jaxwilko.hugo::lang.models.general.updated_at'
+        type: text
+        disabled: true
+        span: right
+
+tabs:
+    fields:
+        results:
+            type: reportresults
+            tab: 'Tests'

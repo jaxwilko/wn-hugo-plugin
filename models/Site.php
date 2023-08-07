@@ -80,6 +80,9 @@ class Site extends Model
         ],
         'healthChecks' => [
             \JaxWilko\Hugo\Models\HealthCheck::class
+        ],
+        'tests' => [
+            \JaxWilko\Hugo\Models\Test::class,
         ]
     ];
     public $hasOneThrough = [];

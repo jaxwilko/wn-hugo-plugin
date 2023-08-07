@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: 'jaxwilko.hugo::lang.models.test.label'
+
+# Model Form Field configuration
+form: $/jaxwilko/hugo/models/test/fields.yaml
+
+# Model Class name
+modelClass: JaxWilko\Hugo\Models\Test
+
+# Default redirect location
+defaultRedirect: jaxwilko/hugo/tests
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: jaxwilko/hugo/tests/update/:id
+    redirectClose: jaxwilko/hugo/tests
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: jaxwilko/hugo/tests
+    redirectClose: jaxwilko/hugo/tests
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

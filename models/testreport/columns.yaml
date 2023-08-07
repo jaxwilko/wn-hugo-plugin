@@ -1,0 +1,29 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: 'jaxwilko.hugo::lang.models.general.id'
+        searchable: true
+    status:
+        label: Status
+        select: '(
+            CASE status
+                WHEN 0 THEN ''Okay''
+                WHEN 1 THEN ''General Error''
+                WHEN 2 THEN ''Uncaught Error''
+                WHEN 3 THEN ''Exit Error''
+            END
+        )'
+    created_at:
+        label: 'jaxwilko.hugo::lang.models.general.created_at'
+        type: datetime
+        searchable: true
+        sortable: true
+        invisible: true
+    updated_at:
+        label: 'jaxwilko.hugo::lang.models.general.updated_at'
+        type: datetime
+        searchable: true
+        sortable: true

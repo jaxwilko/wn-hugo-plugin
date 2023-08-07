@@ -1,0 +1,27 @@
+groups:
+    label: 'Groups'
+    view:
+        list: $/jaxwilko/hugo/controllers/test/columns.yaml
+        toolbarButtons:
+            create: "Create"
+            delete: "Delete"
+        recordsPerPage: 15
+        showSearch: true
+    manage:
+        list: $/jaxwilko/hugo/controllers/test/columns.yaml
+        form: $/jaxwilko/hugo/controllers/test/fields.yaml
+        recordsPerPage: 15
+        showSearch: true
+
+results:
+    label: 'Results'
+    view:
+        list: $/jaxwilko/hugo/models/testresult/columns.yaml
+        toolbarButtons: []
+        recordsPerPage: 15
+        showSearch: false
+    manage:
+        list: $/jaxwilko/hugo/models/testresult/columns.yaml
+        form: $/jaxwilko/hugo/models/testresult/fields.yaml
+        recordsPerPage: 15
+        showSearch: true

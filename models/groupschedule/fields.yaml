@@ -1,0 +1,24 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    id:
+        label: 'jaxwilko.hugo::lang.models.general.id'
+        disabled: true
+        span: left
+    status:
+        label: 'Status'
+        type: text
+        disabled: true
+        span: right
+    created_at:
+        label: 'jaxwilko.hugo::lang.models.general.created_at'
+        type: text
+        disabled: true
+        span: left
+    updated_at:
+        label: 'jaxwilko.hugo::lang.models.general.updated_at'
+        type: text
+        disabled: true
+        span: right

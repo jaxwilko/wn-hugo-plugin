@@ -345,7 +345,7 @@ visible:
         selector:
             label: Selector
             placeholder: '#my-target'
-            span: auto
+            span: full
             type: text
 
 wait:

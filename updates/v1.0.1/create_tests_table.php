@@ -16,6 +16,7 @@ class CreateTestsTable extends Migration
             $table->string('name');
             $table->string('url');
             $table->longText('config');
+            $table->integer('priority')->default(3);
             $table->timestamps();
             $table->softDeletes();
 

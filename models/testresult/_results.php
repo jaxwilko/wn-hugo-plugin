@@ -49,12 +49,12 @@
                             <tr>
                                 <td>
                                     <?=
-                                    match($entry->result->status) {
-                                        \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_OKAY => 'Okay',
-                                        \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_GENERAL_ERROR => 'General Error',
-                                        \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_UNCAUGHT_ERROR => 'Uncaught Error',
-                                        \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_NO_EXIT_ERROR => 'Exit Error',
-                                    }
+                                        match($entry->result->status) {
+                                            \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_OKAY => 'Okay',
+                                            \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_GENERAL_ERROR => 'General Error',
+                                            \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_UNCAUGHT_ERROR => 'Uncaught Error',
+                                            \JaxWilko\Hugo\Classes\Test\TestEngine::STATUS_NO_EXIT_ERROR => 'Exit Error',
+                                        }
                                     ?>
                                 </td>
                                 <td><?= $entry->result->value ?></td>

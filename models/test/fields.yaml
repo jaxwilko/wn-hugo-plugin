@@ -39,6 +39,18 @@ tabs:
             span: full
             required: true
             tab: 'Manage'
+        priority:
+            label: 'Priority'
+            type: dropdown
+            options:
+                1: 1
+                2: 2
+                3: 3
+                4: 4
+                5: 5
+            default: 3
+            comment: 'Lower numbers are processed first'
+            tab: 'Manage'
         groups:
             label: 'Groups'
             type: relation

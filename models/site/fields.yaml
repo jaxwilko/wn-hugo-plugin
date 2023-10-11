@@ -42,6 +42,9 @@ tabs:
         _healthChecks@update:
             tab: 'Health Checks'
             type: partial
-#        _testResults@update:
-#            tab: 'Tests'
-#            type: partial
+        _testCreate@update:
+            tab: 'Tests'
+            type: partial
+        _tests@update:
+            tab: 'Tests'
+            type: partial

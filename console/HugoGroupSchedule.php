@@ -17,7 +17,9 @@ class HugoGroupSchedule extends Command
     /**
      * @var string The name and signature of this command.
      */
-    protected $signature = 'hugo:schedule';
+    protected $signature = 'hugo:schedule
+        {--g|group= : Group ID to schedule}
+    ';
 
     /**
      * @var string The console command description.
@@ -26,10 +28,17 @@ class HugoGroupSchedule extends Command
 
     /**
      * Execute the console command.
-     * @return void
+     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
+        if ($this->option('group') && $group = Group::find($this->option('group'))) {
+            $group->scheduled()->save(new GroupSchedule([
+                'status' => 'pending'
+            ]));
+            return 0;
+        }
+
         foreach (Group::all() as $group) {
             switch ($group->strategy) {
                 case 'cron':
@@ -46,5 +55,7 @@ class HugoGroupSchedule extends Command
                     break;
             }
         }
+
+        return 0;
     }
 }

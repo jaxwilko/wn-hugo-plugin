@@ -160,6 +160,9 @@ ifStatement:
             label: Condition
             maxItems: 1
             type: repeater
+        invert:
+            label: Invert logic
+            type: checkbox
         then:
             groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
             label: Then
@@ -170,10 +173,19 @@ ifStatement:
             label: Else
             span: right
             type: repeater
-        invert:
-            label: Invert logic
-            type: checkbox
 
+writeLog:
+    name: Log
+    icon: icon-note-sticky
+    description: Write a message to the result log
+    fields:
+        _title:
+            label: Log
+            type: section
+        message:
+            label: Message
+            span: full
+            type: text
 
 moveMouse:
     name: Move Mouse
@@ -261,6 +273,7 @@ scrollTo:
         offset:
             label: Offset
             placeholder: '5'
+            default: 0
             span: auto
             type: number
 
@@ -348,23 +361,9 @@ visible:
             span: full
             type: text
 
-wait:
-    name: Wait
-    icon: icon-hourglass-half
-    description: Tell the task to wait for ? seconds
-    fields:
-        _title:
-            label: Wait
-            type: section
-        seconds:
-            label: Seconds
-            placeholder: '5'
-            span: full
-            type: number
-
 waitFor:
     name: Wait For
-    icon: icon-hourglass
+    icon: icon-hourglass-start
     description: Wait for an element to be visible and drawn
     fields:
         _title:
@@ -381,3 +380,30 @@ waitFor:
             span: right
             type: number
             value: 5
+
+wait:
+    name: Wait
+    icon: icon-hourglass-half
+    description: Tell the task to wait for X seconds
+    fields:
+        _title:
+            label: Wait
+            type: section
+        seconds:
+            label: Seconds
+            placeholder: '5'
+            span: full
+            type: number
+uwait:
+    name: Wait Microseconds
+    icon: icon-hourglass-end
+    description: Tell the task to wait for X microseconds
+    fields:
+        _title:
+            label: Wait
+            type: section
+        seconds:
+            label: Microseconds
+            placeholder: '5'
+            span: full
+            type: number

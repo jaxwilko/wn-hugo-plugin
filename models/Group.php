@@ -1,5 +1,8 @@
-<?php namespace JaxWilko\Hugo\Models;
+<?php
 
+namespace JaxWilko\Hugo\Models;
+
+use App;
 use Model;
 
 /**
@@ -88,7 +91,11 @@ class Group extends Model
     public function getAttribute($key)
     {
         if ($key === '_webhook') {
-            return url('/hugo/webhook/' . $this->id);
+            return url(sprintf(
+                '/hugo/webhook/%d?token=%s',
+                $this->id,
+                App::make('encrypter')->encrypt('hugo-' . $this->id)
+            ));
         }
 
         return parent::getAttribute($key);

@@ -9,14 +9,8 @@ columns:
         sortable: true
     status:
         label: Status
-        select: '(
-            CASE status
-                WHEN 0 THEN ''Okay''
-                WHEN 1 THEN ''General Error''
-                WHEN 2 THEN ''Uncaught Error''
-                WHEN 3 THEN ''Exit Error''
-            END
-        )'
+        type: partial
+        path: $/jaxwilko/hugo/models/test/_status.htm
         searchable: true
         sortable: true
     created_at:

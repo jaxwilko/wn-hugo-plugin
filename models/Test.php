@@ -94,7 +94,7 @@ class Test extends Model
 
     public function getTargetAttribute(): string
     {
-        return rtrim($this->site->base_url . $this->url, '/');
+        return rtrim($this->site->base_url, '/') . ($this->url ? '/' . ltrim($this->url, '/') : '');
     }
 
     public function getTestConfigAttribute(): array

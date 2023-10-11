@@ -84,7 +84,7 @@ class TestReport extends Model
     public $hasOneThrough = [];
     public $hasManyThrough = [];
     public $belongsTo = [
-        'test' => [
+        'group' => [
             \JaxWilko\Hugo\Models\Group::class,
         ]
     ];
@@ -95,7 +95,7 @@ class TestReport extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    public static function run(GroupSchedule $schedule): static
+    public static function run(GroupSchedule $schedule, bool $debug = false): static
     {
         $report = $schedule->group->reports()->save(new static([
             'status' => 0,
@@ -105,8 +105,10 @@ class TestReport extends Model
         $schedule->setStatus(GroupSchedule::STATUS_RUNNING);
 
         try {
-            foreach ($schedule->group->tests as $test) {
-                $engine = TestEngine::init(HugoWebDriver::make())
+            $webDriver = HugoWebDriver::make();
+
+            foreach ($schedule->group->tests->sortBy('priority') as $test) {
+                $engine = TestEngine::init($webDriver, $debug)
                     ->run($test->target, $test->config);
 
                 $report->results()->save(new TestResult([
@@ -122,10 +124,15 @@ class TestReport extends Model
         } catch (\Throwable $e) {
             $schedule->setStatus(GroupSchedule::STATUS_FAILED);
 
+            if (isset($webDriver)) {
+                $webDriver->quit();
+            }
+
             return $report;
         }
 
         $schedule->setStatus(GroupSchedule::STATUS_FINISHED);
+        $webDriver->quit();
 
         return $report;
     }

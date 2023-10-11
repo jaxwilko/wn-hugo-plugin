@@ -29,9 +29,10 @@ healthChecks:
         showSearch: true
 
 tests:
-    label: 'Test Results'
+    label: 'Tests'
     view:
         list: $/jaxwilko/hugo/controllers/sites/tests/columns.yaml
+        recordUrl: jaxwilko/hugo/tests/update/:id
         toolbarButtons: []
         recordsPerPage: 15
     manage:
@@ -39,13 +40,3 @@ tests:
         form: $/jaxwilko/hugo/controllers/sites/tests/fields.yaml
         recordsPerPage: 15
 
-results:
-    label: 'Reports'
-    view:
-        list: $/jaxwilko/hugo/models/testresult/columns.yaml
-        toolbarButtons: []
-        recordsPerPage: 15
-    manage:
-        list: $/jaxwilko/hugo/models/testresult/columns.yaml
-        form: $/jaxwilko/hugo/models/testresult/fields.yaml
-        recordsPerPage: 15

@@ -88,14 +88,8 @@ class Plugin extends PluginBase
                 'sideMenu'    => [
                     'sites' => [
                         'label'       => 'Sites',
-                        'icon'        => 'icon-cubes',
+                        'icon'        => 'icon-sitemap',
                         'url'         => Backend::url('jaxwilko/hugo/sites'),
-                        'permissions' => ['jaxwilko.hugo.sites']
-                    ],
-                    'groups' => [
-                        'label' => 'Groups',
-                        'icon' => 'icon-object-group',
-                        'url' => Backend::url('jaxwilko/hugo/groups'),
                         'permissions' => ['jaxwilko.hugo.sites']
                     ],
                     'tests' => [
@@ -103,7 +97,19 @@ class Plugin extends PluginBase
                         'icon' => 'icon-code',
                         'url' => Backend::url('jaxwilko/hugo/tests'),
                         'permissions' => ['jaxwilko.hugo.sites']
-                    ]
+                    ],
+                    'groups' => [
+                        'label' => 'Test Groups',
+                        'icon' => 'icon-cubes',
+                        'url' => Backend::url('jaxwilko/hugo/groups'),
+                        'permissions' => ['jaxwilko.hugo.sites']
+                    ],
+                    'reports' => [
+                        'label' => 'Reports',
+                        'icon' => 'icon-layer-group',
+                        'url' => Backend::url('jaxwilko/hugo/testreports'),
+                        'permissions' => ['jaxwilko.hugo.sites']
+                    ],
                 ]
             ],
         ];

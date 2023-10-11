@@ -45,9 +45,6 @@ class TestEngine
             '_group' => 'nav'
         ]));
 
-        // Kill the webdriver
-        $this->webDriver->quit();
-
         return $this;
     }
 
@@ -57,16 +54,26 @@ class TestEngine
             $method = $action['_group'];
             unset($action['_group']);
 
+            // Catch exits from other call stacks
+            foreach ($this->log as $logItem) {
+                if (isset($logItem->result) && $logItem->result instanceof ExitAction) {
+                    $this->exit = $logItem->result;
+                    return $config;
+                }
+            }
+
             if ($this->verbose) {
                 dump(['calling' => $method, 'timestamp' => date('Y-m-d H:i:s'), 'args' => $action]);
             }
 
+            // Execute config as command
             try {
                 $config[$index]['result'] = $this->{$method}(...$action);
             } catch (\Throwable $e) {
                 $config[$index]['result'] = new ActionResult(static::STATUS_UNCAUGHT_ERROR, $this->errorMessage($e));
             }
 
+            // Ignore void responses
             if (!$config[$index]['result']) {
                 continue;
             }
@@ -291,6 +298,11 @@ class TestEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
+    public function writeLog(string $message): void
+    {
+        $this->log($message);
+    }
+
     public function screenshot(string $label): ActionInterface
     {
         $stub = sprintf(
@@ -326,10 +338,10 @@ class TestEngine
         return $this->exec(sprintf('window.scrollBy(%s, %s)', $x, $y));
     }
 
-    public function scrollTo(string $selector, int $offset): ActionInterface
+    public function scrollTo(string $selector, ?int $offset = 0): ActionInterface
     {
         return $this->exec(
-            sprintf('window.scrollTo(0, (document.querySelector("%s").offsetTop - %s))', $selector, $offset)
+            sprintf('window.scrollTo(0, (document.querySelector("%s").offsetTop - %s))', $selector, $offset ?? 0)
         );
     }
 
@@ -362,31 +374,43 @@ class TestEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
+    public function uwait(int $microseconds): ActionInterface
+    {
+        $this->log('waiting for %d microseconds', $microseconds);
+        usleep($microseconds);
+        return new ActionResult(static::STATUS_OKAY);
+    }
+
     public function waitFor(string $selector, int $timeout = 5): ActionInterface
     {
         $this->log('waiting for %s element', $selector);
 
         try {
+            $start = microtime(true);
+
             $this->webDriver->wait($timeout)->until(
                 WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector($selector))
             );
+
+            return new ActionResult(static::STATUS_OKAY, 'took ' . microtime(true) - $start . ' seconds');
         } catch (\Throwable $e) {
             return new ActionResult(static::STATUS_GENERAL_ERROR, $e->getMessage());
         }
-
-        return new ActionResult(static::STATUS_OKAY);
     }
 
     public function ifStatement(array $condition, bool $invert, array $then, array $else): void
     {
         $this->log(new CommandResult('ifStatement', $condition));
 
-        $test = $this->execute($condition);
+        $test = $this->execute($condition)[0]['result']->successful();
 
-        array_merge($test, ($test[0]['result']->successful() && !$invert)
-            ? $this->execute($then)
-            : $this->execute($else)
-        );
+        if (($test && !$invert) || (!$test && $invert)) {
+            $this->execute($then);
+        }
+
+        if (($test && $invert) || (!$test && !$invert)) {
+            $this->execute($else);
+        }
     }
 
     public function exec(string $code): ActionInterface
@@ -440,7 +464,7 @@ class TestEngine
     {
         return $this->exec(sprintf('
             var elem = document.querySelector("%s");
-            return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+            return elem ? !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length) : false;
         ', $selector));
     }
 
@@ -466,18 +490,24 @@ class TestEngine
     {
         $this->log(new CommandResult('equals', ['arg1' => $arg1, 'arg2' => $arg2]));
 
-        $result1 = $this->execute($arg1)[0]['result'] ?? new ActionResult(static::STATUS_GENERAL_ERROR);
-        $result2 = $this->execute($arg2)[0]['result'] ?? new ActionResult(static::STATUS_GENERAL_ERROR);
+        $result1 = $this->execute($arg1)[0]['result'] ?? new ActionResult(static::STATUS_GENERAL_ERROR, '$arg1 failed');
+        $result2 = $this->execute($arg2)[0]['result'] ?? new ActionResult(static::STATUS_GENERAL_ERROR, '$arg2 failed');
 
-        if ($result1->value && $result2->value && $result1->value === $result2->value) {
+        foreach ([$result1, $result2] as $result) {
+            if ($result instanceof ActionResult) {
+                return $result;
+            }
+        }
+
+        if ($result1->value && $result2->value && $result1->value == $result2->value) {
             return new ActionResult(static::STATUS_OKAY, $result1->value);
         }
 
-        if ($result1->status && $result2->status && $result1->status === $result2->status) {
+        if ($result1->status && $result2->status && $result1->status == $result2->status) {
             return new ActionResult(static::STATUS_OKAY, $result1->status);
         }
 
-        return new ActionResult(static::STATUS_GENERAL_ERROR);
+        return new ActionResult(static::STATUS_GENERAL_ERROR, 'values not equal');
     }
 
 }

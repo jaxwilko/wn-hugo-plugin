@@ -18,7 +18,9 @@ class HugoGroupProcess extends Command
     /**
      * @var string The name and signature of this command.
      */
-    protected $signature = 'hugo:process';
+    protected $signature = 'hugo:process
+        {--d|debug : Enable debug mode}
+    ';
 
     /**
      * @var string The console command description.
@@ -43,7 +45,7 @@ class HugoGroupProcess extends Command
             return 0;
         }
 
-        return TestReport::run($schedule)
+        return TestReport::run($schedule, $this->option('debug'))
             ->notify()
             ->status;
     }

@@ -3,6 +3,10 @@
 # ===================================
 
 columns:
+    id:
+        label: 'jaxwilko.hugo::lang.models.general.id'
+        searchable: true
+        sortable: true
     test[name]:
         label: 'Test Name'
         searchable: true

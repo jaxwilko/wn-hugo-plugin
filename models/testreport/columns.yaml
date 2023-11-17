@@ -3,6 +3,10 @@
 # ===================================
 
 columns:
+    id:
+        label: 'jaxwilko.hugo::lang.models.general.id'
+        searchable: true
+        sortable: true
     group[name]:
         label: 'Group'
         searchable: true
@@ -11,10 +15,6 @@ columns:
         label: Status
         type: partial
         path: $/jaxwilko/hugo/models/test/_status.htm
-    id:
-        label: 'jaxwilko.hugo::lang.models.general.id'
-        searchable: true
-        sortable: true
     created_at:
         label: 'jaxwilko.hugo::lang.models.general.created_at'
         type: datetime

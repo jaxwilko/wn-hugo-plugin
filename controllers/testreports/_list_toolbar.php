@@ -1,10 +1,4 @@
 <div data-control="toolbar">
-    <a
-        href="<?= Backend::url('jaxwilko/hugo/testreports/create') ?>"
-        class="btn btn-primary wn-icon-plus">
-        <?= e(trans('backend::lang.form.create_title', ['name' => trans('jaxwilko.hugo::lang.models.testreport.label')])); ?>
-    </a>
-
     <button
         class="btn btn-danger wn-icon-trash-o"
         disabled="disabled"

@@ -1,0 +1,49 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: 'Name'
+        type: text
+        required: true
+        span: auto
+
+    url:
+        label: 'Url'
+        type: text
+        required: true
+        placeholder: '/example/test'
+        span: auto
+
+    toolbar:
+        label: false
+        type: partial
+        path: $/jaxwilko/hugo/models/test/_toolbar.htm
+
+tabs:
+    cssClass: master-area
+    fields:
+        _title:
+            label: 'Test Configuration'
+            type: section
+            span: full
+            tab: 'Config'
+        config:
+            type: repeater
+            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            tab: 'Config'
+        site:
+            label: 'jaxwilko.hugo::lang.models.site.label'
+            type: relation
+            span: full
+            required: true
+            tab: 'Manage'
+        groups:
+            label: 'Groups'
+            type: relation
+            tab: 'Manage'
+        results:
+            label: Results
+            type: partial
+            tab: 'Results'

@@ -27,3 +27,16 @@ healthChecks:
         form: $/jaxwilko/hugo/controllers/sites/healthchecks/fields.yaml
         recordsPerPage: 15
         showSearch: true
+
+tests:
+    label: 'Tests'
+    view:
+        list: $/jaxwilko/hugo/controllers/sites/tests/columns.yaml
+        recordUrl: jaxwilko/hugo/tests/update/:id
+        toolbarButtons: []
+        recordsPerPage: 15
+    manage:
+        list: $/jaxwilko/hugo/controllers/sites/tests/columns.yaml
+        form: $/jaxwilko/hugo/controllers/sites/tests/fields.yaml
+        recordsPerPage: 15
+

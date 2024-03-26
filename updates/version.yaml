@@ -3,5 +3,12 @@
     - v1.0.0/create_sites_table.php
     - v1.0.0/create_lighthouse_urls_table.php
     - v1.0.0/create_lighthouse_reports_table.php
-    - v1.0.0/create_scripts_table.php
     - v1.0.0/create_health_checks_table.php
+'1.0.1':
+    - 'Hugo with testing support'
+    - v1.0.1/create_tests_table.php
+    - v1.0.1/create_groups_table.php
+    - v1.0.1/create_test_groups_table.php
+    - v1.0.1/create_group_schedule_table.php
+    - v1.0.1/create_test_reports_table.php
+    - v1.0.1/create_test_results_table.php

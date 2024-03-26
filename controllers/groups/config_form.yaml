@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: 'jaxwilko.hugo::lang.models.group.label'
+
+# Model Form Field configuration
+form: $/jaxwilko/hugo/models/group/fields.yaml
+
+# Model Class name
+modelClass: JaxWilko\Hugo\Models\Group
+
+# Default redirect location
+defaultRedirect: jaxwilko/hugo/groups
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: jaxwilko/hugo/groups/update/:id
+    redirectClose: jaxwilko/hugo/groups
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: jaxwilko/hugo/groups
+    redirectClose: jaxwilko/hugo/groups
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

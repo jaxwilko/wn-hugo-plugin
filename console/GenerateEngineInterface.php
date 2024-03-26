@@ -28,7 +28,7 @@ class GenerateEngineInterface extends Command
      */
     public function handle()
     {
-        $config = Yaml::parse(File::get(base_path('plugins/jaxwilko/hugo/models/sitescript/script.yaml')));
+        $config = Yaml::parse(File::get(base_path('plugins/jaxwilko/hugo/models/test/test-commands.yaml')));
 
         $keys = array_keys($config);
 
@@ -46,8 +46,10 @@ class GenerateEngineInterface extends Command
                 }
                 switch ($arg['type']) {
                     case 'text':
+                    case 'codeeditor':
                         $argString .= 'string';
                         break;
+                    case 'dropdown':
                     case 'number':
                         $argString .= 'int';
                         break;

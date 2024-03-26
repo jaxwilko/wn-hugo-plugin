@@ -26,6 +26,8 @@ tabs:
         _reports:
             type: lighthouseresults
             tab: Details
+            list: '$/jaxwilko/hugo/formwidgets/lighthouseresults/config/list.yaml'
+            form: '$/jaxwilko/hugo/models/lighthousereport/fields.yaml'
             context: [update, preview]
 
 

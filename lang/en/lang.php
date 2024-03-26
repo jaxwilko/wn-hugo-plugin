@@ -11,6 +11,7 @@ return [
     'models' => [
         'general' => [
             'id' => 'ID',
+            'name' => 'Name',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ],
@@ -22,9 +23,17 @@ return [
             'label' => 'Lighthouse Url',
             'label_plural' => 'Lighthouse Urls',
         ],
-        'script' => [
-            'label' => 'Script',
-            'label_plural' => 'Scripts',
+        'test' => [
+            'label' => 'Test',
+            'label_plural' => 'Tests',
+        ],
+        'group' => [
+            'label' => 'Group',
+            'label_plural' => 'Groups',
+        ],
+        'testreport' => [
+            'label' => 'Test Report',
+            'label_plural' => 'Test Reports',
         ],
     ],
 ];

@@ -1,0 +1,54 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+tabs:
+    fields:
+        test[name]:
+            label: 'Test Name'
+            span: left
+            disabled: true
+            tab: 'Result'
+
+        status:
+            label: Status
+            type: dropdown
+            span: right
+            options:
+                0: 'Okay'
+                1: 'General Error'
+                2: 'Uncaught Error'
+                3: 'Exit Error'
+            disabled: true
+            tab: 'Result'
+
+        created_at:
+            label: 'jaxwilko.hugo::lang.models.general.created_at'
+            type: text
+            disabled: true
+            span: left
+            tab: 'Result'
+
+        updated_at:
+            label: 'jaxwilko.hugo::lang.models.general.updated_at'
+            type: text
+            disabled: true
+            span: right
+            tab: 'Result'
+
+        _reportLink:
+            type: partial
+            path: '~/plugins/jaxwilko/hugo/models/testresult/_reportlink.php'
+            tab: 'Result'
+
+        section:
+            label: 'Result Log'
+            type: section
+            tab: 'Result'
+
+        result:
+            type: partial
+            path: '~/plugins/jaxwilko/hugo/models/testresult/_results.php'
+            tab: 'Result'

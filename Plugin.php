@@ -1,4 +1,6 @@
-<?php namespace JaxWilko\Hugo;
+<?php
+
+namespace JaxWilko\Hugo;
 
 use Backend;
 use Backend\Models\UserRole;
@@ -31,17 +33,19 @@ class Plugin extends PluginBase
         $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\HugoHealth::class);
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
         $this->registerConsoleCommand('hugo.clear', \JaxWilko\Hugo\Console\HugoClear::class);
+        $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
+        $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\HugoGroupSchedule::class);
+        $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\HugoGroupProcess::class);
 
-        if (env('HUGO_EXPERIMENTAL')) {
-            $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
-            $this->registerConsoleCommand('hugo.engine.gen', \JaxWilko\Hugo\Console\GenerateEngineInterface::class);
-        }
+        // @TODO: remove
+        $this->registerConsoleCommand('hugo.engine.gen', \JaxWilko\Hugo\Console\GenerateEngineInterface::class);
     }
 
     public function registerFormWidgets()
     {
         return [
-            \JaxWilko\Hugo\FormWidgets\LighthouseResults::class => 'lighthouseresults'
+            \JaxWilko\Hugo\FormWidgets\LighthouseResults::class => 'lighthouseresults',
+            \JaxWilko\Hugo\FormWidgets\ReportResults::class => 'reportresults'
         ];
     }
 
@@ -51,7 +55,7 @@ class Plugin extends PluginBase
             'hugo' => 'jaxwilko.hugo::mail.layout-default',
         ];
     }
-    
+
     public function registerPermissions(): array
     {
         return [
@@ -62,7 +66,7 @@ class Plugin extends PluginBase
             ],
             'jaxwilko.hugo.scripts' => [
                 'tab'   => 'Hugo',
-                'label' => 'Access scripts',
+                'label' => 'Access tests',
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
             ],
         ];
@@ -73,7 +77,7 @@ class Plugin extends PluginBase
      */
     public function registerNavigation(): array
     {
-        $menu = [
+        return [
             'hugo' => [
                 'label'       => 'jaxwilko.hugo::lang.plugin.name',
                 'url'         => Backend::url('jaxwilko/hugo/sites'),
@@ -84,23 +88,30 @@ class Plugin extends PluginBase
                 'sideMenu'    => [
                     'sites' => [
                         'label'       => 'Sites',
-                        'icon'        => 'icon-cubes',
+                        'icon'        => 'icon-sitemap',
                         'url'         => Backend::url('jaxwilko/hugo/sites'),
+                        'permissions' => ['jaxwilko.hugo.sites']
+                    ],
+                    'tests' => [
+                        'label' => 'Tests',
+                        'icon' => 'icon-code',
+                        'url' => Backend::url('jaxwilko/hugo/tests'),
+                        'permissions' => ['jaxwilko.hugo.sites']
+                    ],
+                    'groups' => [
+                        'label' => 'Test Groups',
+                        'icon' => 'icon-cubes',
+                        'url' => Backend::url('jaxwilko/hugo/groups'),
+                        'permissions' => ['jaxwilko.hugo.sites']
+                    ],
+                    'reports' => [
+                        'label' => 'Reports',
+                        'icon' => 'icon-layer-group',
+                        'url' => Backend::url('jaxwilko/hugo/testreports'),
                         'permissions' => ['jaxwilko.hugo.sites']
                     ],
                 ]
             ],
         ];
-
-        if (env('HUGO_EXPERIMENTAL')) {
-            $menu['hugo']['sideMenu']['scripts'] = [
-                'label' => 'Scripts',
-                'icon' => 'icon-code',
-                'url' => Backend::url('jaxwilko/hugo/scripts'),
-                'permissions' => ['jaxwilko.hugo.scripts']
-            ];
-        }
-
-        return $menu;
     }
 }

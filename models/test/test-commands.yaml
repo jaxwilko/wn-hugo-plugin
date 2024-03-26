@@ -1,0 +1,409 @@
+add:
+    name: Add
+    icon: icon-plus
+    description: Add an int to a var
+    fields:
+        _title:
+            label: Add
+            type: section
+        arg1:
+            label: Arg1
+            placeholder: $EXAMPLE
+            span: auto
+            type: text
+        arg2:
+            label: Arg2
+            placeholder: '5'
+            span: auto
+            type: text
+
+click:
+    name: Click
+    icon: icon-hand-pointer
+    description: Tell the browser driver to click on an element
+    fields:
+        _title:
+            label: Click
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: full
+            type: text
+        allowJsFallback:
+            default: '1'
+            label: Allow Javascript Click Emulation Fallback
+            span: full
+            type: checkbox
+
+deleteCookies:
+    name: Delete Cookies
+    icon: icon-cookie-bite
+    description: Deletes all cookies on current site
+    fields:
+        _title:
+            label: Delete Cookies
+            type: section
+
+dumpConsole:
+    name: Dump Console Logs
+    icon: icon-terminal
+    description: Return the WebDriver console logs
+    fields:
+        _title:
+            label: Dump Console Logs
+            type: section
+
+echo:
+    name: Echo
+    icon: icon-ear-listen
+    description: Print the specified value
+    fields:
+        _title:
+            label: Echo
+            type: section
+        value:
+            label: Value
+            span: full
+            type: text
+
+elementText:
+    name: Element Text
+    icon: icon-quote-right
+    description: Return the text of an element
+    fields:
+        _title:
+            label: Element Text
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: full
+            type: text
+
+equals:
+    name: Equals
+    icon: icon-equals
+    description: Return true if 2 args are equal
+    fields:
+        _title:
+            label: Equals
+            type: section
+        arg1:
+            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            label: Argument 1
+            maxItems: 1
+            span: left
+            type: repeater
+        arg2:
+            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            label: Argument 2
+            maxItems: 1
+            span: right
+            type: repeater
+
+exec:
+    name: Execute Javascript
+    icon: icon-code
+    description: Tell the browser driver to execute custom js code
+    fields:
+        _title:
+            label: Execute Javascript
+            type: section
+        code:
+            label: Code
+            language: javascript
+            span: full
+            type: codeeditor
+
+exit:
+    name: Exit
+    icon: icon-arrow-right-from-bracket
+    description: Exit the script
+    fields:
+        _title:
+            label: Exit
+            type: section
+        status:
+            label: Status
+            options:
+                '0': Okay
+                '1': Fail
+                '2': Error
+            span: full
+            type: dropdown
+
+getInputValue:
+    name: Get Input Value
+    icon: icon-greater-than-equal
+    description: Returns the value of the specified input
+    fields:
+        _title:
+            label: Get Input Value
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: full
+            type: text
+
+ifStatement:
+    name: If
+    icon: icon-code-branch
+    description: If conditional logic statement
+    fields:
+        _title:
+            label: IF
+            type: section
+        condition:
+            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            label: Condition
+            maxItems: 1
+            type: repeater
+        invert:
+            label: Invert logic
+            type: checkbox
+        then:
+            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            label: Then
+            span: left
+            type: repeater
+        else:
+            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            label: Else
+            span: right
+            type: repeater
+
+writeLog:
+    name: Log
+    icon: icon-note-sticky
+    description: Write a message to the result log
+    fields:
+        _title:
+            label: Log
+            type: section
+        message:
+            label: Message
+            span: full
+            type: text
+
+moveMouse:
+    name: Move Mouse
+    icon: icon-computer-mouse
+    description: Tell the browser driver to move the mouse to an element
+    fields:
+        _title:
+            label: Move Mouse
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: full
+            type: text
+
+nav:
+    name: Navigate
+    icon: icon-diamond-turn-right
+    description: Tell the browser driver to navigate to a url
+    fields:
+        _title:
+            label: Navigate
+            type: section
+        url:
+            label: Url
+            placeholder: 'https://example.com'
+            span: full
+            type: text
+
+refresh:
+    name: Refresh
+    icon: icon-arrows-rotate
+    description: Reloads the current page
+    fields:
+        _title:
+            label: Refresh
+            type: section
+
+screenshot:
+    name: Screenshot
+    icon: icon-file-image
+    description: Tell the browser driver to take a screenshot with the specified name
+    fields:
+        _title:
+            label: Screenshot
+            type: section
+        label:
+            label: Label
+            placeholder: Example Test
+            span: full
+            type: text
+
+scroll:
+    name: Scroll
+    icon: icon-up-down
+    description: Tell the browser driver to scroll
+    fields:
+        _title:
+            label: Scroll
+            type: section
+        x:
+            label: Scroll X
+            placeholder: '5'
+            span: auto
+            type: number
+        y:
+            label: Scroll Y
+            placeholder: '5'
+            span: auto
+            type: number
+
+scrollTo:
+    name: Scroll To
+    icon: icon-turn-down
+    description: Tell the browser driver to scroll to an element
+    fields:
+        _title:
+            label: Move Mouse
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: auto
+            type: text
+        offset:
+            label: Offset
+            placeholder: '5'
+            default: 0
+            span: auto
+            type: number
+
+sendKeys:
+    name: Send Keys
+    icon: icon-keyboard
+    description: Tell the browser driver to send the string as if entered from a keyboard
+    fields:
+        _title:
+            label: Send Keys
+            type: section
+        keys:
+            label: Keys
+            placeholder: Hello World
+            span: full
+            type: text
+
+set:
+    name: Set
+    icon: icon-pencil
+    description: Create a variable with a value
+    fields:
+        _title:
+            label: Set
+            type: section
+        name:
+            label: Name
+            placeholder: EXAMPLE
+            span: auto
+            type: text
+        value:
+            label: Value
+            placeholder: '5'
+            span: auto
+            type: text
+
+setInputValue:
+    name: Set Input Value
+    icon: icon-less-than-equal
+    description: Set the value of a specified input
+    fields:
+        _title:
+            label: Set Input Value
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: auto
+            type: text
+        value:
+            label: Value
+            span: auto
+            type: text
+
+sub:
+    name: Sub
+    icon: icon-minus
+    description: Subtract an int from a var
+    fields:
+        _title:
+            label: Sub
+            type: section
+        arg1:
+            label: Arg1
+            placeholder: $EXAMPLE
+            span: auto
+            type: text
+        arg2:
+            label: Arg2
+            placeholder: '5'
+            span: auto
+            type: text
+
+visible:
+    name: Visible
+    icon: icon-eye-low-vision
+    description: Return the visibility of an element
+    fields:
+        _title:
+            label: Visible
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: full
+            type: text
+
+waitFor:
+    name: Wait For
+    icon: icon-hourglass-start
+    description: Wait for an element to be visible and drawn
+    fields:
+        _title:
+            label: Wait
+            type: section
+        selector:
+            label: Selector
+            placeholder: '#my-target'
+            span: left
+            type: text
+        timeout:
+            label: Timeout
+            placeholder: '5'
+            span: right
+            type: number
+            value: 5
+
+wait:
+    name: Wait
+    icon: icon-hourglass-half
+    description: Tell the task to wait for X seconds
+    fields:
+        _title:
+            label: Wait
+            type: section
+        seconds:
+            label: Seconds
+            placeholder: '5'
+            span: full
+            type: number
+uwait:
+    name: Wait Microseconds
+    icon: icon-hourglass-end
+    description: Tell the task to wait for X microseconds
+    fields:
+        _title:
+            label: Wait
+            type: section
+        seconds:
+            label: Microseconds
+            placeholder: '5'
+            span: full
+            type: number

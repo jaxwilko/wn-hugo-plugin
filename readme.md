@@ -12,4 +12,4 @@ composer require jaxwilko/wn-hugo-plugin
 
 - `./artisan hugo:lighthouse` - Run lighthouse tests
 - `./artisan hugo:health` - Run health checks
-- `./artisan hugo:clear` - Run lighthouse tests
+- `./artisan hugo:clear` - Run lighthouse test against enabled sites

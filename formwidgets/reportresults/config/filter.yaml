@@ -1,0 +1,5 @@
+scopes:
+    created_at:
+        label: jaxwilko.hugo::lang.models.general.created_at
+        type: daterange
+        conditions: created_at >= ':after' AND created_at <= ':before'

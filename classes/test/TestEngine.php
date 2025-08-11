@@ -447,7 +447,7 @@ class TestEngine
         ', $selector, $value));
     }
 
-    public function getBrowserLogs(): ActionInterface
+    public function getBrowserLogs(string $report): ActionInterface
     {
         $logs = $this->webDriver->manage()->getLog('browser');
 
@@ -455,7 +455,7 @@ class TestEngine
 
         $status = static::STATUS_OKAY;
         foreach ($logs as $log) {
-            if ($log['level'] === 'SEVERE') {
+            if ($log['level'] === 'SEVERE' && ($report === 'all' || $log['source'] === $report)) {
                 $status = static::STATUS_GENERAL_ERROR;
                 break;
             }

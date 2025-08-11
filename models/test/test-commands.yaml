@@ -53,6 +53,14 @@ getBrowserLogs:
         _title:
             label: Get Browser Logs
             type: section
+        report:
+            label: What logs to report?
+            type: dropdown
+            options:
+                all: All
+                network: Network
+                'console-api': Console
+                other: Other
 
 echo:
     name: Echo

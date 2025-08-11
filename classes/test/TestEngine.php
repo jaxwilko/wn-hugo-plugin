@@ -447,11 +447,21 @@ class TestEngine
         ', $selector, $value));
     }
 
-    public function dumpConsole(): ActionInterface
+    public function getBrowserLogs(): ActionInterface
     {
         $logs = $this->webDriver->manage()->getLog('browser');
+
         $this->log(json_encode($logs, JSON_PRETTY_PRINT));
-        return new ActionResult(static::STATUS_OKAY, $logs);
+
+        $status = static::STATUS_OKAY;
+        foreach ($logs as $log) {
+            if ($log['level'] === 'SEVERE') {
+                $status = static::STATUS_GENERAL_ERROR;
+                break;
+            }
+        }
+
+        return new ActionResult($status, $logs);
     }
 
     public function deleteCookies(): ActionInterface
@@ -492,12 +502,6 @@ class TestEngine
 
         $result1 = $this->execute($arg1)[0]['result'] ?? new ActionResult(static::STATUS_GENERAL_ERROR, '$arg1 failed');
         $result2 = $this->execute($arg2)[0]['result'] ?? new ActionResult(static::STATUS_GENERAL_ERROR, '$arg2 failed');
-
-        foreach ([$result1, $result2] as $result) {
-            if ($result instanceof ActionResult) {
-                return $result;
-            }
-        }
 
         if ($result1->value && $result2->value && $result1->value == $result2->value) {
             return new ActionResult(static::STATUS_OKAY, $result1->value);

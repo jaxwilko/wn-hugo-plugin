@@ -45,13 +45,13 @@ deleteCookies:
             label: Delete Cookies
             type: section
 
-dumpConsole:
-    name: Dump Console Logs
+getBrowserLogs:
+    name: Get Browser Logs
     icon: icon-terminal
-    description: Return the WebDriver console logs
+    description: Returns all console logs made by the site
     fields:
         _title:
-            label: Dump Console Logs
+            label: Get Browser Logs
             type: section
 
 echo:

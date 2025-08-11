@@ -128,7 +128,7 @@ class TestReport extends Model
                 $webDriver->quit();
             }
 
-            return $report;
+            throw $e;
         }
 
         $schedule->setStatus(GroupSchedule::STATUS_FINISHED);

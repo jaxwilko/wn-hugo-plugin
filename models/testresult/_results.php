@@ -57,7 +57,7 @@
                                         }
                                     ?>
                                 </td>
-                                <td><?= $entry->result->value ?></td>
+                                <td><?= is_array($entry->result->value) ? json_encode($entry->result->value) : $entry->result->value ?></td>
                             </tr>
                             </tbody>
                         </table>

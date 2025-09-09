@@ -119,6 +119,8 @@ class InstallChrome extends Command
 
         $this->components->task('Making driver executable', function () use ($dir) {
             chmod($dir . '/chromedriver-linux64/chromedriver', 0744);
+            chmod($dir . '/chrome-linux64/chrome', 0744);
+            chmod($dir . '/chrome-linux64/chrome_crashpad_handler', 0744);
         });
 
         $this->components->task('Setting Chrome version in env', function () use ($version) {

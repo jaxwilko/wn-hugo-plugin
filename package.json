@@ -6,6 +6,6 @@
   "license": "MIT",
   "dependencies": {
     "apexcharts": "^3.40.0",
-    "lighthouse": "^10.0.2"
+    "lighthouse": "^10.4.0"
   }
 }

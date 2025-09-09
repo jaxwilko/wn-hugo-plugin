@@ -36,6 +36,7 @@ class Plugin extends PluginBase
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
         $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\HugoGroupSchedule::class);
         $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\HugoGroupProcess::class);
+        $this->registerConsoleCommand('hugo.install-chrome', \JaxWilko\Hugo\Console\InstallChrome::class);
 
         // @TODO: remove
         $this->registerConsoleCommand('hugo.engine.gen', \JaxWilko\Hugo\Console\GenerateEngineInterface::class);

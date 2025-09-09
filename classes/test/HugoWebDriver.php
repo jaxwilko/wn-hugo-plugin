@@ -38,18 +38,30 @@ use Winter\Storm\Exception\ApplicationException;
 
 class HugoWebDriver
 {
+    public const CHROME_INSTALL_PATH = 'hugo/google-chrome/%s';
+
     public function __construct(protected ?WebDriver $webDriver)
     {
         $this->webDriver->manage()->window()->setSize(new WebDriverDimension(1920, 934));
     }
 
+    /**
+     * @throws ApplicationException
+     */
     public static function make(): static
     {
         if (!env('webdriver.chrome.driver')) {
-            if (!env('HUGO_WEB_DRIVER')) {
-                throw new ApplicationException('Please set a `HUGO_WEB_DRIVER` env');
+            if (!env('HUGO_CHROME_VERSION')) {
+                throw new ApplicationException('Please run `hugo:install-chrome`');
             }
-            putenv(sprintf('webdriver.chrome.driver=%s', env('HUGO_WEB_DRIVER')));
+
+            $path = realpath(storage_path(sprintf(static::CHROME_INSTALL_PATH, env('HUGO_CHROME_VERSION'))));
+
+            if (!$path || !file_exists($path)) {
+                throw new ApplicationException('Could not find Chrome version');
+            }
+
+            putenv(sprintf('%s:%s:%s', $path . '/chrome-linux64', $path . '/chromedriver-linux64', getenv('PATH')));
         }
 
         $options = ['--headless', '--start-maximized', '--kiosk', '--no-sandbox', '--disable-dev-shm-usage'];

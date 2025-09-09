@@ -19,6 +19,7 @@ class HugoGroupSchedule extends Command
      */
     protected $signature = 'hugo:schedule
         {--g|group= : Group ID to schedule}
+        {--c|clear : Clear the schedule}
     ';
 
     /**
@@ -32,6 +33,12 @@ class HugoGroupSchedule extends Command
      */
     public function handle(): int
     {
+        if ($this->option('clear')) {
+            GroupSchedule::where('status', '=', GroupSchedule::STATUS_RUNNING)
+                ->update(['status' => GroupSchedule::STATUS_FINISHED]);
+            return 0;
+        }
+
         if ($this->option('group') && $group = Group::find($this->option('group'))) {
             $group->scheduled()->save(new GroupSchedule([
                 'status' => 'pending'

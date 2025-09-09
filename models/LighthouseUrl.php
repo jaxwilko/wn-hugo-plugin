@@ -4,6 +4,7 @@ namespace JaxWilko\Hugo\Models;
 
 use Carbon\Carbon;
 use DB;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Model;
 use Winter\Storm\Database\Builder;
 use Winter\Storm\Database\Relations\HasMany;
@@ -37,7 +38,6 @@ class LighthouseUrl extends Model
         'reports' => [
             \JaxWilko\Hugo\Models\LighthouseReport::class,
             'key' => 'url_id',
-            'otherKey' => 'id'
         ]
     ];
 
@@ -52,7 +52,7 @@ class LighthouseUrl extends Model
         return $this->site->base_url . $this->url;
     }
 
-    protected function getAveragesBuilder(): HasMany
+    protected function getAveragesBuilder(): Relation
     {
         return $this->reports()
             ->select(DB::raw('
@@ -74,6 +74,10 @@ class LighthouseUrl extends Model
 
     protected function hasReports(): bool
     {
+        if (isset($this->hasReports)) {
+            return $this->hasReports;
+        }
+
         return $this->hasReports = $this->reports()->count() > 0;
     }
 

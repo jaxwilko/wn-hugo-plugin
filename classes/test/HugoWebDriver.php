@@ -50,21 +50,38 @@ class HugoWebDriver
      */
     public static function make(): static
     {
-        if (!env('webdriver.chrome.driver')) {
-            if (!env('HUGO_CHROME_VERSION')) {
-                throw new ApplicationException('Please run `hugo:install-chrome`');
-            }
-
-            $path = realpath(storage_path(sprintf(static::CHROME_INSTALL_PATH, env('HUGO_CHROME_VERSION'))));
-
-            if (!$path || !file_exists($path)) {
-                throw new ApplicationException('Could not find Chrome version');
-            }
-
-            putenv(sprintf('%s:%s:%s', $path . '/chrome-linux64', $path . '/chromedriver-linux64', getenv('PATH')));
+        if (!env('HUGO_CHROME_VERSION')) {
+            throw new ApplicationException('Please run `hugo:install-chrome`');
         }
 
-        $options = ['--headless', '--start-maximized', '--kiosk', '--no-sandbox', '--disable-dev-shm-usage'];
+        $path = realpath(storage_path(sprintf(static::CHROME_INSTALL_PATH, env('HUGO_CHROME_VERSION'))));
+
+        if (!$path || !file_exists($path)) {
+            throw new ApplicationException('Could not find Chrome version');
+        }
+
+        // Prepend the path with our chrome install
+        $envPath = implode(PATH_SEPARATOR, [
+            $path . '/chrome-linux64',
+            $path . '/chromedriver-linux64',
+            getenv('PATH')
+        ]);
+
+        // Push it into the env for subprocesses
+        putenv('PATH=' . $envPath);
+        // Also append it here because Facebook uses it...
+        $_ENV['PATH'] = $envPath;
+
+        // Force the chromedriver to be used
+        putenv('WEBDRIVER_CHROME_DRIVER=' . $path . '/chromedriver-linux64/chromedriver');
+
+        $options = [
+            '--headless',
+            '--start-maximized',
+            '--kiosk',
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+        ];
 
         if (isset($browserConfig->userAgent)) {
             $options[] = '--user-agent=' . $browserConfig->userAgent;
@@ -74,11 +91,13 @@ class HugoWebDriver
             ChromeDriver::start(
                 DesiredCapabilities::chrome()->setCapability(
                     ChromeOptions::CAPABILITY,
-                    (new ChromeOptions())->addArguments($options)
+                    (new ChromeOptions())
+                        ->addArguments($options)
+                        ->setBinary($path . '/chrome-linux64/chrome')
                 )->setCapability(
                     'loggingPrefs',
                     ['browser' => 'ALL']
-                )
+                ),
             )
         );
     }

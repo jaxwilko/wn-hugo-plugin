@@ -30,12 +30,12 @@ class Plugin extends PluginBase
     public function register(): void
     {
         $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\HugoLighthouse::class);
-        $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\HugoHealth::class);
+        $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\SiteDownDetector::class);
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
         $this->registerConsoleCommand('hugo.clear', \JaxWilko\Hugo\Console\HugoClear::class);
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
-        $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\HugoGroupSchedule::class);
-        $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\HugoGroupProcess::class);
+        $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\HugoWorkflowSchedule::class);
+        $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\HugoWorkflowProcess::class);
         $this->registerConsoleCommand('hugo.install-chrome', \JaxWilko\Hugo\Console\InstallChrome::class);
 
         // @TODO: remove
@@ -93,22 +93,16 @@ class Plugin extends PluginBase
                         'url'         => Backend::url('jaxwilko/hugo/sites'),
                         'permissions' => ['jaxwilko.hugo.sites']
                     ],
-                    'tests' => [
-                        'label' => 'Tests',
+                    'actions' => [
+                        'label' => 'Actions',
                         'icon' => 'icon-code',
-                        'url' => Backend::url('jaxwilko/hugo/tests'),
+                        'url' => Backend::url('jaxwilko/hugo/actions'),
                         'permissions' => ['jaxwilko.hugo.sites']
                     ],
-                    'groups' => [
-                        'label' => 'Test Groups',
+                    'workflows' => [
+                        'label' => 'Workflows',
                         'icon' => 'icon-cubes',
-                        'url' => Backend::url('jaxwilko/hugo/groups'),
-                        'permissions' => ['jaxwilko.hugo.sites']
-                    ],
-                    'reports' => [
-                        'label' => 'Reports',
-                        'icon' => 'icon-layer-group',
-                        'url' => Backend::url('jaxwilko/hugo/testreports'),
+                        'url' => Backend::url('jaxwilko/hugo/workflows'),
                         'permissions' => ['jaxwilko.hugo.sites']
                     ],
                 ]

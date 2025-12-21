@@ -1,8 +1,8 @@
 # Model List Column configuration
-list: $/jaxwilko/hugo/models/testresult/columns.yaml
+list: $/jaxwilko/hugo/models/actionresult/columns.yaml
 
 # Model Class name
-modelClass: JaxWilko\Hugo\Models\TestResult
+modelClass: JaxWilko\Hugo\Models\ActionResult
 
 # Link URL for each record
 recordOnClick: '$.oc.reportResultWidget.clickReportResultRecord(:id, this)'

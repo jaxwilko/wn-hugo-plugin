@@ -9,43 +9,45 @@ columns:
         searchable: true
         sortable: true
         format: 'd-m-Y H:i:s'
-    performance:
-        label: 'Score'
+
+    score_performance:
+        label: 'Performance'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    fcp_score:
-        label: 'FCP'
+    score_accessibility:
+        label: 'Accessibility'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    lcp_score:
-        label: 'LCP'
+    score_best_practice:
+        label: 'Best Practice'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    fmp_score:
-        label: 'FMP'
+    score_seo:
+        label: 'SEO'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    si_score:
-        label: 'SI'
+    performance_first_contentful_paint:
+        label: 'First Contentful Paint'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    cls_score:
-        label: 'CLS'
+        invisible: true
+    performance_largest_contentful_paint:
+        label: 'Largest Contentful Paint'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    srt_score:
-        label: 'SRT'
+        invisible: true
+    performance_total_blocking_time:
+        label: 'Total Blocking Time'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    fid_score:
-        label: 'FID'
+        invisible: true
+    performance_cumulative_layout_shift:
+        label: 'Cumulative Layout Shift'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    int_score:
-        label: 'INT'
+        invisible: true
+    performance_speed_index:
+        label: 'Speed Index'
         type: partial
         path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
-    ds_score:
-        label: 'DS'
-        type: partial
-        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+        invisible: true

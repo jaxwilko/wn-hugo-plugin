@@ -2,89 +2,41 @@
 
 namespace Winter\User\Updates;
 
-use Schema;
+use Winter\Storm\Database\Schema\Blueprint;
 use Winter\Storm\Database\Updates\Migration;
+use Winter\Storm\Support\Facades\Schema;
 
-class CreateLighthouseReportsTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('jaxwilko_hugo_lighthouse_url_reports', function ($table) {
+        Schema::create('jaxwilko_hugo_lighthouse_reports', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
 
             $table->integer('url_id')->unsigned();
 
-            $table->float('performance', 3, 2);
+            $table->float('score_performance', 3);
+            $table->float('score_accessibility', 3);
+            $table->float('score_best_practice', 3);
+            $table->float('score_seo', 3);
 
-            $table->float('fcp_score', 3, 2);
-            $table->float('fcp_value', 16, 8);
-            $table->string('fcp_unit', 16);
-            $table->string('fcp_display', 16);
+            $table->float('performance_first_contentful_paint', 3);
+            $table->float('performance_largest_contentful_paint', 3);
+            $table->float('performance_total_blocking_time', 3);
+            $table->float('performance_cumulative_layout_shift', 3);
+            $table->float('performance_speed_index', 3);
 
-            $table->float('lcp_score', 3, 2);
-            $table->float('lcp_value', 16, 8);
-            $table->string('lcp_unit', 16);
-            $table->string('lcp_display', 16);
-
-            $table->float('fmp_score', 3, 2);
-            $table->float('fmp_value', 16, 8);
-            $table->string('fmp_unit', 16);
-            $table->string('fmp_display', 16);
-
-            $table->float('cls_score', 3, 2);
-            $table->float('cls_value', 16, 8);
-            $table->string('cls_unit', 16);
-            $table->string('cls_display', 16);
-
-            $table->float('si_score', 3, 2);
-            $table->float('si_value', 16, 8);
-            $table->string('si_unit', 16);
-            $table->string('si_display', 16);
-
-            $table->float('srt_score', 3, 2);
-            $table->float('srt_value', 16, 8);
-            $table->string('srt_unit', 16);
-            $table->string('srt_display', 30);
-
-            $table->float('fid_score', 3, 2);
-            $table->float('fid_value', 16, 8);
-            $table->string('fid_unit', 16);
-            $table->string('fid_display', 30);
-
-            $table->float('int_score', 3, 2);
-            $table->float('int_value', 16, 8);
-            $table->string('int_unit', 16);
-            $table->string('int_display', 30);
-
-            $table->float('nsl_score', 3, 2)->nullable();
-            $table->float('nsl_value', 16, 8);
-            $table->string('nsl_unit', 16);
-            $table->string('nsl_display', 30);
-
-            $table->float('ucr_score', 3, 2);
-            $table->float('ucr_value', 16, 8);
-            $table->string('ucr_unit', 16);
-            $table->string('ucr_display', 30);
-
-            $table->float('ujc_score', 3, 2);
-            $table->float('ujc_value', 16, 8);
-            $table->string('ujc_unit', 16);
-            $table->string('ujc_display', 30);
-
-            $table->float('ds_score', 3, 2);
-            $table->float('ds_value', 16, 8);
-            $table->string('ds_unit', 16);
-            $table->string('ds_display', 30);
+            $table->text('report')->nullable();
 
             $table->timestamps();
 
-            $table->foreign('url_id')->references('id')->on('jaxwilko_hugo_lighthouse_urls');
+            $table->foreign('url_id')->references('id')->on('jaxwilko_hugo_site_urls');
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('jaxwilko_hugo_lighthouse_url_reports');
+        Schema::dropIfExists('jaxwilko_hugo_lighthouse_reports');
     }
-}
+};

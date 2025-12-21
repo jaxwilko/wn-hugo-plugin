@@ -1,0 +1,68 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: 'Name'
+        type: text
+        required: true
+        span: auto
+
+    url:
+        label: 'Url'
+        type: text
+        required: true
+        placeholder: '/example/test'
+        span: auto
+
+    toolbar:
+        label: false
+        type: partial
+
+tabs:
+    cssClass: master-area
+    fields:
+        _titleConfig:
+            label: 'Action Config'
+            type: section
+            span: full
+            tab: 'Manage'
+        site:
+            label: 'jaxwilko.hugo::lang.models.site.label'
+            type: relation
+            span: auto
+            required: true
+            tab: 'Manage'
+        priority:
+            label: 'Priority'
+            span: auto
+            type: dropdown
+            options:
+                1: 1
+                2: 2
+                3: 3
+                4: 4
+                5: 5
+            default: 3
+            comment: 'Lower numbers are processed first'
+            tab: 'Manage'
+        workflows:
+            label: 'Workflows'
+            type: relation
+            tab: 'Manage'
+        _titleInstructions:
+            label: 'Action Instructions'
+            type: section
+            span: full
+            tab: 'Manage'
+        config:
+            type: repeater
+            groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
+            tab: 'Manage'
+        results:
+            type: partial
+            tab: 'Results'
+        _preview:
+            type: partial
+            tab: 'Preview'

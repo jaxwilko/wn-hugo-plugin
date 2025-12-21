@@ -31,9 +31,13 @@ return [
             'label' => 'Group',
             'label_plural' => 'Groups',
         ],
-        'testreport' => [
+        'workflowresult' => [
             'label' => 'Test Report',
             'label_plural' => 'Test Reports',
+        ],
+        'lighthousereport' => [
+            'label' => 'Lighthouse Report',
+            'label_plural' => 'Lighthouse Reports',
         ],
     ],
 ];

@@ -1,0 +1,33 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: 'jaxwilko.hugo::lang.models.workflow.label'
+
+# Model Form Field configuration
+form: $/jaxwilko/hugo/models/workflow/fields.yaml
+
+# Model Class name
+modelClass: JaxWilko\Hugo\Models\Workflow
+
+# Default redirect location
+defaultRedirect: jaxwilko/hugo/workflows
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: jaxwilko/hugo/workflows/update/:id
+    redirectClose: jaxwilko/hugo/workflows
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: jaxwilko/hugo/workflows
+    redirectClose: jaxwilko/hugo/workflows
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title
+
+formLayout: fancy

@@ -1,56 +1,55 @@
 <?php Block::put('breadcrumb') ?>
-    <ul>
-        <li><a href="<?= Backend::url('jaxwilko/hugo/sites') ?>">Sites</a></li>
-        <li><?= e($this->pageTitle) ?></li>
-    </ul>
+    <?= $this->makeLayoutPartial('breadcrumb') ?>
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
-
-    <?= Form::open(['class' => 'layout']) ?>
-
-        <div class="layout-row">
-            <?= $this->formRender() ?>
-        </div>
-
-        <div class="form-buttons">
-            <div class="loading-indicator-container">
-                <button
-                    type="button"
-                    data-request="onSave"
-                    data-request-data="redirect:0"
-                    data-hotkey="ctrl+s, cmd+s"
-                    data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name' => trans('jaxwilko.hugo::lang.models.site.label')])); ?>"
-                    class="btn btn-primary">
-                    <?= e(trans('backend::lang.form.save')); ?>
-                </button>
-                <button
-                    type="button"
-                    data-request="onSave"
-                    data-request-data="close:1"
-                    data-hotkey="ctrl+enter, cmd+enter"
-                    data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name' => trans('jaxwilko.hugo::lang.models.site.label')])); ?>"
-                    class="btn btn-default">
-                    <?= e(trans('backend::lang.form.save_and_close')); ?>
-                </button>
-                <button
-                    type="button"
-                    class="wn-icon-trash-o btn-icon danger pull-right"
-                    data-request="onDelete"
-                    data-load-indicator="<?= e(trans('backend::lang.form.deleting_name', ['name' => trans('jaxwilko.hugo::lang.models.site.label')])); ?>"
-                    data-request-confirm="<?= e(trans('backend::lang.form.confirm_delete')); ?>">
-                </button>
-                <span class="btn-text">
-                    or <a href="<?= Backend::url('jaxwilko/hugo/sites') ?>"><?= e(trans('backend::lang.form.cancel')); ?></a>
-                </span>
+    <?php Block::put('form-contents') ?>
+    <style>
+        .fancy-layout *:not(.nested-form):not(.modal-body)>.form-widget>.layout-row>.control-tabs.secondary-tabs.has-tabs>div.tab-content {
+            background: transparent;
+        }
+        .fancy-layout *:not(.nested-form):not(.modal-body)>.form-widget>.layout-row>.control-tabs.primary-tabs>div>ul.nav-tabs, *:not(.nested-form):not(.modal-body)>.form-widget>.layout-row>.control-tabs.fancy-layout.primary-tabs>div>ul.nav-tabs {
+            background: #2da7c7;
+        }
+        #Form-primaryTabs ul.nav.nav-tabs > li > a[title="Settings"] {
+            display: none;
+        }
+        @media(max-width: 1024px) {
+            #Form-primaryTabs ul.nav.nav-tabs > li > a[title="Settings"] {
+                display: block;
+            }
+        }
+    </style>
+        <div class="layout fancy-layout">
+            <div class="layout-row">
+                <?= $this->formRenderOutsideFields() ?>
+                <?= $this->formRenderPrimaryTabs() ?>
             </div>
         </div>
+    <?php Block::endPut() ?>
 
-    <?= Form::close() ?>
+    <?php Block::put('form-sidebar') ?>
+        <div class="hide-tabs"><?= $this->formRenderSecondaryTabs() ?></div>
+    <?php Block::endPut() ?>
 
+    <?php Block::put('body') ?>
+        <div class="hugo-app">
+            <?= Form::open([
+                'id' => $this->formGetId(),
+                'class' => 'layout stretch fancy flex flex-col lg:flex-row',
+                'data-change-monitor' => 'true',
+                'data-window-close-confirm' => 'true',
+            ]) ?>
+                <?= $this->makeLayout('form-with-sidebar') ?>
+            <?= Form::close() ?>
+        </div>
+    <?php Block::endPut() ?>
 <?php else: ?>
-
-    <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('jaxwilko/hugo/sites') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')); ?></a></p>
-
+    <div class="control-breadcrumb">
+        <?= Block::placeholder('breadcrumb') ?>
+    </div>
+    <div class="padded-container">
+        <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+        <p><a href="<?= isset($formConfig) ? Backend::url($formConfig->defaultRedirect) : 'javascript:history.back()' ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')); ?></a></p>
+    </div>
 <?php endif ?>

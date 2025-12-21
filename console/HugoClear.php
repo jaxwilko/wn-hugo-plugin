@@ -3,10 +3,10 @@
 namespace JaxWilko\Hugo\Console;
 
 use Carbon\Carbon;
-use JaxWilko\Hugo\Models\HealthCheck;
+use JaxWilko\Hugo\Models\SiteDown;
 use JaxWilko\Hugo\Models\LighthouseReport;
 use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\LighthouseUrl;
+use JaxWilko\Hugo\Models\SiteUrl;
 use Log;
 use Winter\Storm\Console\Command;
 
@@ -39,6 +39,6 @@ class HugoClear extends Command
             ->each(fn (LighthouseReport $report) => $report->deleteImages());
 
         // Clear old health checks
-        HealthCheck::whereDate('created_at', '<', Carbon::now()->subMonths(3))->delete();
+        SiteDown::whereDate('created_at', '<', Carbon::now()->subMonths(3))->delete();
     }
 }

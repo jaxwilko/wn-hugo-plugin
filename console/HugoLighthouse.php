@@ -2,9 +2,10 @@
 
 namespace JaxWilko\Hugo\Console;
 
+use Illuminate\Support\Facades\Log;
+use JaxWilko\Hugo\Classes\Lighthouse\Lighthouse;
 use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\LighthouseUrl;
-use Log;
+use JaxWilko\Hugo\Models\SiteUrl;
 use Winter\Storm\Console\Command;
 
 class HugoLighthouse extends Command
@@ -41,13 +42,12 @@ class HugoLighthouse extends Command
 
         $this->withProgressBar($urls, function ($url) {
             try {
-                $report = \JaxWilko\Hugo\Classes\Lighthouse\Lighthouse::report($url);
+                Lighthouse::make($url)
+                    ->generateReport()
+                    ->save();
             } catch (\Throwable $e) {
                 Log::error('Lighthouse reporting failed: ' . $e->getMessage());
-                return;
             }
-
-            $report->save();
         });
 
         $this->info(PHP_EOL);

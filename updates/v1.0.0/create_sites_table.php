@@ -2,12 +2,12 @@
 
 namespace Winter\User\Updates;
 
-use Schema;
 use Winter\Storm\Database\Updates\Migration;
+use Winter\Storm\Support\Facades\Schema;
 
-class CreateSitesTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('jaxwilko_hugo_sites', function ($table) {
             $table->engine = 'InnoDB';
@@ -16,12 +16,13 @@ class CreateSitesTable extends Migration
             $table->string('base_url');
             $table->boolean('performance_testing');
             $table->boolean('health_testing');
+            $table->boolean('is_down')->default(false);
             $table->timestamps();
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('jaxwilko_hugo_sites');
     }
-}
+};

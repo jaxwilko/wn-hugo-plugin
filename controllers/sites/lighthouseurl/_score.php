@@ -1,65 +1,26 @@
 <?php
 $score = $value * 100;
-$id = \Str::random(16);
+$colour = $score >= 90 ? 'text-green-500' : ($score >= 50 ? 'text-orange-500' : 'text-red-500');
+$size = $size ?? 'large';
 ?>
-
-<div style="display: block">
-    <svg
-        id="svg-<?= $id ?>"
-        class="score-circle"
-        width="30"
-        height="30"
-        data-score="<?= $score ?>"
-    >
+<div class="relative <?= $size === 'large' ? 'size-12' : 'size-10' ?> mx-auto">
+    <svg class="size-full -rotate-90" viewBox="0 0 40 40">
         <circle
-            class="outer"
-            stroke="rgba(0, 0, 0, 0)"
-            stroke-width="3"
-            fill="transparent"
-            r="12"
-            cx="15"
-            cy="15"
+            cx="20" cy="20" r="16"
+            fill="none"
+            class="stroke-current text-white"
+            stroke-width="5"
         />
         <circle
-            class="score"
-            <?php if ($score >= 90): ?>
-                stroke="#4caf50"
-            <?php elseif ($score >= 50): ?>
-                stroke="#ff9800"
-            <?php else: ?>
-                stroke="#f44336"
-            <?php endif; ?>
-            stroke-width="3"
-            fill="transparent"
-            r="12"
-            cx="15"
-            cy="15"
-            />
-            <?php if (!in_array($score, [0, 100])): ?>
-                <text
-                    <?php if ($score >= 90): ?>
-                        fill="#4caf50"
-                    <?php elseif ($score >= 50): ?>
-                        fill="#ff9800"
-                    <?php else: ?>
-                        fill="#f44336"
-                    <?php endif; ?>
-                    y="19"
-                    x="8"
-                    style="font-size: 12px"
-                    >
-                    <?= $score ?>
-                </text>
-            <?php endif; ?>
+            cx="20" cy="20" r="16"
+            fill="none"
+            class="stroke-current <?= $colour ?> transition-all duration-300"
+            stroke-width="5"
+            stroke-dasharray="101"
+            stroke-dashoffset="<?= 100 - $score ?>"
+        />
     </svg>
-    <script>
-        (() => {
-            const element = document.querySelector("#svg-<?= $id ?>");
-            const circle = element.querySelector('circle.score');
-            const circumference = circle.r.baseVal.value * 2 * Math.PI;
-
-            circle.style.strokeDasharray = `${circumference} ${circumference}`;
-            circle.style.strokeDashoffset = circumference - element.getAttribute("data-score") / 100 * circumference;
-        })();
-    </script>
+    <div class="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div class="text-center <?= $size === 'large' ? 'text-lg' : 'text-md' ?> <?= $colour ?>"><?= $score ?></div>
+    </div>
 </div>

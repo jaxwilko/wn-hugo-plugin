@@ -3,12 +3,7 @@
 # ===================================
 
 fields:
-    image:
-        label: 'Site Logo'
-        type: fileupload
-        span: right
-        imageWidth: 140
-        required: false
+
     name:
         label: 'Site Name'
         type: text
@@ -17,34 +12,70 @@ fields:
     base_url:
         label: 'Site Base Url'
         type: text
-        span: left
+        span: right
         required: true
-    performance_testing:
-        label: 'Enable Performance Testing'
-        type: switch
-        span: left
-        required: true
-    health_testing:
-        label: 'Enable Health Testing'
-        type: switch
-        span: left
-        required: true
+    _toolbar:
+        type: partial
+        path: ~/modules/backend/behaviors/formcontroller/views/update/fancy/_toolbar.php
+
+secondaryTabs:
+    fields:
+        image:
+            label: 'Site Logo'
+            type: fileupload
+            span: full
+            imageWidth: 140
+            required: false
+        performance_testing:
+            label: 'Enable Performance Testing'
+            type: switch
+            span: full
+            required: true
+        health_testing:
+            label: 'Enable Health Testing'
+            type: switch
+            span: full
+            required: true
 
 tabs:
+    icons:
+        'Lighthouse': 'icon-lightbulb-o'
+        'Outages': 'icon-triangle-exclamation'
+        'Actions': 'icon-robot'
+        'Settings': 'icon-cog'
     fields:
         _urls@update:
             tab: 'Lighthouse'
             type: partial
-        _healthCheckGraph@update:
-            label: Last 7 Day Health Checks
-            tab: 'Health Checks'
-            type: partial
-        _healthChecks@update:
-            tab: 'Health Checks'
+#        _downsGraph@update:
+#            label: Last 7 Outages
+#            tab: 'Outages'
+#            type: partial
+        _downs@update:
+            tab: 'Outages'
             type: partial
         _testCreate@update:
-            tab: 'Tests'
+            tab: 'Actions'
             type: partial
         _tests@update:
-            tab: 'Tests'
+            tab: 'Actions'
             type: partial
+        image:
+            label: 'Site Logo'
+            type: fileupload
+            span: left
+            imageWidth: 140
+            required: false
+            tab: 'Settings'
+        performance_testing:
+            label: 'Enable Performance Testing'
+            type: switch
+            span: right
+            required: true
+            tab: 'Settings'
+        health_testing:
+            label: 'Enable Health Testing'
+            type: switch
+            span: right
+            required: true
+            tab: 'Settings'

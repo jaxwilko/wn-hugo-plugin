@@ -2,7 +2,7 @@
     <div style="width: 100%; height: fit-content; white-space: nowrap; overflow-x: scroll; overflow-y: hidden;">
         <?php if (isset($value) && is_array($value)): ?>
             <?php foreach ($value as $timestamp => $img): ?>
-                <div style="width: 250px; height: 525px; float: none; display: inline-block;">
+                <div style="width: 250px; height: 450px; float: none; display: inline-block;">
                     <img src="<?= $img ?>">
                     <span><?= $timestamp ?></span>
                 </div>

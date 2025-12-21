@@ -31,7 +31,7 @@ tabs:
             tab: 'Config'
         config:
             type: repeater
-            groups: ~/plugins/jaxwilko/hugo/models/test/test-commands.yaml
+            groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
             tab: 'Config'
         site:
             label: 'jaxwilko.hugo::lang.models.site.label'

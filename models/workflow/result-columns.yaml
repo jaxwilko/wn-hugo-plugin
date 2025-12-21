@@ -1,0 +1,19 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    created_at:
+        label: 'Started At'
+        type: datetime
+        searchable: true
+        sortable: true
+    updated_at_human:
+        label: 'Finished'
+        type: text
+        searchable: true
+        sortable: true
+    status:
+        label: Status
+        type: partial
+        path: $/jaxwilko/hugo/models/action/_status.htm

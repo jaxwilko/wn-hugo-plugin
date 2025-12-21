@@ -2,9 +2,10 @@
 
 namespace JaxWilko\Hugo\Models;
 
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Model;
+use Winter\Storm\Database\Model;
+use Winter\Storm\Support\Str;
 
 /**
  * LighthouseReport Model
@@ -16,7 +17,7 @@ class LighthouseReport extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'jaxwilko_hugo_lighthouse_url_reports';
+    public $table = 'jaxwilko_hugo_lighthouse_reports';
 
     /**
      * @var array Guarded fields
@@ -28,55 +29,16 @@ class LighthouseReport extends Model
      */
     protected $fillable = [
         'url_id',
-        'performance',
-        'fcp_score',
-        'fcp_value',
-        'fcp_unit',
-        'fcp_display',
-        'lcp_score',
-        'lcp_value',
-        'lcp_unit',
-        'lcp_display',
-        'fmp_score',
-        'fmp_value',
-        'fmp_unit',
-        'fmp_display',
-        'cls_score',
-        'cls_value',
-        'cls_unit',
-        'cls_display',
-        'si_score',
-        'si_value',
-        'si_unit',
-        'si_display',
-        'srt_score',
-        'srt_value',
-        'srt_unit',
-        'srt_display',
-        'fid_score',
-        'fid_value',
-        'fid_unit',
-        'fid_display',
-        'int_score',
-        'int_value',
-        'int_unit',
-        'int_display',
-        'nsl_score',
-        'nsl_value',
-        'nsl_unit',
-        'nsl_display',
-        'ucr_score',
-        'ucr_value',
-        'ucr_unit',
-        'ucr_display',
-        'ujc_score',
-        'ujc_value',
-        'ujc_unit',
-        'ujc_display',
-        'ds_score',
-        'ds_value',
-        'ds_unit',
-        'ds_display'
+        'score_performance',
+        'score_accessibility',
+        'score_best_practice',
+        'score_seo',
+        'performance_first_contentful_paint',
+        'performance_largest_contentful_paint',
+        'performance_total_blocking_time',
+        'performance_cumulative_layout_shift',
+        'performance_speed_index',
+        'report',
     ];
 
     /**
@@ -85,19 +47,21 @@ class LighthouseReport extends Model
     public $rules = [];
 
     /**
-     * @var array Attributes to be cast to native types
-     */
-    protected $casts = [];
-
-    /**
      * @var array Attributes to be cast to JSON
      */
-    protected $jsonable = [];
+    protected $jsonable = [
+        'report',
+    ];
 
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = [];
+    protected $appends = [
+        'timeline',
+        'final_image',
+        'full_page_image',
+        'human_created_at',
+    ];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
@@ -115,34 +79,29 @@ class LighthouseReport extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
-    public $hasMany = [];
-    public $hasOneThrough = [];
-    public $hasManyThrough = [];
     public $belongsTo = [
         'url' => [
-            \JaxWilko\Hugo\Models\LighthouseUrl::class,
+            \JaxWilko\Hugo\Models\SiteUrl::class,
             'key' => 'url_id',
             'otherKey' => 'id'
         ]
     ];
-    public $belongsToMany = [];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
 
-    public function getFinishedAttribute(): string
+    public function getFinalImageAttribute(): ?string
     {
-        return Storage::url(sprintf('lighthouse/%d/finished.jpg', $this->id));
+        return Storage::url(Str::after($this->getAssetPath('final'), storage_path('app')));
+    }
+
+    public function getFullPageImageAttribute(): ?string
+    {
+        return Storage::url(Str::after($this->getAssetPath('full-page'), storage_path('app')));
     }
 
     public function getTimelineAttribute(): array
     {
-        $path = storage_path(sprintf('app/lighthouse/%d/timeline', $this->id));
+        $path = $this->getAssetPath('timeline');
 
-        if (!is_dir($path)) {
+        if (!File::isDirectory($path)) {
             return [];
         }
 
@@ -151,7 +110,7 @@ class LighthouseReport extends Model
         $timeline = [];
 
         foreach ($files as $file) {
-            $timeline[substr($file, 0, -4)] = Storage::url(sprintf('lighthouse/%d/timeline/%s', $this->id, $file));
+            $timeline[substr($file, 0, -4)] = Storage::url(Str::after($path . '/' . $file, storage_path('app')));
         }
 
         ksort($timeline);
@@ -159,15 +118,29 @@ class LighthouseReport extends Model
         return $timeline;
     }
 
+    public function getHumanCreatedAtAttribute(): ?string
+    {
+        return $this->created_at?->format('Y-m-d H:i:s');
+    }
+
     public function hasImages(): bool
     {
-        $path = storage_path(sprintf('app/lighthouse/%d', $this->id));
-        return File::isDirectory($path);
+        return File::isDirectory($this->getAssetPath());
     }
 
     public function deleteImages(): bool
     {
-        $path = storage_path(sprintf('app/lighthouse/%d', $this->id));
-        return File::deleteDirectory($path);
+        return File::deleteDirectory($this->getAssetPath());
+    }
+
+    public function getAssetPath(string $path = ''): string
+    {
+        $path = storage_path(sprintf('app/lighthouse/%d', $this->id)) . ($path ? '/' . ltrim($path, '/') : '');
+
+        if ($glob = File::glob($path . '*')) {
+            return $glob[0];
+        }
+
+        return $path;
     }
 }

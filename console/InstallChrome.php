@@ -10,12 +10,12 @@ use Winter\Storm\Network\Http;
 
 class InstallChrome extends Command
 {
-    public const VERSIONS_URL = 'https://googlechromelabs.github.io/chrome-for-testing/known-good-versions.json';
-    public const DOWNLOAD_CHROME_URL = 'https://storage.googleapis.com/chrome-for-testing-public/%s/linux64/chrome-linux64.zip';
-    public const DOWNLOAD_DRIVER_URL = 'https://storage.googleapis.com/chrome-for-testing-public/%s/linux64/chromedriver-linux64.zip';
-    public const TEMP_CHROME_FILE = 'google-chrome-%s-linux64.zip';
-    public const TEMP_DRIVER_FILE = 'google-chromedriver-%s-linux64.zip';
-    public const STORAGE_DIR = 'hugo/google-chrome/%s';
+    public const string VERSIONS_URL = 'https://googlechromelabs.github.io/chrome-for-testing/known-good-versions.json';
+    public const string DOWNLOAD_CHROME_URL = 'https://storage.googleapis.com/chrome-for-testing-public/%s/linux64/chrome-linux64.zip';
+    public const string DOWNLOAD_DRIVER_URL = 'https://storage.googleapis.com/chrome-for-testing-public/%s/linux64/chromedriver-linux64.zip';
+    public const string TEMP_CHROME_FILE = 'google-chrome-%s-linux64.zip';
+    public const string TEMP_DRIVER_FILE = 'google-chromedriver-%s-linux64.zip';
+    public const string STORAGE_DIR = 'hugo/google-chrome/%s';
 
     /**
      * @var string The console command name.

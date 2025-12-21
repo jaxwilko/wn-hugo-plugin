@@ -1,7 +1,10 @@
-<?php namespace JaxWilko\Hugo\Models;
+<?php
+
+namespace JaxWilko\Hugo\Models;
 
 use Carbon\Carbon;
-use Model;
+use Winter\Storm\Database\Model;
+use Winter\Storm\Support\Facades\DB;
 
 /**
  * Site Model
@@ -28,7 +31,8 @@ class Site extends Model
         'base_url',
         'image',
         'performance_testing',
-        'health_testing'
+        'health_testing',
+        'is_down',
     ];
 
     public $attachOne = [
@@ -68,7 +72,7 @@ class Site extends Model
         'updated_at',
     ];
 
-    protected ?array $chartDataCache = null;
+    protected ?array $downReportCache = null;
 
     /**
      * @var array Relations
@@ -76,66 +80,67 @@ class Site extends Model
     public $hasOne = [];
     public $hasMany = [
         'urls' => [
-            \JaxWilko\Hugo\Models\LighthouseUrl::class
+            \JaxWilko\Hugo\Models\SiteUrl::class
         ],
-        'healthChecks' => [
-            \JaxWilko\Hugo\Models\HealthCheck::class
+        'downs' => [
+            \JaxWilko\Hugo\Models\SiteDown::class
         ],
         'tests' => [
-            \JaxWilko\Hugo\Models\Test::class,
+            \JaxWilko\Hugo\Models\Action::class,
         ]
     ];
-    public $hasOneThrough = [];
-    public $hasManyThrough = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
-    public $attachMany = [];
 
-    public function getHealthCheckData(): array
+    public function getDownReports(): array
     {
-        if ($this->chartDataCache) {
-            return $this->chartDataCache;
+        if ($this->downReportCache) {
+            return $this->downReportCache;
         }
 
-        $records = $this->healthChecks()->select([
-            \DB::raw('DATE(created_at) as date_created'),
+        $records = $this->downs()->select([
+            DB::raw('DATE(created_at) as created_at'),
             'status_code',
-            \DB::raw('COUNT(*) as occurrences'),
+            DB::raw('COUNT(*) as count'),
         ])
-            ->whereDate('created_at', '>=', Carbon::today()->subDays(7))
-            ->groupBy('date_created', 'status_code')
-            ->orderBy('date_created')
+            ->groupBy('created_at', 'status_code')
+            ->orderBy('created_at')
+            ->limit(10)
             ->get();
 
         $data = [
-            'statues' => [],
-            'checks' => []
+            'chart' => [
+                'type' => 'bar',
+                'height' => 300,
+                'animations' => [
+                    'speed' => 300,
+                    'animateGradually' => [
+                        'delay' => 30
+                    ]
+                ],
+            ],
+            'series' => [
+                [
+                    'name' => 'Outages',
+                    'data' => []
+                ]
+            ],
+            'xaxis' => [
+                'type' => 'datetime',
+            ]
         ];
 
-        $timestampCache = [];
-
-        foreach ($records as $record) {
-            $timestamp = $timestampCache[$record->date_created]
-                ?? $timestampCache[$record->date_created] = Carbon::createFromDate($record->date_created)->timestamp * 1000;
-
-            if (!isset($data['checks'][$timestamp])) {
-                $data['checks'][$timestamp] = [];
-            }
-
-            if (!isset($data['statues'][$record->code])) {
-                $data['statues'][$record->code] = match ($record->code) {
-                    200 => '#51BBFE',
-                    '5xx' => '#FC6471',
-                    default => '#F7FE72'
-                };
-            }
-
-            $data['checks'][$timestamp][$record->code] = $record->occurrences;
+        if ($records->isEmpty()) {
+            return $data;
         }
 
-        return $this->chartDataCache = $data;
+        foreach ($records as $record) {
+            $data['series'][0]['data'][] = [
+                'x' => $record->created_at->timestamp * 1000,
+                'y' => $record->count,
+                'fillColor' => '#ff4e42',
+                'strokeColor' => '#C23829'
+            ];
+        }
+
+        return $this->downReportCache = $data;
     }
 }

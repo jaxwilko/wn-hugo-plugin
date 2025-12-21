@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .tw-hidden {
+        @apply hidden;
+    }
+    .border-t-8 {
+        border-top-width: 8px;
+    }
+
+    pre.json {
+        max-height: 78.8vh;
+        padding: 15px;
+        background: rgb(236 240 241);
+        color: #151515;
+        border: 1px solid rgb(236 240 241);
+        border-radius: 8px;
+        box-shadow: 0px 4px 9px 0px #ccc;
+        overflow: scroll;
+    }
+
+    pre.json .string {
+        color: #19ad2f;
+    }
+    pre.json .number {
+        color: #e8af00;
+    }
+    pre.json .boolean {
+        color: #1798e1;
+    }
+    pre.json .null {
+        color: #2e35c0;
+    }
+    pre.json .key {
+        color: #ee2d4a;
+    }
+
+    pre.json::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    pre.json::-webkit-scrollbar-track, pre.json::-webkit-scrollbar-corner {
+        background: rgb(236 240 241);
+    }
+    pre.json::-webkit-scrollbar-thumb {
+        background: rgba(141, 141, 141, 0.60);
+        border-radius: 4px;
+    }
+    pre.json::-webkit-scrollbar-thumb:hover {
+        background: rgba(141, 141, 141, 0.40);
+        cursor: pointer;
+    }
+
+
+    #winter-log-viewer {
+        margin: -20px;
+        padding: 20px;
+    }
+    #winter-log-viewer h1 {
+        margin-top: 20px;
+        font-size: 23px;
+    }
+    #winter-log-viewer .btn[disabled] {
+        color: #fff;
+        font-weight: bold;
+        user-select: auto;
+    }
+    #winter-log-viewer .btn.btn-secondary[disabled] {
+        color: #000;
+        font-weight: normal;
+    }
+    #winter-log-viewer table.table tr:first-child td, #winter-log-viewer table.table tr:first-child th {
+        border-top: 0;
+    }
+    #winter-log-viewer table.table tr td {
+        font-family: monospace;
+    }
+    #winter-log-viewer .input-group.select-container {
+        position: absolute;
+        right: 0;
+    }
+    #winter-log-viewer .input-group.select-container .select2-container--default {
+        width: auto;
+    }
+    #winter-log-viewer .input-group.select-container .select2-container--default .select2-selection {
+        padding-right: 30px;
+    }
+    #winter-log-viewer .exception-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    #winter-log-viewer .exception-list.reverse {
+        flex-direction: column-reverse;
+    }
+    #winter-log-viewer .exception-list .exception {
+        width: 100%;
+    }
+    #winter-log-viewer .btn-group:not(:last-of-type) {
+        margin-right: 5px;
+    }
+    p.message-log {
+        font-family: monospace;
+        margin: 15px auto;
+    }
+    div.snippet-preview-container {
+        overflow-x: auto;
+        background: #f9f9ff;
+        margin-top: 15px;
+        border-radius: 4px;
+    }
+    div.snippet-preview {
+        line-height: 0.7em;
+        width: fit-content;
+        min-width: 100%;
+        padding-bottom: 5px;
+        white-space: pre;
+        font-family: monospace, monospace;
+    }
+    div.snippet-preview div.preview-line {
+        display: block;
+        box-sizing: border-box;
+        background: #f9f9ff;
+        width: 100%;
+        padding: 7px 10px;
+        margin: -5px 0;
+    }
+    div.snippet-preview div.preview-line:first-child {
+        margin-top: -18px;
+    }
+    div.snippet-preview div.preview-line:last-child {
+        padding-bottom: 0;
+    }
+    div.snippet-preview div.preview-line.highlight {
+        display: block;
+        background: #fff;
+        padding: 5px 10px;
+        margin: -5px 0;
+    }
+    div.snippet-preview div.preview-line span.line-number {
+        cursor: pointer;
+        position: relative;
+    }
+    div.snippet-preview div.preview-line span.line-number .icon {
+        opacity: 0;
+        position: absolute;
+        left: calc(100% + 1em);
+        transition: opacity linear .2s;
+    }
+    div.snippet-preview div.preview-line:hover span.line-number .icon {
+        opacity: 1;
+    }
+    div.snippet-preview div.preview-line.highlight span.line-number {
+        color: red;
+    }
+    div.snippet-preview span.bracket { color: #343434; }
+    div.snippet-preview span.variable { color: #d3542f; }
+    div.snippet-preview span.control { color: #7109e1; }
+    div.snippet-preview span.string { color: #6a8d00; }
+    div.snippet-preview span.number { color: #006ac0; }
+    div.snippet-preview span.html { color: #cba604; }
+    div.snippet-preview span.bool { color: #e1095c; }
+    div.snippet-preview span.comment { color: #8c8c8c; }
+    .trace-title {
+        margin: 15px auto;
+        display: block;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    .trace-title small {
+        font-size: 0.85em;
+        font-weight: normal;
+    }
+    .trace {
+        @apply border border-blue-200;
+        border-radius: 6px;
+        margin-top: 15px;
+    }
+    .trace-frame {
+        @apply border-blue-200 bg-blue-200/30;
+        padding: 10px;
+    }
+    .trace-frame:first-child {
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+    }
+    .trace-frame:last-child {
+        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+    .trace-frame:not(:last-child) {
+        @apply border-b border-blue-200;
+    }
+    .trace-frame .label {
+        cursor: pointer;
+        width: 100%;
+        font-size: 0.95em;
+        word-break: break-word;
+    }
+    .trace-frame .label .item {
+        font-weight: bold;
+        font-style: italic;
+    }
+    .trace-frame .label  .app-icon{
+        background: #73b2d0;
+        color: #e9f3fa;
+        border-radius: 6px;
+        font-size: 0.8em;
+        padding: 3px;
+        font-weight: bold;
+        float: right;
+        margin-top: -2px;
+    }
+    .trace-frame .folded {
+        display: none;
+    }
+    /* The following are fixes for the TailwindUI plugin */
+    #winter-log-viewer hr {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+}

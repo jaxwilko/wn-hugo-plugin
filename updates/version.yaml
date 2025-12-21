@@ -1,14 +1,14 @@
 '1.0.0':
     - 'First version of Hugo'
     - v1.0.0/create_sites_table.php
-    - v1.0.0/create_lighthouse_urls_table.php
+    - v1.0.0/create_site_urls_table.php
     - v1.0.0/create_lighthouse_reports_table.php
-    - v1.0.0/create_health_checks_table.php
+    - v1.0.0/create_site_downs_table.php
 '1.0.1':
     - 'Hugo with testing support'
-    - v1.0.1/create_tests_table.php
-    - v1.0.1/create_groups_table.php
-    - v1.0.1/create_test_groups_table.php
-    - v1.0.1/create_group_schedule_table.php
-    - v1.0.1/create_test_reports_table.php
-    - v1.0.1/create_test_results_table.php
+    - v1.0.1/create_actions_table.php
+    - v1.0.1/create_workflows_table.php
+    - v1.0.1/create_action_workflows_table.php
+    - v1.0.1/create_workflow_schedule_table.php
+    - v1.0.1/create_workflow_results_table.php
+    - v1.0.1/create_action_results_table.php

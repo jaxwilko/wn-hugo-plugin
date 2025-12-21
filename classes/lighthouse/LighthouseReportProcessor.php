@@ -2,7 +2,7 @@
 
 namespace JaxWilko\Hugo\Classes\Lighthouse;
 
-use JaxWilko\Hugo\Models\LighthouseUrl;
+use JaxWilko\Hugo\Models\SiteUrl;
 use JaxWilko\Hugo\Models\LighthouseReport;
 
 /**
@@ -23,7 +23,7 @@ use JaxWilko\Hugo\Models\LighthouseReport;
  */
 class LighthouseReportProcessor
 {
-    protected LighthouseUrl $url;
+    protected SiteUrl $url;
 
     protected float $performance = 0.0;
 
@@ -62,7 +62,7 @@ class LighthouseReportProcessor
         'timeline' => []
     ];
 
-    public function __construct(LighthouseUrl $url, object $report)
+    public function __construct(SiteUrl $url, object $report)
     {
         $this->url = $url;
 

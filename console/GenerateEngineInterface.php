@@ -28,7 +28,7 @@ class GenerateEngineInterface extends Command
      */
     public function handle()
     {
-        $config = Yaml::parse(File::get(base_path('plugins/jaxwilko/hugo/models/test/test-commands.yaml')));
+        $config = Yaml::parse(File::get(base_path('plugins/jaxwilko/hugo/models/actions/action-commands.yaml')));
 
         $keys = array_keys($config);
 

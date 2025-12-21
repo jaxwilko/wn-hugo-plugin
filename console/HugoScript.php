@@ -3,8 +3,8 @@
 use JaxWilko\Hugo\Classes\Script\HugoWebDriver;
 use JaxWilko\Hugo\Classes\Script\ScriptEngine;
 use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\LighthouseUrl;
-use JaxWilko\Hugo\Models\Test;
+use JaxWilko\Hugo\Models\SiteUrl;
+use JaxWilko\Hugo\Models\Action;
 use Log;
 use Winter\Storm\Console\Command;
 
@@ -31,7 +31,7 @@ class HugoScript extends Command
      */
     public function handle()
     {
-        $test = Test::find(1);
+        $test = Action::find(1);
 
         $result = ScriptEngine::init(HugoWebDriver::make(), true)
             ->run($test->target, $test->config);

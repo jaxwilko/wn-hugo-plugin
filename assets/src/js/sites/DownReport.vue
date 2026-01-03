@@ -9,9 +9,6 @@ import ApexChart from '~plugin/assets/src/js/sites/components/ApexChart.vue';
 export default {
     name: 'DownReport',
     props: ['chartOptions'],
-    components: {ApexChart},
-    mounted() {
-        console.log(this.chartOptions);
-    }
+    components: {ApexChart}
 };
 </script>

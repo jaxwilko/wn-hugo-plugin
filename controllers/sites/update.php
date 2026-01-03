@@ -8,9 +8,6 @@
         .fancy-layout *:not(.nested-form):not(.modal-body)>.form-widget>.layout-row>.control-tabs.secondary-tabs.has-tabs>div.tab-content {
             background: transparent;
         }
-        .fancy-layout *:not(.nested-form):not(.modal-body)>.form-widget>.layout-row>.control-tabs.primary-tabs>div>ul.nav-tabs, *:not(.nested-form):not(.modal-body)>.form-widget>.layout-row>.control-tabs.fancy-layout.primary-tabs>div>ul.nav-tabs {
-            background: #2da7c7;
-        }
         #Form-primaryTabs ul.nav.nav-tabs > li > a[title="Settings"] {
             display: none;
         }
@@ -18,6 +15,10 @@
             #Form-primaryTabs ul.nav.nav-tabs > li > a[title="Settings"] {
                 display: block;
             }
+        }
+        .relation-behavior .control-toolbar {
+            padding: 0;
+            padding-bottom: 15px;
         }
     </style>
         <div class="layout fancy-layout">

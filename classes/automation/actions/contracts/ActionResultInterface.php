@@ -2,7 +2,7 @@
 
 namespace JaxWilko\Hugo\Classes\Automation\Actions\Contracts;
 
-interface ActionInterface
+interface ActionResultInterface
 {
     public function __construct(int $status, mixed $value = null);
 
@@ -11,4 +11,6 @@ interface ActionInterface
     public function getStatus(): int;
 
     public function getValue(): mixed;
+
+    public function getTimestamp(): float;
 }

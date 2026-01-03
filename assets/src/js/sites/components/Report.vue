@@ -9,14 +9,18 @@
                     <span class="font-bold text-xl mt-3 mx-auto">Performance</span>
                 </div>
                 <div class="w-full flex mx-auto">
-                    <img :src="lighthouse.final_image">
+                    <LightboxImage :src="lighthouse.final_image"
+                                   :fullsize-src="lighthouse.full_page_image"
+                                   alt="Lighthouse final image"
+                                   class="ml-auto"
+                    ></LightboxImage>
                 </div>
             </div>
             <div class="border-t border-blue-200 pt-8 mt-8">
                 <div class="w-full flex flex-row gap-2">
-                    <div v-for="(src, time) in lighthouse.timeline">
-                        <img :src="src" :alt="`site at ${time}ms`">
-                        <span>{{time}}</span>
+                    <div v-for="snapshot in timeline">
+                        <LightboxImage :src="snapshot.src" :alt="snapshot.alt" :group="timeline"></LightboxImage>
+                        <span>{{snapshot.label}}</span>
                     </div>
                 </div>
             </div>
@@ -52,11 +56,12 @@ import HeadlineScores from '~plugin/assets/src/js/sites/components/HeadlineScore
 import AuditIcon from '~plugin/assets/src/js/sites/components/audit/AuditIcon.vue';
 import AuditOverview from '~plugin/assets/src/js/sites/components/audit/AuditOverview.vue';
 import AuditInsights from '~plugin/assets/src/js/sites/components/audit/AuditInsights.vue';
+import LightboxImage from '~plugin/assets/src/js/components/LightboxImage.vue';
 
 export default {
     name: 'Report',
     props: ['lighthouse'],
-    components: {AuditDetails: AuditInsights, AuditOverview, AuditIcon, HeadlineScores, Score},
+    components: {LightboxImage, AuditDetails: AuditInsights, AuditOverview, AuditIcon, HeadlineScores, Score},
     data: () => {
         return {
             performanceDetailed: false,
@@ -78,6 +83,17 @@ export default {
         seoAudits() {
             return this.getAudits('seo');
         },
+        timeline() {
+            const timeline = [];
+            Object.entries(this.lighthouse.timeline).forEach(([key, value]) => {
+                timeline.push({
+                    label: key,
+                    alt: `Site at ${key}ms`,
+                    src: value,
+                })
+            });
+            return timeline;
+        }
     },
     methods: {
         getAudits(category) {

@@ -61,7 +61,8 @@ export default {
     },
     computed: {
         displayScore() {
-            return Math.round(this.score * 100);
+            const score = Math.round(this.score * 100);
+            return isNaN(score) ? '...' : score;
         },
         radius() {
             return 50 - this.strokeWidth / 2

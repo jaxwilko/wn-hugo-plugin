@@ -1,0 +1,95 @@
+.default-layout-side-inline #layout-sidenav-2 {
+    width: 200px!important;
+    border: 0;
+}
+
+@media (min-width: 768px) {
+    .default-layout-side-inline {
+        grid-template-columns: 200px 1fr!important;
+    }
+}
+
+#layout-sidenav-2 > div > nav > div > div > a {
+    padding: 5px 10px;
+    margin: 5px 5px 5px 0;
+}
+
+nav.sidemenu-item-child ul.sidemenu-item-child-menu > li > a {
+    padding: 10px;
+    margin: 5px 0 5px 15px;
+    max-width: -webkit-fill-available;
+}
+
+.control-scrollbar > .scrollbar-scrollbar {
+    z-index: 90!important;
+}
+
+nav div.sidemenu-item > div:not(.bg-primary) a img {
+    filter: grayscale(1);
+}
+
+nav[aria-label="Sidebar"] {
+    margin-right: 2px;
+}
+
+nav[aria-label="Sidebar"]::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+nav[aria-label="Sidebar"]::-webkit-scrollbar-track, nav[aria-label="Sidebar"]::-webkit-scrollbar-corner {
+    background: #065f46;
+}
+
+nav[aria-label="Sidebar"]::-webkit-scrollbar-thumb {
+    background: #ccda84;
+    border-radius: 4px;
+}
+nav[aria-label="Sidebar"]::-webkit-scrollbar-thumb:hover {
+    background: #ccda84;
+}
+
+/* LOGO FIX */
+nav[aria-label="Sidebar"] > .flex.items-center.mb-4.h-16.shrink-0 img {
+    display: none;
+}
+nav[aria-label="Sidebar"] > .flex.items-center.mb-4.h-16.shrink-0 {
+    background-image: url('/plugins/jaxwilko/hugo/assets/img/hugo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin: 15px auto 20px auto;
+}
+
+/* BRANDING */
+
+@media (max-width: 768px) {
+    #layout-sidenav-1.bg-gray-900 {
+        background-color: #0751bd !important;
+    }
+
+    #layout-sidenav-1.bg-gray-900 .bg-gray-900 {
+        background-color: #08377a !important;
+    }
+}
+
+.layout-sidemenu.layout-sidemenu-inline .sidemenu-item:not(:last-of-type) {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #0947a2;
+}
+
+.bg-gray-800 {
+    background-color: #0751bd !important;
+}
+
+.bg-primary {
+    background-color: #0d428c !important;
+}
+
+.sidemenu li.active a {
+    background-color: #08377a !important;
+}
+
+.hover\:bg-gray-700:hover {
+    background-color: #0d4da6 !important;
+}

@@ -8,7 +8,7 @@ use JaxWilko\Hugo\Models\Site;
 use JaxWilko\Hugo\Models\SiteUrl;
 use Winter\Storm\Console\Command;
 
-class HugoLighthouse extends Command
+class LighthouseProcess extends Command
 {
     /**
      * @var string The console command name.

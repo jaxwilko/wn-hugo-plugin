@@ -8,6 +8,7 @@ use JaxWilko\Hugo\Classes\Automation\HugoWebDriver;
 use JaxWilko\Hugo\Classes\Url;
 use JaxWilko\Hugo\Models\ActionResult;
 use JaxWilko\Hugo\Models\WorkflowSchedule;
+use Winter\Storm\Exception\ApplicationException;
 
 class Actions extends Controller
 {
@@ -27,6 +28,18 @@ class Actions extends Controller
         ], 'jaxwilko.hugo');
     }
 
+    public function update($recordId = null, $context = null)
+    {
+        $this->asExtension('FormController')->update($recordId, $context);
+        $this->asExtension('FormController')
+            ->formGetWidget()
+            ->prependViewPath('$/jaxwilko/hugo/controllers/actions/overrides/form');
+    }
+
+    /**
+     * @throws \Throwable
+     * @throws ApplicationException
+     */
     public function onActionPreview($recordId = null, $context = null): array
     {
         return [
@@ -44,50 +57,28 @@ class Actions extends Controller
         }
 
         $url = Url::make($model->site->base_url, $formData['url']);
-        $config = [
-            [
-                'url' => $url,
-                '_group' => 'nav'
-            ],
-            [
-                'label' => 'After nav Screenshot',
-                '_group' => 'screenshot'
-            ],
-        ];
-
-        foreach ($formData['config'] as $index => $item) {
-            $item['original_index'] = $index;
-            $config[] = $item;
-            if ($item['_group'] !== 'screenshot') {
-                $config[] = [
-                    'label' => 'After ' . $item['_group'] . ' Screenshot',
-                    '_group' => 'screenshot'
-                ];
-            }
-        }
 
         try {
             $engine = AutomationEngine::init($webDriver = HugoWebDriver::make())
-                ->run($url, $config, false);
+                ->run($url, $formData['config'], autoScreenshot: true);
 
             $resultConfig = $engine->getConfig();
 
             $result = [
+                'startedAt' => $engine->getStartedAt(),
+                'finishedAt' => $engine->getFinishedAt(),
                 'status' => $engine->getExit(),
                 'result' => $resultConfig,
                 'log' => $engine->getLog()
             ];
         } catch (\Throwable $e) {
-            if (isset($webDriver)) {
-                $webDriver->quit();
-            }
-
+            $webDriver->quit();
             throw $e;
         } finally {
-            if (isset($webDriver)) {
-                $webDriver->quit();
-            }
+            $webDriver->quit();
         }
+
+        file_put_contents(base_path('action.json'), json_encode($result, JSON_PRETTY_PRINT));
 
         return [
             'action' => $result

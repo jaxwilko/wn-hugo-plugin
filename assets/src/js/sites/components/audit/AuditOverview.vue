@@ -10,7 +10,7 @@
                 <div class="flex flex-col gap-4">
                     <div class="font-bold pt-[1px]">{{audit.data.title}}</div>
                     <div :class="`flex flex-row gap-4 items-center ${scoreColour(audit.data.score)} text-3xl`">
-                        <Score class="mx-0" :score="audit.data.score" size="xs"></Score>
+                        <Score class="!mx-0" :score="audit.data.score" size="xs"></Score>
                         <div class="border-l border-gray-300">
                             &nbsp;
                         </div>

@@ -4,10 +4,10 @@ namespace JaxWilko\Hugo\Console;
 
 use Cron\CronExpression;
 use JaxWilko\Hugo\Models\Workflow;
-use JaxWilko\Hugo\Models\WorkflowSchedule;
+use JaxWilko\Hugo\Models\WorkflowSchedule as WorkflowScheduleModel;
 use Winter\Storm\Console\Command;
 
-class HugoWorkflowSchedule extends Command
+class WorkflowSchedule extends Command
 {
     /**
      * @var string The console command name.
@@ -34,8 +34,8 @@ class HugoWorkflowSchedule extends Command
     public function handle(): int
     {
         if ($this->option('clear')) {
-            WorkflowSchedule::where('status', '=', WorkflowSchedule::STATUS_RUNNING)
-                ->update(['status' => WorkflowSchedule::STATUS_FINISHED]);
+            WorkflowScheduleModel::where('status', '=', WorkflowScheduleModel::STATUS_RUNNING)
+                ->update(['status' => WorkflowScheduleModel::STATUS_FINISHED]);
             return 0;
         }
 

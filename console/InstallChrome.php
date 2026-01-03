@@ -86,7 +86,7 @@ class InstallChrome extends Command
         }
 
         if (!file_exists($driverPath)) {
-            $this->components->task('Downloading driver ' . $version->version, function () use ($driverPath, $version) {
+            $this->components->task('Downloading Driver ' . $version->version, function () use ($driverPath, $version) {
                 Http::get(sprintf(static::DOWNLOAD_DRIVER_URL, $version->version), function (Http $http) use ($driverPath) {
                     $http->streamFile = $driverPath;
                 });
@@ -107,7 +107,7 @@ class InstallChrome extends Command
             $zip->close();
         });
 
-        $this->components->task('Unpacking driver', function () use ($driverPath, $dir) {
+        $this->components->task('Unpacking Driver', function () use ($driverPath, $dir) {
             $zip = new ZipArchive();
             if (!$zip->open($driverPath)) {
                 throw new \RuntimeException('Could not open zip file');

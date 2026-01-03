@@ -3,8 +3,11 @@
 namespace JaxWilko\Hugo;
 
 use Backend;
+use Backend\Classes\Controller;
 use Backend\Models\UserRole;
 use System\Classes\PluginBase;
+use System\Classes\PluginManager;
+use Winter\Storm\Support\Facades\Config;
 
 /**
  * Hugo Plugin Information File
@@ -29,17 +32,25 @@ class Plugin extends PluginBase
      */
     public function register(): void
     {
-        $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\HugoLighthouse::class);
+        $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\LighthouseProcess::class);
         $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\SiteDownDetector::class);
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
         $this->registerConsoleCommand('hugo.clear', \JaxWilko\Hugo\Console\HugoClear::class);
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
-        $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\HugoWorkflowSchedule::class);
-        $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\HugoWorkflowProcess::class);
+        $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\WorkflowSchedule::class);
+        $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\WorkflowProcess::class);
+        $this->registerConsoleCommand('hugo.install', \JaxWilko\Hugo\Console\HugoInstall::class);
         $this->registerConsoleCommand('hugo.install-chrome', \JaxWilko\Hugo\Console\InstallChrome::class);
 
         // @TODO: remove
         $this->registerConsoleCommand('hugo.engine.gen', \JaxWilko\Hugo\Console\GenerateEngineInterface::class);
+
+
+        if (PluginManager::instance()->hasPlugin('Winter.TailwindUI') && Config::get('jaxwilko.hugo::apply_styles', false)) {
+            Controller::extend(function (Controller $controller) {
+                $controller->addCss('plugins/jaxwilko/hugo/assets/src/css/backend.css');
+            });
+        }
     }
 
     public function registerFormWidgets()

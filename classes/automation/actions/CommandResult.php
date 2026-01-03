@@ -9,6 +9,6 @@ readonly class CommandResult implements LogItemInterface
     public function __construct(
         public string $command,
         public array $args,
-        public ActionResult|ExitAction|null $result = null
+        public ActionResult|CompoundActionResult|ExitAction|null $result = null
     ) {}
 }

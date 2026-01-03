@@ -51,8 +51,3 @@
         data-control="delete-button"
     ></button>
 </div>
-<style>
-    #Form-primaryTabs ul.nav.nav-tabs > li > a[title="Preview"] {
-        display: none;
-    }
-</style>

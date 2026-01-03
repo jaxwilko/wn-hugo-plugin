@@ -4,6 +4,8 @@ namespace JaxWilko\Hugo\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\Expression;
+use Winter\Storm\Database\Collection;
 use Winter\Storm\Database\Model;
 use Winter\Storm\Support\Facades\DB;
 
@@ -51,24 +53,28 @@ class SiteUrl extends Model
 
     public function getTargetAttribute(): string
     {
-        return $this->site->base_url . $this->url;
+        return $this->site?->base_url . $this->url;
+    }
+
+    public static function getAveragesSelect(): Expression
+    {
+        return DB::raw('
+            ROUND(AVG(score_performance), 2) AS `score_performance`,
+            ROUND(AVG(score_accessibility), 2) AS `score_accessibility`,
+            ROUND(AVG(score_best_practice), 2) AS `score_best_practice`,
+            ROUND(AVG(score_seo), 2) AS `score_seo`,
+            ROUND(AVG(performance_first_contentful_paint), 2) AS `performance_first_contentful_paint`,
+            ROUND(AVG(performance_largest_contentful_paint), 2) AS `performance_largest_contentful_paint`,
+            ROUND(AVG(performance_total_blocking_time), 2) AS `performance_total_blocking_time`,
+            ROUND(AVG(performance_cumulative_layout_shift), 2) AS `performance_cumulative_layout_shift`,
+            ROUND(AVG(performance_speed_index), 2) AS `performance_speed_index`,
+            COUNT(*) as `count`
+        ');
     }
 
     protected function getAveragesBuilder(): Relation
     {
-        return $this->reports()
-            ->select(DB::raw('
-                ROUND(AVG(score_performance), 2) AS `score_performance`,
-                ROUND(AVG(score_accessibility), 2) AS `score_accessibility`,
-                ROUND(AVG(score_best_practice), 2) AS `score_best_practice`,
-                ROUND(AVG(score_seo), 2) AS `score_seo`,
-                ROUND(AVG(performance_first_contentful_paint), 2) AS `performance_first_contentful_paint`,
-                ROUND(AVG(performance_largest_contentful_paint), 2) AS `performance_largest_contentful_paint`,
-                ROUND(AVG(performance_total_blocking_time), 2) AS `performance_total_blocking_time`,
-                ROUND(AVG(performance_cumulative_layout_shift), 2) AS `performance_cumulative_layout_shift`,
-                ROUND(AVG(performance_speed_index), 2) AS `performance_speed_index`,
-                COUNT(*) as `count`
-            '));
+        return $this->reports()->select(static::getAveragesSelect());
     }
 
     protected function hasReports(): bool
@@ -109,6 +115,18 @@ class SiteUrl extends Model
             return $this->chartDataCache;
         }
 
+        return $this->chartDataCache = static::buildChartFromData(
+            $this->getAveragesBuilder()
+                ->addSelect(DB::raw('DATE(created_at) as `created_at`'))
+                ->groupBy(DB::raw('DATE(created_at)'))
+                ->orderBy('created_at', 'DESC')
+                ->limit(60)
+                ->get()
+        );
+    }
+
+    public static function buildChartFromData(Collection $reports): array
+    {
         $data = [
             'chartDetails' => [
                 'chart' => [
@@ -203,13 +221,6 @@ class SiteUrl extends Model
             ]
         ];
 
-        $reports = $this->getAveragesBuilder()
-            ->addSelect(DB::raw('DATE(created_at) as `created_at`'))
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy('created_at', 'DESC')
-            ->limit(60)
-            ->get();
-
         foreach ($reports as $report) {
             // Append chartDetails data
             foreach ($data['chartDetails']['series'] as $index => $series) {
@@ -221,15 +232,15 @@ class SiteUrl extends Model
             $data['chartPerformance']['series'][0]['data'][] = [
                 'x' => $report->created_at->timestamp * 1000,
                 'y' => (int) ($report->score_performance * 100),
-                'fillColor' => $this->scoreToColour($report->score_performance),
+                'fillColor' => static::scoreToColour($report->score_performance),
                 'strokeColor' => '#C23829'
             ];
         }
 
-        return $this->chartDataCache = $data;
+        return $data;
     }
 
-    public function scoreToColour(float $score): string
+    public static function scoreToColour(float $score): string
     {
         if ($score >= 0.9) {
             return '#0cce6b';

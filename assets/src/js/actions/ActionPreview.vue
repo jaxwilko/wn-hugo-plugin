@@ -2,70 +2,32 @@
     <div>
         <input ref="input" type="hidden">
         <div class="flex flex-row justify-between">
-            <div @click="logMode = !logMode" class="cursor-pointer select-none size-12 bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center flex justify-center mr-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
-                </svg>
-            </div>
-            <div @click="close" class="cursor-pointer select-none size-12 bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center flex justify-center ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                </svg>
+            <HugoButton @click="logMode = !logMode" :icon="`${logMode ? 'log' : 'log-detail'}`" :title="`${logMode ? 'View Details' : 'View Log'}`"></HugoButton>
+            <HugoButton @click="close" icon="cross" title="Close"></HugoButton>
+        </div>
+        <HugoLoading v-if="loading"></HugoLoading>
+        <div v-else-if="logMode" class="flex flex-col gap-4 my-6">
+            <div v-for="item in log" class="bg-gray-100 outline outline-gray-200 shadow w-full rounded-xl p-4">
+                {{item}}
             </div>
         </div>
-        <div v-if="loading" class="flex justify-center">
-            <div class="select-none mx-auto size-48 p-6 my-8 transition-all duration-300 rounded-2xl items-center flex justify-center ml-auto">
-                <svg class="text-blue-100 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
-                        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path
-                        d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
-                        stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500">
-                    </path>
-                </svg>
-            </div>
-        </div>
-        <div v-else class="flex flex-col gap-y-4 my-8">
-            <div v-for="(item, index) in viewResult"
-                 @mouseover="highlight(item, true)"
-                 @mouseleave="highlight(item, false)"
-                 :class="`
-                    ${item.hasOwnProperty('original_index') ? 'bg-blue-100/20 border-blue-200' : 'bg-gray-100 border-gray-200'}
-                    px-4 py-3 rounded-xl border shadow
-                 `"
-            >
-                <div class="flex flex-row justify-between mb-3">
-                    <div class="uppercase font-bold align-middle">{{item._group}}</div>
-                    <div v-if="item.hasOwnProperty('original_index')" @click="scrollToItem(item)" class="cursor-pointer text-gray-900 select-none size-6 bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center flex justify-center ml-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6" />
-                        </svg>
-                    </div>
-                </div>
-                <Screenshot v-if="item._group === 'screenshot'" :storageUrl="storageUrl" :value="item.result.value"></Screenshot>
-                <div v-else class="flex flex-row gap-4 text-gray-900">
-                    <div class="w-1/2">
-                        <table class="border-separate border-spacing-y-2">
-                            <tbody>
-                                <tr>
-                                    <th class="bg-white p-3 border border-blue-200 rounded-l-xl">Status</th>
-                                    <td class="bg-white/70 p-3 border border-blue-200 border-l-0 rounded-r-xl text-right">
-                                        {{ getStatusLabel(item?.result?.status) }}
-                                    </td>
-                                </tr>
-                                <tr v-if="item?.result?.value">
-                                    <th class="bg-white p-3 border border-blue-200 rounded-l-xl">Value</th>
-                                    <td class="bg-white/70 p-3 border border-blue-200 border-l-0 rounded-r-xl text-right">
-                                        {{ item?.result?.value }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="w-1/2">
-                        <Screenshot v-if="item.screenshot" :storageUrl="storageUrl" :value="item.screenshot.result.value"></Screenshot>
-                    </div>
+        <div v-else class="flex flex-col gap-4 mt-6">
+            <ActionOverview :status="status" :startedAt="startedAt" :finishedAt="finishedAt"></ActionOverview>
+            <div class="flex flex-col gap-y-6 my-8 border-l-4 ml-4 pl-10 border-blue-800">
+                <div v-for="(item, index) in commands"
+                     class="flex flex-row relative w-full"
+                     @mouseover="highlight(item, true)"
+                     @mouseleave="highlight(item, false)"
+                >
+                    <ActionTime :time="(item._group === 'ifStatement') ? null : (item?.result?.timestamp ? `${(item?.result?.timestamp - startedAt).toFixed(2)}s` : null)"></ActionTime>
+                    <ActionResult
+                        :action="item"
+                        :storageUrl="storageUrl"
+                        :startedAt="startedAt"
+                        :finishedAt="commands[index + 1] ? commands[index + 1].result?.timestamp : finishedAt"
+                        :screenshots="screenshots"
+                        @scrollToItem="scrollToItem(item)"
+                    ></ActionResult>
                 </div>
             </div>
         </div>
@@ -74,51 +36,57 @@
 <script>
 import Screenshot from '~plugin/assets/src/js/actions/components/Screenshot.vue';
 import {scrollToTarget} from '~plugin/assets/src/js/utils/scroll';
+import actionConfig from '~plugin/models/action/action-commands.yaml';
+import ActionResult from '~plugin/assets/src/js/actions/components/ActionResult.vue';
+import HugoButton from '~plugin/assets/src/js/components/HugoButton.vue';
+import HugoLoading from '~plugin/assets/src/js/components/HugoMark.vue';
+import ActionOverview from '~plugin/assets/src/js/actions/components/ActionOverview.vue';
+import ActionTime from '~plugin/assets/src/js/actions/components/ActionTime.vue';
+import LightboxImage from '~plugin/assets/src/js/components/LightboxImage.vue';
 
 export default {
     name: 'ActionPreview',
     props: ['storageUrl'],
-    components: {Screenshot},
+    components: {LightboxImage, ActionTime, ActionOverview, HugoLoading, HugoButton, ActionResult, Screenshot},
     data: () => {
         return {
             mappings: {},
             loading: true,
             logMode: false,
+            startedAt: null,
+            finishedAt: null,
+            commands: null,
+            log: null,
             result: null,
             status: null,
         }
     },
     computed: {
-        viewResult() {
-            const commands = [];
-            for (let i = 0; i < this.result.length; i++) {
-                let current = this.result[i];
-                if (
-                    this.result[i + 1]
-                    && this.result[i + 1]._group === 'screenshot'
-                    && !this.result[i + 1].hasOwnProperty('original_index')
-                ) {
-                    current.screenshot = this.result[i + 1];
-                    i++;
-                }
-                commands.push(current);
-            }
+        screenshots() {
+            const screenshots = [];
+            this.commands.forEach((action) => {
+                const src = action._group === 'screenshot'
+                    ? action?.result.value?.path.substring(4)
+                    : action.screenshot?.result?.value?.path.substring(4)
 
-            return commands
+                if (!src) {
+                    return;
+                }
+
+                screenshots.push({
+                    src: `${this.storageUrl}${src}`,
+                    alt: `${actionConfig[action._group].name} at ${action?.result?.timestamp ? `${(action?.result?.timestamp - this.startedAt).toFixed(2)}s` : null}`
+                })
+            });
+            return screenshots
         }
     },
     methods: {
         open() {
-            this.mappings.manage.style.display = 'inline-block';
-            this.mappings.manage.style.width = '50%';
-            this.mappings.preview.style.display = 'inline-block';
-            this.mappings.preview.style.width = '50%';
+            document.querySelector('#actions-app').classList.remove('hidden');
         },
         close() {
-            this.mappings.manage.style.display = null;
-            this.mappings.manage.style.width = null;
-            this.mappings.preview.style.display = null;
-            this.mappings.preview.style.width = null;
+            document.querySelector('#actions-app').classList.add('hidden');
         },
         preview() {
             this.loading = true;
@@ -126,13 +94,54 @@ export default {
                 form: this.$refs.input.form,
                 success: (response) => {
                     this.loading = false;
+
                     if (!response.action) {
                         this.errorMode = true;
                         return;
                     }
 
+                    const commands = [];
+                    let current;
+                    for (let i = 0; i < response.action.result.length; i++) {
+                        current = response.action.result[i];
+                        if (
+                            response.action.result[i + 1]
+                            && response.action.result[i + 1]._group === 'screenshot'
+                            && !response.action.result[i + 1].hasOwnProperty('original_index')
+                        ) {
+                            current.screenshot = response.action.result[i + 1];
+                            i++;
+                        }
+                        commands.push(current);
+
+                        // Detected compound result object
+                        if (current?.result?.results) {
+                            let subcurrent;
+                            for (let j = 0; j < current.result.results.length; j++) {
+                                subcurrent = current.result.results[j];
+                                subcurrent.original_index = `${current.original_index}-${subcurrent.condition ? 'condition' : current.result.value}-${subcurrent.original_index}`;
+                                subcurrent.nested = true;
+                                if (
+                                    current.result.results[j + 1]
+                                    && current.result.results[j + 1]._group === 'screenshot'
+                                    && !current.result.results[j + 1].hasOwnProperty('original_index')
+                                ) {
+                                    subcurrent.screenshot = current.result.results[j + 1];
+                                    j++;
+                                }
+                                commands.push(subcurrent);
+                            }
+                        }
+                    }
+
+                    console.log(response);
+
+                    this.commands = commands;
+                    this.startedAt = response.action.startedAt;
+                    this.finishedAt = response.action.finishedAt;
                     this.result = response.action.result;
                     this.status = response.action.status;
+                    this.log = response.action.log;
                 },
                 error: () => {
                     this.loading = false;
@@ -141,42 +150,51 @@ export default {
             });
         },
         highlight(item, state) {
-            if (typeof item.original_index === 'undefined') {
+            const config = this.identify(item);
+
+            if (!config) {
                 return;
             }
 
-            this.mappings.actions.children[item.original_index].style.outline = state ? '#6be0ff 4px solid' : null;
+            config.style.outline = state ? '#0751bd 4px solid' : '#0751bd 0 solid';
         },
         scrollToItem(item) {
+            const config = this.identify(item);
+
+            if (!config) {
+                return;
+            }
+
+            config.style.boxShadow = '#1266de 0 0 0 0';
+            config.style.boxShadow = '#1266de 0px 1px 13px 1px';
+            scrollToTarget(config);
+            setTimeout(() => {
+                config.style.boxShadow = '#1266de 0 0 0 0';
+            }, 1000);
+        },
+        identify(item) {
             if (typeof item.original_index === 'undefined') {
                 return;
             }
 
-            const config = this.mappings.actions.children[item.original_index];
-            config.style.boxShadow = '#3739f5 0 0 0 0';
-            config.style.boxShadow = '#3739f5 0px 1px 17px 1px';
-            scrollToTarget(config);
-            setTimeout(() => {
-                config.style.boxShadow = '#3739f5 0 0 0 0';
-            }, 1000);
-        },
-        getStatusLabel(value) {
-            return {
-                '0': 'Okay',
-                '1': 'Fail',
-                '2': 'Error',
-            }[value] || 'Unknown';
+            if (typeof item.original_index === 'string' && item.original_index.includes('-')) {
+                const parts = item.original_index.split('-');
+                return this.mappings.actions.children[parts[0]]
+                    .querySelector(`[id$="-${parts[1]}-group"] ul.field-repeater-items`)
+                    .children[parts[2]]
+            }
+
+            return this.mappings.actions.children[item.original_index];
         },
     },
     mounted() {
         window.openActionPreview = () => {
-            if (!this.mappings.lenght) {
+            if (!this.mappings.length) {
                 document.querySelectorAll('.layout-row.min-size ul.nav.nav-tabs li a').forEach((a) => {
                     this.mappings[a.title.toLowerCase()] = document.querySelector(a.dataset.target);
                 });
 
                 this.mappings.actions = document.querySelector('#Repeater-formConfig-items-config');
-                Array.from(this.mappings.actions.children).forEach((e) => e.style.transition = 'box-shadow 0.3s ease-out, outline 0.1s ease-out');
             }
 
             this.open();

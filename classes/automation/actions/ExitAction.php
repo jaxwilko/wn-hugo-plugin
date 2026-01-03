@@ -2,27 +2,9 @@
 
 namespace JaxWilko\Hugo\Classes\Automation\Actions;
 
-use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionInterface;
+use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionResultInterface;
 
-class ExitAction implements ActionInterface
+readonly class ExitAction extends ActionResult implements ActionResultInterface
 {
-    public function __construct(
-        public readonly int $status,
-        public readonly mixed $value = null
-    ) {}
 
-    public function successful(): bool
-    {
-        return $this->status === 0;
-    }
-
-    public function getStatus(): int
-    {
-        return $this->status;
-    }
-
-    public function getValue(): mixed
-    {
-        return $this->value;
-    }
 }

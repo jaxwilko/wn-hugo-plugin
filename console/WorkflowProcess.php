@@ -8,7 +8,7 @@ use JaxWilko\Hugo\Models\WorkflowSchedule;
 use JaxWilko\Hugo\Models\WorkflowResult;
 use Winter\Storm\Console\Command;
 
-class HugoWorkflowProcess extends Command
+class WorkflowProcess extends Command
 {
     /**
      * @var string The console command name.

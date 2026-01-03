@@ -18,7 +18,7 @@
         </div>
 
     </div>
-    <div class="layout-cell w-full tw-hidden lg:table-cell lg:!w-[300px] h-[300px] lg:h-auto form-sidebar control-scrollpanel">
+    <div class="w-full tw-hidden lg:table-cell lg:!w-[300px] h-[300px] lg:h-auto form-sidebar control-scrollpanel">
         <div class="layout-relative lg:min-h-[93vh]">
             <div class="layout-absolute">
                 <div class="control-scrollbar" data-control="scrollbar">

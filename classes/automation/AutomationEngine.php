@@ -1,12 +1,13 @@
 <?php
 
-namespace JaxWilko\Hugo\Classes\Automation;
+namespace jaxwilko\hugo\classes\automation;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverWait;
 use JaxWilko\Hugo\Classes\Automation\Actions\CommandResult;
-use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionInterface;
+use jaxwilko\hugo\classes\automation\actions\CompoundActionResult;
+use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionResultInterface;
 use JaxWilko\Hugo\Classes\Automation\Actions\ActionResult;
 use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\LogItemInterface;
 use JaxWilko\Hugo\Classes\Automation\Actions\ExitAction;
@@ -25,6 +26,9 @@ class AutomationEngine
     protected array $config = [];
     protected array $log = [];
 
+    protected float $startedAt;
+    protected float $finishedAt;
+
     protected ?ExitAction $exit = null;
 
     public function __construct(
@@ -38,19 +42,63 @@ class AutomationEngine
         return new static($webDriver, $verbose, str_replace('.', '', (string) microtime(true)));
     }
 
-    public function run(string $url, array $config, bool $autoNavigate = true): static
+    public function run(string $url, array $config, bool $autoScreenshot = false): static
     {
+        if ($autoScreenshot) {
+            $config = $this->addScreenshotCommands($config);
+            $config = [
+                [
+                    'label' => 'After Navigation Screenshot',
+                    '_group' => 'screenshot'
+                ],
+                ...$config
+            ];
+        }
+
         // Run the test but first navigate to the page
-        if ($autoNavigate) {
-            $config = array_prepend($config, [
+        $config = [
+            [
                 'url' => $url,
                 '_group' => 'nav'
-            ]);
-        }
+            ],
+            ...$config
+        ];
+
+        $this->startedAt = microtime(true);
 
         $this->config = $this->execute($config);
 
+        $this->finishedAt = microtime(true);
+
         return $this;
+    }
+
+    public function addScreenshotCommands(array $config, bool $addIndexes = true): array
+    {
+        $newConfig = [];
+        foreach ($config as $index => $item) {
+            if ($addIndexes) {
+                $item['original_index'] = $index;
+            }
+
+            // Add screenshots for nested paths
+            if ($item['_group'] === 'ifStatement') {
+                $item['condition'] = $this->addScreenshotCommands($item['condition']);
+                $item['then'] = $this->addScreenshotCommands($item['then']);
+                $item['else'] = $this->addScreenshotCommands($item['else']);
+            }
+
+            $newConfig[] = $item;
+
+            if (!in_array($item['_group'], ['screenshot', 'ifStatement'])) {
+                $newConfig[] = [
+                    'label' => 'After ' . $item['_group'] . ' Screenshot',
+                    '_group' => 'screenshot'
+                ];
+            }
+        }
+
+        return $newConfig;
     }
 
     public function execute(array $config): array
@@ -104,6 +152,16 @@ class AutomationEngine
         return $this->config;
     }
 
+    public function getStartedAt(): float
+    {
+        return $this->startedAt;
+    }
+
+    public function getFinishedAt(): float
+    {
+        return $this->finishedAt;
+    }
+
     public function getExit(): int
     {
         if (!$this->exit) {
@@ -120,16 +178,14 @@ class AutomationEngine
 
     protected function log(LogItemInterface|string $message, mixed ...$args): static
     {
-        if ($message instanceof Screenshot || $message instanceof CommandResult) {
-            $this->log[] = $message;
-            return $this;
-        }
+        $this->log[] = $message instanceof Screenshot || $message instanceof CommandResult
+            ? $message
+            : new LogEntry(sprintf($message, ...$args));
 
-        $this->log[] = new LogEntry(sprintf($message, ...$args));
         return $this;
     }
 
-    public function add(mixed $arg1, mixed $arg2): ActionInterface
+    public function add(mixed $arg1, mixed $arg2): ActionResultInterface
     {
         if (is_string($arg1) && is_string($arg2)) {
             if (!isset($this->variables[$arg1])) {
@@ -173,7 +229,7 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function sub(mixed $arg1, mixed $arg2): ActionInterface
+    public function sub(mixed $arg1, mixed $arg2): ActionResultInterface
     {
         if (is_string($arg1) && is_string($arg2)) {
             if (!isset($this->variables[$arg1])) {
@@ -217,14 +273,14 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function set(string $name, mixed $value): ActionInterface
+    public function set(string $name, mixed $value): ActionResultInterface
     {
         $this->variables[$name] = $value;
 
         return new ActionResult(1);
     }
 
-    public function nav(string $url): ActionInterface
+    public function nav(string $url): ActionResultInterface
     {
         $this->scroll(0, 0);
         $this->webDriver->get($url);
@@ -232,13 +288,13 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function refresh(): ActionInterface
+    public function refresh(): ActionResultInterface
     {
         $this->scroll(0, 0);
         return $this->exec('window.location.reload()');
     }
 
-    public function click(string $selector, bool $allowJsFallback): ActionInterface
+    public function click(string $selector, bool $allowJsFallback): ActionResultInterface
     {
         try {
             $elements = $this->webDriver->findElements(WebDriverBy::cssSelector($selector));
@@ -268,7 +324,7 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    private function fallbackJsClick($selector): ActionInterface
+    private function fallbackJsClick($selector): ActionResultInterface
     {
         try {
             return $this->exec('
@@ -287,7 +343,7 @@ class AutomationEngine
         }
     }
 
-    public function moveMouse(string $selector): ActionInterface
+    public function moveMouse(string $selector): ActionResultInterface
     {
         try {
             $elements = $this->webDriver->findElements(WebDriverBy::cssSelector($selector));
@@ -308,12 +364,14 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function writeLog(string $message): void
+    public function writeLog(string $message): ActionResultInterface
     {
         $this->log($message);
+
+        return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function screenshot(string $label): ActionInterface
+    public function screenshot(string $label): ActionResultInterface
     {
         $stub = sprintf(
             'app%shugo%stests%s%s',
@@ -344,19 +402,19 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY, $screenshot);
     }
 
-    public function scroll(int $x, int $y): ActionInterface
+    public function scroll(int $x, int $y): ActionResultInterface
     {
         return $this->exec(sprintf('window.scrollBy(%s, %s)', $x, $y));
     }
 
-    public function scrollTo(string $selector, ?int $offset = 0): ActionInterface
+    public function scrollTo(string $selector, ?int $offset = 0): ActionResultInterface
     {
         return $this->exec(
             sprintf('window.scrollTo(0, (document.querySelector("%s").offsetTop - %s))', $selector, $offset ?? 0)
         );
     }
 
-    public function sendKeys(string $keys): ActionInterface
+    public function sendKeys(string $keys): ActionResultInterface
     {
         $this->log('sending keys `%s`', $keys);
 
@@ -378,21 +436,21 @@ class AutomationEngine
         }
     }
 
-    public function wait(int $seconds): ActionInterface
+    public function wait(int $seconds): ActionResultInterface
     {
         $this->log('waiting for %d seconds', $seconds);
         sleep($seconds);
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function uwait(int $microseconds): ActionInterface
+    public function uwait(int $microseconds): ActionResultInterface
     {
         $this->log('waiting for %d microseconds', $microseconds);
         usleep($microseconds);
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function waitFor(string $selector, int $timeout = 5): ActionInterface
+    public function waitFor(string $selector, int $timeout = 5): ActionResultInterface
     {
         $this->log('waiting for %s element', $selector);
 
@@ -409,22 +467,29 @@ class AutomationEngine
         }
     }
 
-    public function ifStatement(array $condition, bool $invert, array $then, array $else): void
+    public function ifStatement(array $condition, bool $invert, array $then, array $else): ActionResultInterface
     {
         $this->log(new CommandResult('ifStatement', $condition));
 
-        $test = $this->execute($condition)[0]['result']->successful();
+        $test = $this->execute($condition);
 
-        if (($test && !$invert) || (!$test && $invert)) {
-            $this->execute($then);
+        // Map into the config that the executed commands were conditions
+        array_walk($test, fn (&$item) => $item['condition'] = true);
+
+        $result = $test[0]['result']->successful();
+
+        if (($result && !$invert) || (!$result && $invert)) {
+            return new CompoundActionResult(static::STATUS_OKAY, 'then', [...$test, ...$this->execute($then)]);
         }
 
-        if (($test && $invert) || (!$test && !$invert)) {
-            $this->execute($else);
+        if (($result && $invert) || (!$result && !$invert)) {
+            return new CompoundActionResult(static::STATUS_GENERAL_ERROR, 'else', [...$test, ...$this->execute($else)]);
         }
+
+        return new ActionResult(static::STATUS_UNCAUGHT_ERROR);
     }
 
-    public function exec(string $code): ActionInterface
+    public function exec(string $code): ActionResultInterface
     {
         $result = $this->webDriver->executeScript($code);
 
@@ -441,12 +506,12 @@ class AutomationEngine
         return new ExitAction($status);
     }
 
-    public function getInputValue(string $selector): ActionInterface
+    public function getInputValue(string $selector): ActionResultInterface
     {
         return $this->exec(sprintf('return document.querySelector("%s").value', $selector));
     }
 
-    public function setInputValue(string $selector, string $value): ActionInterface
+    public function setInputValue(string $selector, string $value): ActionResultInterface
     {
         return $this->exec(sprintf('
             var setInputValueEl = document.querySelector("%s");
@@ -458,7 +523,7 @@ class AutomationEngine
         ', $selector, $value));
     }
 
-    public function getBrowserLogs(string $report): ActionInterface
+    public function getBrowserLogs(string $report): ActionResultInterface
     {
         $logs = $this->webDriver->manage()->getLog('browser');
 
@@ -475,18 +540,18 @@ class AutomationEngine
         return new ActionResult($status, $logs);
     }
 
-    public function deleteCookies(): ActionInterface
+    public function deleteCookies(): ActionResultInterface
     {
         $this->webDriver->manage()->deleteAllCookies();
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function noop(): ActionInterface
+    public function noop(): ActionResultInterface
     {
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function visible(string $selector): ActionInterface
+    public function visible(string $selector): ActionResultInterface
     {
         return $this->exec(sprintf('
             var elem = document.querySelector("%s");
@@ -494,12 +559,12 @@ class AutomationEngine
         ', $selector));
     }
 
-    public function echo(string $value): ActionInterface
+    public function echo(string $value): ActionResultInterface
     {
         return new ActionResult(static::STATUS_OKAY, $value);
     }
 
-    public function elementText(string $selector): ActionInterface
+    public function elementText(string $selector): ActionResultInterface
     {
         try {
             return new ActionResult(
@@ -512,7 +577,7 @@ class AutomationEngine
         }
     }
 
-    public function equals(array $arg1, array $arg2): ActionInterface
+    public function equals(array $arg1, array $arg2): ActionResultInterface
     {
         $this->log(new CommandResult('equals', ['arg1' => $arg1, 'arg2' => $arg2]));
 

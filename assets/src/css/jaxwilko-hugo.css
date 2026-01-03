@@ -6,6 +6,7 @@
     .tw-hidden {
         @apply hidden;
     }
+
     .border-t-8 {
         border-top-width: 8px;
     }

@@ -23,6 +23,15 @@ fields:
 tabs:
     cssClass: master-area
     fields:
+        _titleInstructions:
+            label: 'Action Instructions'
+            type: section
+            span: full
+            tab: 'Action Instructions'
+        config:
+            type: repeater
+            groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
+            tab: 'Action Instructions'
         _titleConfig:
             label: 'Action Config'
             type: section
@@ -51,18 +60,6 @@ tabs:
             label: 'Workflows'
             type: relation
             tab: 'Manage'
-        _titleInstructions:
-            label: 'Action Instructions'
-            type: section
-            span: full
-            tab: 'Manage'
-        config:
-            type: repeater
-            groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
-            tab: 'Manage'
         results:
             type: partial
             tab: 'Results'
-        _preview:
-            type: partial
-            tab: 'Preview'

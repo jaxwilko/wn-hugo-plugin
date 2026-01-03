@@ -1,12 +1,14 @@
 import { createApp } from "vue";
 import Lighthouse from "./sites/Lighthouse.vue";
+import LighthouseSiteReport from "./sites/LighthouseSiteReport.vue";
 import DownReport from "./sites/DownReport.vue";
+import HugoButton from "./components/HugoButton.vue";
 import Score from '~plugin/assets/src/js/sites/components/Score.vue';
 import { winterRequestPlugin } from './utils/winter-request';
 
 const createSiteApp = (target) => {
     const app = createApp({
-        components: {Lighthouse, DownReport, Score}
+        components: {Lighthouse, LighthouseSiteReport, DownReport, Score, HugoButton}
     });
 
     app.use(winterRequestPlugin);

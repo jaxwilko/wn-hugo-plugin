@@ -20,24 +20,25 @@ fields:
 
 secondaryTabs:
     fields:
-        image:
+        image@update:
             label: 'Site Logo'
             type: fileupload
             span: full
             imageWidth: 140
             required: false
-        performance_testing:
+        performance_testing@update:
             label: 'Enable Performance Testing'
             type: switch
             span: full
             required: true
-        health_testing:
+        health_testing@update:
             label: 'Enable Health Testing'
             type: switch
             span: full
             required: true
 
 tabs:
+    cssClass: master-area
     icons:
         'Lighthouse': 'icon-lightbulb-o'
         'Outages': 'icon-triangle-exclamation'

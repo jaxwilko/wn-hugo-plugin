@@ -2,14 +2,18 @@
 
 namespace JaxWilko\Hugo\Classes\Automation\Actions;
 
-use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionInterface;
+use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionResultInterface;
 
-class ActionResult implements ActionInterface
+readonly class ActionResult implements ActionResultInterface
 {
+    public float $timestamp;
+
     public function __construct(
-        public readonly int $status,
-        public readonly mixed $value = null
-    ) {}
+        public int $status,
+        public mixed $value = null
+    ) {
+        $this->timestamp = microtime(true);
+    }
 
     public function successful(): bool
     {
@@ -24,5 +28,10 @@ class ActionResult implements ActionInterface
     public function getValue(): mixed
     {
         return $this->value;
+    }
+
+    public function getTimestamp(): float
+    {
+        return $this->timestamp;
     }
 }

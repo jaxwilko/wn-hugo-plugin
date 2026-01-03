@@ -4,6 +4,9 @@ namespace JaxWilko\Hugo\Controllers;
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Carbon\Carbon;
+use JaxWilko\Hugo\Models\SiteUrl;
+use Winter\Storm\Support\Facades\DB;
 
 /**
  * Sites Backend Controller
@@ -43,7 +46,39 @@ class Sites extends Controller
             ->prependViewPath('$/jaxwilko/hugo/controllers/sites/overrides/form');
     }
 
-    public function onLighthouseData($recordId = null, $context = null)
+    public function onLighthouseSiteData($recordId = null, $context = null): array
+    {
+        $formController = $this->asExtension('FormController');
+        $formController->update($recordId, $context);
+
+        $model = $formController->formGetModel();
+
+        return [
+            'allTimeAverages' => $model->urls()
+                ->select(SiteUrl::getAveragesSelect())
+                ->join('jaxwilko_hugo_lighthouse_reports', 'jaxwilko_hugo_site_urls.id', '=', 'url_id')
+                ->first()
+                ->toArray(),
+            'sevenDayAverages' => $model->urls()
+                ->select(SiteUrl::getAveragesSelect())
+                ->join('jaxwilko_hugo_lighthouse_reports', 'jaxwilko_hugo_site_urls.id', '=', 'url_id')
+                ->where('jaxwilko_hugo_lighthouse_reports.created_at', '>', Carbon::now()->subWeek()->format('Y-m-d'))
+                ->first()
+                ->toArray(),
+            'chartData' =>  SiteUrl::buildChartFromData(
+                $model->urls()
+                    ->select(SiteUrl::getAveragesSelect())
+                    ->join('jaxwilko_hugo_lighthouse_reports', 'jaxwilko_hugo_site_urls.id', '=', 'url_id')
+                    ->addSelect(DB::raw('DATE(jaxwilko_hugo_lighthouse_reports.created_at) as `created_at`'))
+                    ->groupBy(DB::raw('DATE(jaxwilko_hugo_lighthouse_reports.created_at)'))
+                    ->orderBy('jaxwilko_hugo_lighthouse_reports.created_at', 'DESC')
+                    ->limit(60)
+                    ->get()
+            ),
+        ];
+    }
+
+    public function onLighthouseData($recordId = null, $context = null): array
     {
         $formController = $this->asExtension('FormController');
         $formController->update($recordId, $context);

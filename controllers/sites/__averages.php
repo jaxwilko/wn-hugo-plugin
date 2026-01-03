@@ -5,12 +5,12 @@ $averages = isset($column)
 ?>
 
 <?php if (!empty($averages)): ?>
-    <div class="rounded-xl bg-white">
+    <div class="rounded-xl">
         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <?php foreach (['performance', 'accessibility', 'best_practice', 'seo'] as $key): ?>
-                <div class="flex flex-col py-3">
+                <div class="flex flex-col py-3 text-center">
                     <score score="<?= round($averages['score_' . $key] ?? 0, 2) ?>" size="xs"></score>
-                    <div class="text-gray-900 text-sm mx-auto font-bold"><?= $key === 'seo' ? 'SEO' : ucwords(str_replace('_', ' ', $key)) ?></div>
+                    <div class="text-gray-900 text-xs mx-auto font-bold"><?= $key === 'seo' ? 'SEO' : ucwords(str_replace('_', ' ', $key)) ?></div>
                 </div>
             <?php endforeach; ?>
         </div>

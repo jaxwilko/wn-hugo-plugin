@@ -48,4 +48,28 @@ class ActionResult extends Model
             AutomationEngine::STATUS_NO_EXIT_ERROR => 'Exit Error',
         };
     }
+
+    public function getStatusColour(): string
+    {
+        return match ($this->status) {
+            AutomationEngine::STATUS_OKAY => '#3f843f',
+            AutomationEngine::STATUS_GENERAL_ERROR => '#9e3939',
+            AutomationEngine::STATUS_UNCAUGHT_ERROR => '#9e3939',
+            AutomationEngine::STATUS_NO_EXIT_ERROR => '#9e3939',
+        };
+    }
+
+
+    public function getNotificationMessage(): string
+    {
+        if (!($str = $this->action->notification_message)) {
+            return '';
+        }
+
+        foreach ($this->result['variables'] as $key => $value) {
+            $str = preg_replace(sprintf('/\$%s/', $key), e($value), $str);
+        }
+
+        return $str;
+    }
 }

@@ -23,9 +23,9 @@ return [
             'label' => 'Lighthouse Url',
             'label_plural' => 'Lighthouse Urls',
         ],
-        'test' => [
-            'label' => 'Test',
-            'label_plural' => 'Tests',
+        'action' => [
+            'label' => 'Action',
+            'label_plural' => 'Actions',
         ],
         'group' => [
             'label' => 'Group',

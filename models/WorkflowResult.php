@@ -62,12 +62,19 @@ class WorkflowResult extends Model
 
             foreach ($schedule->workflow->actions->sortBy('priority') as $action) {
                 $engine = AutomationEngine::init($webDriver, $debug)
-                    ->run($action->target, $action->config);
+                    ->run($action->target, $action->config, $action->auto_screenshot);
 
                 $workflowResult->results()->save(new ActionResult([
                     'action_id' => $action->id,
                     'status' => $engine->getExit(),
-                    'result' => $engine->getLog()
+                    'result' => [
+                        'startedAt' => $engine->getStartedAt(),
+                        'finishedAt' => $engine->getFinishedAt(),
+                        'status' => $engine->getExit(),
+                        'result' => $engine->getConfig(),
+                        'log' => $engine->getLog(),
+                        'variables' => $engine->getVariables(),
+                    ]
                 ]));
 
                 $workflowResult->status = $engine->getExit() !== 0 ? $engine->getExit() : $workflowResult->status;
@@ -92,23 +99,40 @@ class WorkflowResult extends Model
 
     public function notify(): static
     {
-        if ($this->status === AutomationEngine::STATUS_OKAY) {
+        $report = [];
+        foreach ($this->results as $result) {
+            if ($this->status === 0 && $result->action->notification === 'okay') {
+                $report[$result->id] = $result;
+            }
+            if ($this->status > 0 && $result->action->notification === 'fail') {
+                $report[$result->id] = $result;
+            }
+        }
+
+        if (empty($report)) {
             return $this;
         }
 
-        $string = '<table style="text-align: left;"><thead><tr><th>Test</th><th>Result</th></tr></thead><tbody>';
+        $string = '<table style="text-align: left;"><thead><tr><th>Action</th><th>Result</th></tr></thead><tbody>';
         foreach ($this->results as $result) {
             $string .= sprintf(
-                '<tr><td style="padding-right: 15px;">%s</td><td>%s</td></tr>',
+                '<tr><td style="padding-right: 15px;">%s</td><td style="color: %s;">%s</td></tr>',
                 $result->action->name,
+                $result->getStatusColour(),
                 $result->getStatusLabel()
             );
+            if (isset($report[$result->id]) && ($message = $report[$result->id]->getNotificationMessage())) {
+                $string .= sprintf('
+                    <tr><th colspan="2">Message</th></tr>
+                    <tr><td colspan="2" style="font-family: mono; padding: 10px; background: #cecece">%s</td></tr>
+                ', $message);
+            }
         }
         $string .= '</tbody></table>';
 
         $config = [
-            'title'     => 'Test Failed',
-            'heading'   => 'Test group has reported a failure!',
+            'title'     => 'Workflow ' . ($this->status > 0 ? 'Failed' : 'Passed'),
+            'heading'   => 'Workflow has reported a ' . ($this->status > 0 ? 'failure' : 'success') . '!',
             'text'      => $string,
             'footer'    => 'Use the following links to find out more:',
             'buttons'   => [
@@ -137,5 +161,16 @@ class WorkflowResult extends Model
     public function getUpdatedAtHumanAttribute(): string
     {
         return $this->updated_at->diffForHumans();
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            0 => 'Okay',
+            1 => 'General Error',
+            2 => 'Uncaught Error',
+            3 => 'Exit Error',
+            default => 'Unknown',
+        };
     }
 }

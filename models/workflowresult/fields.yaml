@@ -3,15 +3,10 @@
 # ===================================
 
 fields:
-    status:
+    _status_label:
         label: Status
-        type: dropdown
+        type: text
         span: left
-        options:
-            0: 'Okay'
-            1: 'General Error'
-            2: 'Uncaught Error'
-            3: 'Exit Error'
         disabled: true
     updated_at:
         label: 'jaxwilko.hugo::lang.models.general.updated_at'
@@ -19,9 +14,19 @@ fields:
         disabled: true
         span: right
 
+    _spacer:
+        label: false
+        type: section
+        cssClass: invisible
+        disabled: true
+        span: full
+
 tabs:
-    cssClass: master-area
+    cssClass: 'master-area hugo-app actions-app'
     fields:
+#        results:
+#            type: reportresults
+#            tab: 'Tests'
         results:
-            type: reportresults
+            type: relationmanager
             tab: 'Tests'

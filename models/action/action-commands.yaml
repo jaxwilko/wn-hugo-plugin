@@ -310,13 +310,14 @@ set:
         name:
             label: Name
             placeholder: EXAMPLE
-            span: auto
+            span: full
             type: text
+            required: true
         value:
             label: Value
-            placeholder: '5'
-            span: auto
-            type: text
+            groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
+            maxItems: 1
+            type: repeater
 
 setInputValue:
     name: 'Set Input Value'

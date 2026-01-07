@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('url');
             $table->longText('config');
             $table->integer('priority')->default(3);
+            $table->string('notification')->default('fail');
+            $table->text('notification_message')->nullable();
+            $table->boolean('auto_screenshot')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

@@ -99,12 +99,4 @@ class Action extends Model
     {
         return Url::make($this->site->base_url, $this->url);
     }
-
-    public function getTestConfigAttribute(): array
-    {
-        return array_prepend($this->config, [
-            '_group' => 'nav',
-            'url' => $this->target
-        ]);
-    }
 }

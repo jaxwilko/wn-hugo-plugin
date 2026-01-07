@@ -7,8 +7,10 @@ use JaxWilko\Hugo\Models\SiteDown;
 use JaxWilko\Hugo\Models\LighthouseReport;
 use JaxWilko\Hugo\Models\Site;
 use JaxWilko\Hugo\Models\SiteUrl;
+use JaxWilko\Hugo\Models\WorkflowResult;
 use Log;
 use Winter\Storm\Console\Command;
+use Winter\Storm\Support\Facades\Schema;
 
 class HugoClear extends Command
 {
@@ -33,6 +35,17 @@ class HugoClear extends Command
      */
     public function handle()
     {
+
+        WorkflowResult::orderBy('id', 'DESC')->first()->notify();
+
+//        Schema::table('jaxwilko_hugo_actions', function ($table) {
+////            $table->string('notification')->after('priority')->default('fail');
+//            $table->boolean('auto_screenshot')->after('notification_message')->default(false);
+//        });
+//
+        dd();
+
+
         // Clear old lighthouse images
         LighthouseReport::whereDate('created_at', '<', Carbon::now()->subMonths(1))
             ->get()

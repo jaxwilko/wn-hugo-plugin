@@ -19,13 +19,14 @@
                      @mouseover="highlight(item, true)"
                      @mouseleave="highlight(item, false)"
                 >
-                    <ActionTime :time="(item._group === 'ifStatement') ? null : (item?.result?.timestamp ? `${(item?.result?.timestamp - startedAt).toFixed(2)}s` : null)"></ActionTime>
+                    <ActionTime :time="(['ifStatement', 'set'].indexOf(item._group) === -1) ? null : (item?.result?.timestamp ? `${(item?.result?.timestamp - startedAt).toFixed(2)}s` : null)"></ActionTime>
                     <ActionResult
                         :action="item"
                         :storageUrl="storageUrl"
                         :startedAt="startedAt"
                         :finishedAt="commands[index + 1] ? commands[index + 1].result?.timestamp : finishedAt"
                         :screenshots="screenshots"
+                        :showInspect="true"
                         @scrollToItem="scrollToItem(item)"
                     ></ActionResult>
                 </div>
@@ -36,13 +37,13 @@
 <script>
 import Screenshot from '~plugin/assets/src/js/actions/components/Screenshot.vue';
 import {scrollToTarget} from '~plugin/assets/src/js/utils/scroll';
-import actionConfig from '~plugin/models/action/action-commands.yaml';
 import ActionResult from '~plugin/assets/src/js/actions/components/ActionResult.vue';
 import HugoButton from '~plugin/assets/src/js/components/HugoButton.vue';
-import HugoLoading from '~plugin/assets/src/js/components/HugoMark.vue';
+import HugoLoading from '~plugin/assets/src/js/components/HugoLoading.vue';
 import ActionOverview from '~plugin/assets/src/js/actions/components/ActionOverview.vue';
 import ActionTime from '~plugin/assets/src/js/actions/components/ActionTime.vue';
 import LightboxImage from '~plugin/assets/src/js/components/LightboxImage.vue';
+import {getScreenshots, parseCommands} from '~plugin/assets/src/js/actions/utils/actions';
 
 export default {
     name: 'ActionPreview',
@@ -63,22 +64,7 @@ export default {
     },
     computed: {
         screenshots() {
-            const screenshots = [];
-            this.commands.forEach((action) => {
-                const src = action._group === 'screenshot'
-                    ? action?.result.value?.path.substring(4)
-                    : action.screenshot?.result?.value?.path.substring(4)
-
-                if (!src) {
-                    return;
-                }
-
-                screenshots.push({
-                    src: `${this.storageUrl}${src}`,
-                    alt: `${actionConfig[action._group].name} at ${action?.result?.timestamp ? `${(action?.result?.timestamp - this.startedAt).toFixed(2)}s` : null}`
-                })
-            });
-            return screenshots
+            return getScreenshots(this.commands, this.startedAt, this.storageUrl);
         }
     },
     methods: {
@@ -100,43 +86,7 @@ export default {
                         return;
                     }
 
-                    const commands = [];
-                    let current;
-                    for (let i = 0; i < response.action.result.length; i++) {
-                        current = response.action.result[i];
-                        if (
-                            response.action.result[i + 1]
-                            && response.action.result[i + 1]._group === 'screenshot'
-                            && !response.action.result[i + 1].hasOwnProperty('original_index')
-                        ) {
-                            current.screenshot = response.action.result[i + 1];
-                            i++;
-                        }
-                        commands.push(current);
-
-                        // Detected compound result object
-                        if (current?.result?.results) {
-                            let subcurrent;
-                            for (let j = 0; j < current.result.results.length; j++) {
-                                subcurrent = current.result.results[j];
-                                subcurrent.original_index = `${current.original_index}-${subcurrent.condition ? 'condition' : current.result.value}-${subcurrent.original_index}`;
-                                subcurrent.nested = true;
-                                if (
-                                    current.result.results[j + 1]
-                                    && current.result.results[j + 1]._group === 'screenshot'
-                                    && !current.result.results[j + 1].hasOwnProperty('original_index')
-                                ) {
-                                    subcurrent.screenshot = current.result.results[j + 1];
-                                    j++;
-                                }
-                                commands.push(subcurrent);
-                            }
-                        }
-                    }
-
-                    console.log(response);
-
-                    this.commands = commands;
+                    this.commands = parseCommands(response.action);
                     this.startedAt = response.action.startedAt;
                     this.finishedAt = response.action.finishedAt;
                     this.result = response.action.result;
@@ -200,12 +150,6 @@ export default {
             this.open();
             this.preview();
         };
-
-        this.$nextTick(() => {
-            setTimeout(() => {
-                document.querySelector('#Form-field-Action-toolbar-group > div > a.btn.btn-primary.wn-icon-crosshairs').click();
-            }, 100);
-        });
     }
 };
 </script>

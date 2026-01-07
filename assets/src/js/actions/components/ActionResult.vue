@@ -3,17 +3,17 @@
         :class="`
             ${action.hasOwnProperty('original_index') ? 'bg-blue-100/20 outline-blue-200' : 'bg-gray-100 outline-gray-200'}
             ${action.hasOwnProperty('nested') ? 'ml-8' : ''}
-            w-full overflow-hidden rounded-xl outline shadow relative
+            tw-w-full overflow-hidden rounded-xl outline shadow relative
          `"
     >
-        <div class="flex flex-col md:flex-row w-full">
-            <div :class="`flex flex-col ${action.screenshot?.result?.value?.path || action?.value?.path ? 'w-full md:w-1/2' : 'w-full'} gap-4 p-3`">
+        <div class="flex flex-col md:flex-row tw-w-full">
+            <div :class="`flex flex-col ${action.screenshot?.result?.value?.path || action?.value?.path ? 'tw-w-full md:w-1/2' : 'tw-w-full'} gap-4 p-3`">
                 <div class="flex flex-row items-center gap-4">
                     <div class="flex items-center justify-center p-3 bg-blue-200 rounded-xl size-10">
                         <i :class="config.icon"></i>
                     </div>
                     <div class="uppercase font-bold align-middle">{{config.name}}</div>
-                    <div v-if="action.hasOwnProperty('original_index')"
+                    <div v-if="action.hasOwnProperty('original_index') && showInspect"
                          @click="$emit('scrollToItem')"
                          class="flex cursor-pointer text-gray-900 select-none bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center justify-center ml-auto p-1"
                          title="Inspect"
@@ -26,7 +26,7 @@
                 <div>
                     {{config.description}}
                 </div>
-                <div class="flex flex-row gap-4 border-t border-blue-100 pt-4">
+                <div :class="`flex flex-row gap-4 border-t ${action.hasOwnProperty('original_index') ? 'border-blue-100' : 'border-gray-200'} pt-4`">
                     <div class="flex flex-row items-center gap-2">
                         <div :class="`p-1 border rounded-xl ${getStatusClasses(action?.result?.status)}`">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
@@ -39,7 +39,7 @@
                             <span class="font-bold text-lg -mt-[7px]">{{ getStatusLabel(action?.result?.status) }}</span>
                         </div>
                     </div>
-                    <div v-if="action._group !== 'ifStatement'" class="flex flex-row items-center gap-2">
+                    <div v-if="['ifStatement', 'set'].indexOf(action._group) === -1" class="flex flex-row items-center gap-2">
                         <div class="p-1 rounded-xl bg-gray-200 border border-gray-300">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -52,17 +52,17 @@
                     </div>
                 </div>
                 <div>
-                    <div v-if="action?.result?.value" class="flex flex-row items-center gap-2 border-t border-blue-100 pt-4">
-                        <div class="flex flex-col w-full">
+                    <div v-if="action?.result?.value" :class="`flex flex-row items-center gap-2 border-t ${action.hasOwnProperty('original_index') ? 'border-blue-100' : 'border-gray-200'} pt-4`">
+                        <div class="flex flex-col tw-w-full">
                             <span class="text-xs mb-2">Result Value</span>
-                            <div class="p-2 bg-gray-100 border border-gray-200 rounded-lg w-full font-mono text-lg">
-                                {{ action?.result?.value }}
-                            </div>
+                            <pre class="p-2 bg-gray-100 border border-gray-200 rounded-lg font-mono text-lg overflow-x-auto"
+                                 v-text="typeof action?.result?.value === 'string' ? action?.result?.value : JSON.stringify(action?.result?.value, null, 4)"
+                            ></pre>
                         </div>
                     </div>
                 </div>
             </div>
-            <div v-if="action.screenshot?.result?.value?.path || action?.result.value?.path" class="w-full md:w-1/2 bg-cover bg-center min-h-[175px]" :style="`background-image: url('${this.storageUrl}${action._group === 'screenshot' ? action?.result.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}')`">
+            <div v-if="action.screenshot?.result?.value?.path || action?.result.value?.path" class="tw-w-full md:w-1/2 bg-cover bg-center min-h-[175px]" :style="`background-image: url('${this.storageUrl}${action._group === 'screenshot' ? action?.result.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}')`">
                 <LightboxImage :invisible="true"
                                :src="`${this.storageUrl}${action._group === 'screenshot' ? action?.result.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}`"
                                :alt="`${config.name} at ${action?.result?.timestamp ? `${(action?.result?.timestamp - startedAt).toFixed(2)}s` : null}`"
@@ -81,7 +81,7 @@ import LightboxImage from '~plugin/assets/src/js/components/LightboxImage.vue';
 export default {
     name: 'ActionResult',
     components: {LightboxImage, Screenshot},
-    props: ['action', 'startedAt', 'finishedAt', 'screenshots', 'storageUrl'],
+    props: ['action', 'startedAt', 'finishedAt', 'screenshots', 'showInspect', 'storageUrl'],
     computed: {
         config() {
             return actionConfig[this.action._group] || {};

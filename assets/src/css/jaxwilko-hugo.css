@@ -7,6 +7,10 @@
         @apply hidden;
     }
 
+    .tw-w-full {
+        @apply w-full;
+    }
+
     .border-t-8 {
         border-top-width: 8px;
     }

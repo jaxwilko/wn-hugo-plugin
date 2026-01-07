@@ -88,9 +88,13 @@ class AutomationEngine
                 $item['else'] = $this->addScreenshotCommands($item['else']);
             }
 
+            if ($item['_group'] === 'set') {
+                $item['value'] = $this->addScreenshotCommands($item['value']);
+            }
+
             $newConfig[] = $item;
 
-            if (!in_array($item['_group'], ['screenshot', 'ifStatement'])) {
+            if (!in_array($item['_group'], ['screenshot', 'ifStatement', 'set'])) {
                 $newConfig[] = [
                     'label' => 'After ' . $item['_group'] . ' Screenshot',
                     '_group' => 'screenshot'
@@ -150,6 +154,11 @@ class AutomationEngine
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    public function getVariables(): array
+    {
+        return $this->variables;
     }
 
     public function getStartedAt(): float
@@ -273,11 +282,21 @@ class AutomationEngine
         return new ActionResult(static::STATUS_OKAY);
     }
 
-    public function set(string $name, mixed $value): ActionResultInterface
+    public function set(string $name, array $value): ActionResultInterface
     {
-        $this->variables[$name] = $value;
+        if (empty($value)) {
+            $this->variables[$name] = null;
+            return new ActionResult(static::STATUS_GENERAL_ERROR);
+        }
 
-        return new ActionResult(1);
+        $result = $this->execute($value);
+
+        // Map into the config that the executed commands were conditions
+        array_walk($result, fn (&$item) => $item['condition'] = true);
+
+        $this->variables[$name] = $result[0]['result']->getValue();
+
+        return new CompoundActionResult($result[0]['result']->successful(), $result[0]['result']->getValue(), $result);
     }
 
     public function nav(string $url): ActionResultInterface

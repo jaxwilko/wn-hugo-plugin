@@ -7,8 +7,8 @@ columns:
         label: 'jaxwilko.hugo::lang.models.general.id'
         searchable: true
         sortable: true
-    test[name]:
-        label: 'Test Name'
+    action[name]:
+        label: 'Action'
         searchable: true
         sortable: true
     status:
@@ -17,6 +17,12 @@ columns:
         path: $/jaxwilko/hugo/models/action/_status.htm
         searchable: true
         sortable: true
+    _view_btn:
+        label: 'View'
+        type: partial
+        valueFrom: id
+        searchable: false
+        sortable: false
     created_at:
         label: 'jaxwilko.hugo::lang.models.general.created_at'
         type: datetime

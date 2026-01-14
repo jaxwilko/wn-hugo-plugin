@@ -48,17 +48,10 @@ tabs:
         _urls@update:
             tab: 'Lighthouse'
             type: partial
-#        _downsGraph@update:
-#            label: Last 7 Outages
-#            tab: 'Outages'
-#            type: partial
         _downs@update:
             tab: 'Outages'
             type: partial
-        _testCreate@update:
-            tab: 'Actions'
-            type: partial
-        _tests@update:
+        _actions@update:
             tab: 'Actions'
             type: partial
         image:

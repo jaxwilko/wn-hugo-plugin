@@ -23,6 +23,10 @@ return [
             'label' => 'Lighthouse Url',
             'label_plural' => 'Lighthouse Urls',
         ],
+        'lighthousereport' => [
+            'label' => 'Lighthouse Report',
+            'label_plural' => 'Lighthouse Reports',
+        ],
         'action' => [
             'label' => 'Action',
             'label_plural' => 'Actions',
@@ -31,13 +35,17 @@ return [
             'label' => 'Group',
             'label_plural' => 'Groups',
         ],
-        'workflowresult' => [
-            'label' => 'Test Report',
-            'label_plural' => 'Test Reports',
+        'workflows' => [
+            'label' => 'Workflow',
+            'label_plural' => 'Workflows',
         ],
-        'lighthousereport' => [
-            'label' => 'Lighthouse Report',
-            'label_plural' => 'Lighthouse Reports',
+        'workflow' => [
+            'label' => 'Workflow',
+            'label_plural' => 'Workflows',
+        ],
+        'workflowresult' => [
+            'label' => 'Workflow Result',
+            'label_plural' => 'Workflow Results',
         ],
     ],
 ];

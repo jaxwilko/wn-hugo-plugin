@@ -6,9 +6,9 @@
             <HugoButton @click="close" icon="cross" title="Close"></HugoButton>
         </div>
         <HugoLoading v-if="loading"></HugoLoading>
-        <div v-else-if="logMode" class="flex flex-col gap-4 my-6">
+        <div v-else-if="logMode" class="flex flex-col gap-4 my-6 pb-6">
             <div v-for="item in log" class="bg-gray-100 outline outline-gray-200 shadow w-full rounded-xl p-4">
-                {{item}}
+                <pre>{{JSON.stringify(item, null, 4)}}</pre>
             </div>
         </div>
         <div v-else class="flex flex-col gap-4 mt-6">

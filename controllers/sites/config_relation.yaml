@@ -27,15 +27,16 @@ downs:
         recordsPerPage: 15
         showSearch: true
 
-tests:
-    label: 'Tests'
+actions:
+    label: 'Actions'
     view:
-        list: $/jaxwilko/hugo/controllers/sites/tests/columns.yaml
+        list: $/jaxwilko/hugo/controllers/sites/actions/columns.yaml
         recordUrl: jaxwilko/hugo/actions/update/:id
         toolbarButtons: []
+        toolbarPartial: 'actions_relation_toolbar'
         recordsPerPage: 15
     manage:
-        list: $/jaxwilko/hugo/controllers/sites/tests/columns.yaml
-        form: $/jaxwilko/hugo/controllers/sites/tests/fields.yaml
+        list: $/jaxwilko/hugo/controllers/sites/actions/columns.yaml
+        form: $/jaxwilko/hugo/controllers/sites/actions/fields.yaml
         recordsPerPage: 15
 

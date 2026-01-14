@@ -85,7 +85,7 @@ class Site extends Model
         'downs' => [
             \JaxWilko\Hugo\Models\SiteDown::class
         ],
-        'tests' => [
+        'actions' => [
             \JaxWilko\Hugo\Models\Action::class,
         ]
     ];

@@ -7,8 +7,6 @@ use Backend\FormWidgets\Repeater;
 use JaxWilko\Hugo\Classes\Automation\AutomationEngine;
 use JaxWilko\Hugo\Classes\Automation\HugoWebDriver;
 use JaxWilko\Hugo\Classes\Url;
-use JaxWilko\Hugo\Models\ActionResult;
-use JaxWilko\Hugo\Models\WorkflowSchedule;
 use Winter\Storm\Exception\ApplicationException;
 
 class Actions extends Controller
@@ -47,9 +45,9 @@ class Actions extends Controller
      */
     public function onActionPreview($recordId = null, $context = null): array
     {
-        return [
-            'action' => json_decode(file_get_contents(base_path('action.json'), JSON_OBJECT_AS_ARRAY))
-        ];
+//        return [
+//            'action' => json_decode(file_get_contents(base_path('action.json'), JSON_OBJECT_AS_ARRAY))
+//        ];
 
         $formController = $this->asExtension('FormController');
         $formController->update($recordId, $context);
@@ -81,7 +79,7 @@ class Actions extends Controller
             $webDriver->quit();
         }
 
-        file_put_contents(base_path('action.json'), json_encode($result, JSON_PRETTY_PRINT));
+//        file_put_contents(base_path('action.json'), json_encode($result, JSON_PRETTY_PRINT));
 
         return [
             'action' => $result

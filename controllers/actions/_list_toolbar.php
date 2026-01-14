@@ -2,7 +2,7 @@
     <a
         href="<?= Backend::url('jaxwilko/hugo/actions/create') ?>"
         class="btn btn-primary wn-icon-plus">
-        <?= e(trans('backend::lang.form.create_title', ['name' => trans('jaxwilko.hugo::lang.models.test.label')])); ?>
+        <?= e(trans('backend::lang.form.create_title', ['name' => trans('jaxwilko.hugo::lang.models.action.label')])); ?>
     </a>
 
     <button

@@ -53,6 +53,35 @@ class Plugin extends PluginBase
         }
     }
 
+
+    public function registerSchedule($schedule): void
+    {
+        if (!Config::get('jaxwilko.hugo::config.enable_scheduler', false)) {
+            return;
+        }
+
+        $schedule->command('hugo:schedule')
+            ->everyMinute()
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:process')
+            ->everyMinute()
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:down-detector')
+            ->cron('*/2 * * * *')
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:lighthouse')
+            ->cron('30 7,19 * * *')
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:clean')
+            ->dailyAt('00:30')
+            ->withoutOverlapping();
+    }
+
+
     public function registerFormWidgets(): array
     {
         return [

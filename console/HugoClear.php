@@ -35,21 +35,13 @@ class HugoClear extends Command
      */
     public function handle()
     {
-
-        WorkflowResult::orderBy('id', 'DESC')->first()->notify();
-
-//        Schema::table('jaxwilko_hugo_actions', function ($table) {
-////            $table->string('notification')->after('priority')->default('fail');
-//            $table->boolean('auto_screenshot')->after('notification_message')->default(false);
-//        });
-//
-        dd();
-
-
         // Clear old lighthouse images
         LighthouseReport::whereDate('created_at', '<', Carbon::now()->subMonths(1))
             ->get()
             ->each(fn (LighthouseReport $report) => $report->deleteImages());
+
+        WorkflowResult::whereDate('created_at', '<', Carbon::now()->subMonths(2))
+            ->delete();
 
         // Clear old health checks
         SiteDown::whereDate('created_at', '<', Carbon::now()->subMonths(3))->delete();

@@ -59,7 +59,6 @@ class ActionResult extends Model
         };
     }
 
-
     public function getNotificationMessage(): string
     {
         if (!($str = $this->action->notification_message)) {

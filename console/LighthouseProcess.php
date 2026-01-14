@@ -5,11 +5,13 @@ namespace JaxWilko\Hugo\Console;
 use Illuminate\Support\Facades\Log;
 use JaxWilko\Hugo\Classes\Lighthouse\Lighthouse;
 use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\SiteUrl;
+use JaxWilko\Hugo\Traits\HasHugoProgressBar;
 use Winter\Storm\Console\Command;
 
 class LighthouseProcess extends Command
 {
+    use HasHugoProgressBar;
+
     /**
      * @var string The console command name.
      */
@@ -40,7 +42,7 @@ class LighthouseProcess extends Command
             }
         }
 
-        $this->withProgressBar($urls, function ($url) {
+        $this->progressBar($urls, 'target', function ($url) {
             try {
                 Lighthouse::make($url)
                     ->generateReport()
@@ -49,7 +51,5 @@ class LighthouseProcess extends Command
                 Log::error('Lighthouse reporting failed: ' . $e->getMessage());
             }
         });
-
-        $this->info(PHP_EOL);
     }
 }

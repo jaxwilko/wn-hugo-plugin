@@ -19,7 +19,7 @@
                      @mouseover="highlight(item, true)"
                      @mouseleave="highlight(item, false)"
                 >
-                    <ActionTime :time="(['ifStatement', 'set'].indexOf(item._group) === -1) ? null : (item?.result?.timestamp ? `${(item?.result?.timestamp - startedAt).toFixed(2)}s` : null)"></ActionTime>
+                    <ActionTime :time="(['ifStatement', 'set'].indexOf(item._group) !== -1) ? null : (item?.result?.timestamp ? `${(item?.result?.timestamp - startedAt).toFixed(2)}s` : null)"></ActionTime>
                     <ActionResult
                         :action="item"
                         :storageUrl="storageUrl"

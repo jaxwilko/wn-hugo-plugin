@@ -3,9 +3,6 @@ add:
     icon: icon-plus
     description: 'Add an int to a var'
     fields:
-        _title:
-            label: Add
-            type: section
         arg1:
             label: Arg1
             placeholder: $EXAMPLE
@@ -22,9 +19,6 @@ click:
     icon: icon-hand-pointer
     description: 'Tell the browser driver to click on an element'
     fields:
-        _title:
-            label: Click
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -50,9 +44,6 @@ getBrowserLogs:
     icon: icon-terminal
     description: 'Returns all console logs made by the site'
     fields:
-        _title:
-            label: 'Get Browser Logs'
-            type: section
         report:
             label: 'What logs to report?'
             type: dropdown
@@ -67,9 +58,6 @@ echo:
     icon: icon-ear-listen
     description: 'Print the specified value'
     fields:
-        _title:
-            label: Echo
-            type: section
         value:
             label: Value
             span: full
@@ -80,9 +68,6 @@ elementText:
     icon: icon-quote-right
     description: 'Return the text of an element'
     fields:
-        _title:
-            label: 'Element Text'
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -94,9 +79,6 @@ equals:
     icon: icon-equals
     description: 'Return true if 2 args are equal'
     fields:
-        _title:
-            label: Equals
-            type: section
         arg1:
             groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
             label: 'Argument 1'
@@ -115,9 +97,6 @@ exec:
     icon: icon-code
     description: 'Tell the browser driver to execute custom js code'
     fields:
-        _title:
-            label: 'Execute Javascript'
-            type: section
         code:
             label: Code
             language: javascript
@@ -129,9 +108,6 @@ exit:
     icon: icon-arrow-right-from-bracket
     description: 'Exit the script'
     fields:
-        _title:
-            label: Exit
-            type: section
         status:
             label: Status
             options:
@@ -146,9 +122,6 @@ getInputValue:
     icon: icon-greater-than-equal
     description: 'Returns the value of the specified input'
     fields:
-        _title:
-            label: 'Get Input Value'
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -160,9 +133,6 @@ ifStatement:
     icon: icon-code-branch
     description: 'If conditional logic statement'
     fields:
-        _title:
-            label: IF
-            type: section
         condition:
             groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
             label: Condition
@@ -187,9 +157,6 @@ writeLog:
     icon: icon-note-sticky
     description: 'Write a message to the result log'
     fields:
-        _title:
-            label: Log
-            type: section
         message:
             label: Message
             span: full
@@ -200,9 +167,6 @@ moveMouse:
     icon: icon-computer-mouse
     description: 'Tell the browser driver to move the mouse to an element'
     fields:
-        _title:
-            label: Move Mouse
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -214,9 +178,6 @@ nav:
     icon: icon-diamond-turn-right
     description: 'Tell the browser driver to navigate to a url'
     fields:
-        _title:
-            label: Navigate
-            type: section
         url:
             label: Url
             placeholder: 'https://example.com'
@@ -237,9 +198,6 @@ screenshot:
     icon: icon-file-image
     description: 'Tell the browser driver to take a screenshot with the specified name'
     fields:
-        _title:
-            label: Screenshot
-            type: section
         label:
             label: Label
             placeholder: Example Test
@@ -251,9 +209,6 @@ scroll:
     icon: icon-up-down
     description: 'Tell the browser driver to scroll'
     fields:
-        _title:
-            label: Scroll
-            type: section
         x:
             label: Scroll X
             placeholder: '5'
@@ -270,9 +225,6 @@ scrollTo:
     icon: icon-turn-down
     description: 'Tell the browser driver to scroll to an element'
     fields:
-        _title:
-            label: Move Mouse
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -290,9 +242,6 @@ sendKeys:
     icon: icon-keyboard
     description: 'Tell the browser driver to send the string as if entered from a keyboard'
     fields:
-        _title:
-            label: Send Keys
-            type: section
         keys:
             label: Keys
             placeholder: Hello World
@@ -304,9 +253,6 @@ set:
     icon: icon-pencil
     description: 'Create a variable with a value'
     fields:
-        _title:
-            label: Set
-            type: section
         name:
             label: Name
             placeholder: EXAMPLE
@@ -324,9 +270,6 @@ setInputValue:
     icon: icon-less-than-equal
     description: 'Set the value of a specified input'
     fields:
-        _title:
-            label: 'Set Input Value'
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -342,9 +285,6 @@ sub:
     icon: icon-minus
     description: 'Subtract an int from a var'
     fields:
-        _title:
-            label: Sub
-            type: section
         arg1:
             label: Arg1
             placeholder: $EXAMPLE
@@ -361,9 +301,6 @@ visible:
     icon: icon-eye-low-vision
     description: 'Return the visibility of an element'
     fields:
-        _title:
-            label: Visible
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -375,9 +312,6 @@ waitFor:
     icon: icon-hourglass-start
     description: 'Wait for an element to be visible and drawn'
     fields:
-        _title:
-            label: Wait
-            type: section
         selector:
             label: Selector
             placeholder: '#my-target'
@@ -395,9 +329,6 @@ wait:
     icon: icon-hourglass-half
     description: 'Tell the task to wait for X seconds'
     fields:
-        _title:
-            label: Wait
-            type: section
         seconds:
             label: Seconds
             placeholder: '5'
@@ -408,9 +339,6 @@ uwait:
     icon: icon-hourglass-end
     description: 'Tell the task to wait for X microseconds'
     fields:
-        _title:
-            label: Wait
-            type: section
         seconds:
             label: Microseconds
             placeholder: '5'

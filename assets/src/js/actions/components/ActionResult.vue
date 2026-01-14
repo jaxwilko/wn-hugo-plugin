@@ -7,7 +7,7 @@
          `"
     >
         <div class="flex flex-col md:flex-row tw-w-full">
-            <div :class="`flex flex-col ${action.screenshot?.result?.value?.path || action?.value?.path ? 'tw-w-full md:w-1/2' : 'tw-w-full'} gap-4 p-3`">
+            <div :class="`flex flex-col ${action.screenshot?.result?.value?.path || action?.result.value?.path ? 'tw-w-full md:w-1/2' : 'tw-w-full'} gap-4 p-3`">
                 <div class="flex flex-row items-center gap-4">
                     <div class="flex items-center justify-center p-3 bg-blue-200 rounded-xl size-10">
                         <i :class="config.icon"></i>

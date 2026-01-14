@@ -3,6 +3,7 @@
 namespace JaxWilko\Hugo\Controllers;
 
 use Backend\Classes\Controller;
+use Backend\FormWidgets\Repeater;
 use JaxWilko\Hugo\Classes\Automation\AutomationEngine;
 use JaxWilko\Hugo\Classes\Automation\HugoWebDriver;
 use JaxWilko\Hugo\Classes\Url;
@@ -28,8 +29,12 @@ class Actions extends Controller
         ], 'jaxwilko.hugo');
     }
 
-    public function update($recordId = null, $context = null)
+    public function update($recordId = null, $context = null): void
     {
+        Repeater::extend(function (Repeater $repeater) {
+            $repeater->prependViewPath('$/jaxwilko/hugo/controllers/actions/overrides/repeater');
+        });
+
         $this->asExtension('FormController')->update($recordId, $context);
         $this->asExtension('FormController')
             ->formGetWidget()
@@ -42,9 +47,9 @@ class Actions extends Controller
      */
     public function onActionPreview($recordId = null, $context = null): array
     {
-//        return [
-//            'action' => json_decode(file_get_contents(base_path('action.json'), JSON_OBJECT_AS_ARRAY))
-//        ];
+        return [
+            'action' => json_decode(file_get_contents(base_path('action.json'), JSON_OBJECT_AS_ARRAY))
+        ];
 
         $formController = $this->asExtension('FormController');
         $formController->update($recordId, $context);
@@ -76,7 +81,7 @@ class Actions extends Controller
             $webDriver->quit();
         }
 
-//        file_put_contents(base_path('action.json'), json_encode($result, JSON_PRETTY_PRINT));
+        file_put_contents(base_path('action.json'), json_encode($result, JSON_PRETTY_PRINT));
 
         return [
             'action' => $result

@@ -124,7 +124,7 @@ class WorkflowResult extends Model
             if (isset($report[$result->id]) && ($message = $report[$result->id]->getNotificationMessage())) {
                 $string .= sprintf('
                     <tr><th colspan="2">Message</th></tr>
-                    <tr><td colspan="2" style="font-family: mono; padding: 10px; background: #cecece">%s</td></tr>
+                    <tr><td colspan="2" class="code" style="padding: 10px; background: #cecece">%s</td></tr>
                 ', $message);
             }
         }

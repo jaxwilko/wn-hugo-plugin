@@ -53,7 +53,7 @@ class Plugin extends PluginBase
         }
     }
 
-    public function registerFormWidgets()
+    public function registerFormWidgets(): array
     {
         return [
             \JaxWilko\Hugo\FormWidgets\LighthouseResults::class => 'lighthouseresults',
@@ -61,10 +61,17 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerMailLayouts()
+    public function registerMailLayouts(): array
     {
         return [
             'hugo' => 'jaxwilko.hugo::mail.layout-default',
+        ];
+    }
+
+    public function registerMailPartials(): array
+    {
+        return [
+            'logo'  => 'jaxwilko.hugo::partials.logo-base64',
         ];
     }
 

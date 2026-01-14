@@ -13,6 +13,10 @@ layout = "hugo"
                 min-width: 100% !important;
                 font-weight: 400;
             }
+            .code {
+                font-family: "Noto Sans Mono", monospace;
+                font-weight: 300;
+            }
             img {
                 height: auto;
             }
@@ -95,7 +99,7 @@ layout = "hugo"
                 }
             }
         </style>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|Material+Icons&family=Noto+Sans+Mono:300" rel="stylesheet">
     </head>
     <body yahoo bgcolor="#eee">
         <table width="100%" bgcolor="#eee" border="0" cellpadding="0" cellspacing="0">
@@ -104,10 +108,10 @@ layout = "hugo"
                     <table bgcolor="#ffffff" class="content" align="center" cellpadding="0" cellspacing="0" border="0" style="margin: auto">
                         <tr>
                             <td bgcolor="#0747a6" class="header" style="text-align: left">
-                                <table width="70" align="left" border="0" cellpadding="0" cellspacing="0">
+                                <table width="90" align="left" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
-                                        <td height="70" style="padding: 0 10px 5px 10px">
-                                            <img class="fix" src="{{ url('/plugins/jaxwilko/hugo/assets/img/hugo.svg') }}" width="70" height="70" border="0" alt="" />
+                                        <td height="90" style="padding: 0 20px 5px 20px">
+                                            <img class="fix" src="data:image/png;base64,{% partial 'logo' %}" width="90" height="90" border="0" alt="" />
                                         </td>
                                     </tr>
                                 </table>

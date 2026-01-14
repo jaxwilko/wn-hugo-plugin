@@ -296,7 +296,7 @@ class AutomationEngine
 
         $this->variables[$name] = $result[0]['result']->getValue();
 
-        return new CompoundActionResult($result[0]['result']->successful(), $result[0]['result']->getValue(), $result);
+        return new CompoundActionResult($result[0]['result']->getStatus(), $result[0]['result']->getValue(), $result);
     }
 
     public function nav(string $url): ActionResultInterface
@@ -580,6 +580,10 @@ class AutomationEngine
 
     public function echo(string $value): ActionResultInterface
     {
+        if (str_starts_with($value, '$') && isset($this->variables[substr($value, 1)])) {
+            $value = $this->variables[substr($value, 1)];
+        }
+
         return new ActionResult(static::STATUS_OKAY, $value);
     }
 

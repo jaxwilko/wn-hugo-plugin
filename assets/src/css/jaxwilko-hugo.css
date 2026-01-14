@@ -11,6 +11,10 @@
         @apply w-full;
     }
 
+    .max-w-1\/2 {
+        max-width: 50%;
+    }
+
     .border-t-8 {
         border-top-width: 8px;
     }

@@ -67,7 +67,7 @@ if ($tabs->stretch) {
                             <?= $this->makePartial('form_fields', ['fields' => $fields]) ?>
                         <?php endif ?>
                     </div>
-                    <div id="actions-app" class="w-full hidden">
+                    <div id="actions-app" class="w-full max-w-1/2 hidden">
                         <action-preview storage-url="<?= \Illuminate\Support\Facades\Storage::url('') ?>"></action-preview>
                     </div>
                 </div>

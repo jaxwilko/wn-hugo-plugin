@@ -10,15 +10,10 @@ use Winter\Storm\Console\Command;
 class WorkflowSchedule extends Command
 {
     /**
-     * @var string The console command name.
-     */
-    protected static $defaultName = 'hugo:schedule';
-
-    /**
      * @var string The name and signature of this command.
      */
-    protected $signature = 'hugo:schedule
-        {--g|group= : Group ID to schedule}
+    protected $signature = 'hugo:workflow-schedule
+        {--w|workflow= : Group ID to schedule}
         {--c|clear : Clear the schedule}
     ';
 
@@ -39,19 +34,19 @@ class WorkflowSchedule extends Command
             return 0;
         }
 
-        if ($this->option('group') && $group = Workflow::find($this->option('group'))) {
-            $group->scheduled()->save(new WorkflowSchedule([
+        if ($this->option('workflow') && $workflow = Workflow::find($this->option('workflow'))) {
+            $workflow->scheduled()->save(new WorkflowSchedule([
                 'status' => 'pending'
             ]));
             return 0;
         }
 
-        foreach (Workflow::all() as $group) {
-            switch ($group->strategy) {
+        foreach (Workflow::all() as $workflow) {
+            switch ($workflow->strategy) {
                 case 'cron':
-                    $cron = new CronExpression($group->cron);
+                    $cron = new CronExpression($workflow->cron);
                     if ($cron->isDue()) {
-                        $group->scheduled()->save(new WorkflowSchedule([
+                        $workflow->scheduled()->save(new WorkflowSchedule([
                             'status' => 'pending'
                         ]));
                     }

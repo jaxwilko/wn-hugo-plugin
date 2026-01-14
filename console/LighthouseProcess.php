@@ -13,11 +13,6 @@ class LighthouseProcess extends Command
     use HasHugoProgressBar;
 
     /**
-     * @var string The console command name.
-     */
-    protected static $defaultName = 'hugo:lighthouse';
-
-    /**
      * @var string The name and signature of this command.
      */
     protected $signature = 'hugo:lighthouse';

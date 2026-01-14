@@ -25,14 +25,22 @@ class Actions extends Controller
             'assets/src/css/jaxwilko-hugo.css',
             'assets/src/js/jaxwilko-hugo-actions.js'
         ], 'jaxwilko.hugo');
+
+        Repeater::extend(function (Repeater $repeater) {
+            $repeater->prependViewPath('$/jaxwilko/hugo/controllers/actions/overrides/repeater');
+        });
+    }
+
+    public function create(): void
+    {
+        $this->asExtension('FormController')->create();
+        $this->asExtension('FormController')
+            ->formGetWidget()
+            ->prependViewPath('$/jaxwilko/hugo/controllers/actions/overrides/form');
     }
 
     public function update($recordId = null, $context = null): void
     {
-        Repeater::extend(function (Repeater $repeater) {
-            $repeater->prependViewPath('$/jaxwilko/hugo/controllers/actions/overrides/repeater');
-        });
-
         $this->asExtension('FormController')->update($recordId, $context);
         $this->asExtension('FormController')
             ->formGetWidget()

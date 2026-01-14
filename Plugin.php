@@ -32,6 +32,21 @@ class Plugin extends PluginBase
      */
     public function register(): void
     {
+        if (
+            PluginManager::instance()->hasPlugin('Winter.TailwindUI')
+            && $this->app->runningInBackend()
+            && Config::get('jaxwilko.hugo::apply_styles', false)
+        ) {
+            Controller::extend(function (Controller $controller) {
+                $controller->addCss('plugins/jaxwilko/hugo/assets/src/css/backend.css');
+            });
+        }
+
+        $this->registerCommands();
+    }
+
+    public function registerCommands(): void
+    {
         $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\LighthouseProcess::class);
         $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\SiteDownDetector::class);
         $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
@@ -41,18 +56,7 @@ class Plugin extends PluginBase
         $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\WorkflowProcess::class);
         $this->registerConsoleCommand('hugo.install', \JaxWilko\Hugo\Console\HugoInstall::class);
         $this->registerConsoleCommand('hugo.install-chrome', \JaxWilko\Hugo\Console\InstallChrome::class);
-
-        // @TODO: remove
-        $this->registerConsoleCommand('hugo.engine.gen', \JaxWilko\Hugo\Console\GenerateEngineInterface::class);
-
-
-        if (PluginManager::instance()->hasPlugin('Winter.TailwindUI') && Config::get('jaxwilko.hugo::apply_styles', false)) {
-            Controller::extend(function (Controller $controller) {
-                $controller->addCss('plugins/jaxwilko/hugo/assets/src/css/backend.css');
-            });
-        }
     }
-
 
     public function registerSchedule($schedule): void
     {
@@ -60,11 +64,11 @@ class Plugin extends PluginBase
             return;
         }
 
-        $schedule->command('hugo:schedule')
+        $schedule->command('hugo:workflow-schedule')
             ->everyMinute()
             ->withoutOverlapping();
 
-        $schedule->command('hugo:process')
+        $schedule->command('hugo:workflow-process')
             ->everyMinute()
             ->withoutOverlapping();
 

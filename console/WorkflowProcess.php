@@ -11,14 +11,9 @@ use Winter\Storm\Console\Command;
 class WorkflowProcess extends Command
 {
     /**
-     * @var string The console command name.
-     */
-    protected static $defaultName = 'hugo:process';
-
-    /**
      * @var string The name and signature of this command.
      */
-    protected $signature = 'hugo:process
+    protected $signature = 'hugo:workflow-process
         {--d|debug : Enable debug mode}
     ';
 

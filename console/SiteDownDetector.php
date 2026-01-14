@@ -13,11 +13,6 @@ use Winter\Storm\Support\Facades\Mail;
 class SiteDownDetector extends Command
 {
     /**
-     * @var string The console command name.
-     */
-    protected static $defaultName = 'hugo:down-detector';
-
-    /**
      * @var string The name and signature of this command.
      */
     protected $signature = 'hugo:down-detector';

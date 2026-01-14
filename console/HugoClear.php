@@ -5,20 +5,11 @@ namespace JaxWilko\Hugo\Console;
 use Carbon\Carbon;
 use JaxWilko\Hugo\Models\SiteDown;
 use JaxWilko\Hugo\Models\LighthouseReport;
-use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\SiteUrl;
 use JaxWilko\Hugo\Models\WorkflowResult;
-use Log;
 use Winter\Storm\Console\Command;
-use Winter\Storm\Support\Facades\Schema;
 
 class HugoClear extends Command
 {
-    /**
-     * @var string The console command name.
-     */
-    protected static $defaultName = 'hugo:clear';
-
     /**
      * @var string The name and signature of this command.
      */

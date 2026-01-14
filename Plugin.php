@@ -85,15 +85,6 @@ class Plugin extends PluginBase
             ->withoutOverlapping();
     }
 
-
-    public function registerFormWidgets(): array
-    {
-        return [
-            \JaxWilko\Hugo\FormWidgets\LighthouseResults::class => 'lighthouseresults',
-            \JaxWilko\Hugo\FormWidgets\ReportResults::class => 'reportresults'
-        ];
-    }
-
     public function registerMailLayouts(): array
     {
         return [

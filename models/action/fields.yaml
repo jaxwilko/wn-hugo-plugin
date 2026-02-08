@@ -22,15 +22,14 @@ fields:
 
 tabs:
     cssClass: master-area
+    icons:
+        'Action Instructions': 'icon-robot'
+        'Manage': 'icon-cog'
     fields:
-        _titleInstructions:
-            label: 'Action Instructions'
-            type: section
-            span: full
-            tab: 'Action Instructions'
         config:
             type: repeater
             groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
+            required: true
             tab: 'Action Instructions'
         _titleConfig:
             label: 'Action Config'

@@ -3,9 +3,11 @@
 namespace JaxWilko\Hugo\Controllers;
 
 use Backend\Classes\Controller;
+use Backend\Facades\BackendMenu;
 use Illuminate\Support\Facades\Redirect;
 use JaxWilko\Hugo\Classes\automation\ScheduleService;
 use JaxWilko\Hugo\Models\Workflow;
+use Winter\Storm\Support\Facades\Config;
 use Winter\Storm\Support\Facades\Flash;
 
 class Workflows extends Controller
@@ -18,6 +20,15 @@ class Workflows extends Controller
         \Backend\Behaviors\ListController::class,
         \Backend\Behaviors\RelationController::class,
     ];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        if (!Config::get('jaxwilko.hugo::collapse_menu', true)) {
+            BackendMenu::setContext('Jaxwilko.Hugo', 'hugo.workflows');
+        }
+    }
 
     public function onSchedule(int $groupId)
     {

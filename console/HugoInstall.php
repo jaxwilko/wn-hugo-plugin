@@ -41,7 +41,6 @@ class HugoInstall extends Command
     public function handle(): int
     {
         $face = $this->getFace();
-
         $faceTalking = $face;
         array_splice($faceTalking, 24, 0, $face[24]);
 
@@ -92,6 +91,8 @@ class HugoInstall extends Command
             $this->putLine('This can be done later via the `vite:install JaxWilko.Hugo` command.', 'NOTICE', true);
         }
 
+        $this->putLine(PHP_EOL);
+
         $this->putLine(
             'Hugo supports custom backend style overrides, these make the backend interface nicer when combined with the Winter.TailwindUI package.',
             'NOTICE',
@@ -104,7 +105,7 @@ class HugoInstall extends Command
                 ->write();
 
             BrandSetting::set([
-                'primary_color' => '#434E5B',
+                'primary_color' => '#0C1015',
                 'secondary_color' => '#05306F',
                 'accent_color' => '#1DB3A7'
             ]);
@@ -112,13 +113,28 @@ class HugoInstall extends Command
             $this->putLine('This can be done later by adding `HUGO_APPLY_STYLES=true` to your env.', 'NOTICE', true);
         }
 
-
         if ($this->components->choice('Would you like to enable Hugo using the Winter Scheduler?', ['Yes', 'No'], 'Yes') === 'Yes') {
             EnvFile::open(base_path('.env'))
                 ->set('HUGO_ENABLE_SCHEDULER', true)
                 ->write();
         } else {
             $this->putLine('This can be done later by adding `HUGO_ENABLE_SCHEDULER=true` to your env.', 'NOTICE', true);
+        }
+
+        if ($this->components->choice('Would you like to hide the media system?', ['Yes', 'No'], 'Yes') === 'Yes') {
+            EnvFile::open(base_path('.env'))
+                ->set('HUGO_HIDE_MEDIA', true)
+                ->write();
+        } else {
+            $this->putLine('This can be done later by adding `HUGO_HIDE_MEDIA=true` to your env.', 'NOTICE', true);
+        }
+
+        if ($this->components->choice('Would you like to hide the collapse the Hugo menu?', ['Yes', 'No'], 'No') === 'No') {
+            EnvFile::open(base_path('.env'))
+                ->set('HUGO_COLLAPSE_MENU', false)
+                ->write();
+        } else {
+            $this->putLine('This can be done later by adding `HUGO_HIDE_MEDIA=true` to your env.', 'NOTICE', true);
         }
 
         sleep(2);
@@ -198,7 +214,7 @@ class HugoInstall extends Command
         foreach ($lines as $line) {
             $str .= str_repeat(' ', $padding)
                 . $line['str']
-                . str_repeat(' ', $width - ($padding + $line['length'] - 1))
+                . str_repeat(' ', ($width - ($padding + $line['length'] - 1)) - 1)
                 . PHP_EOL;
         }
 

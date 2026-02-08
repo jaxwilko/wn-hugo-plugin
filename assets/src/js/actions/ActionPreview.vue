@@ -13,7 +13,7 @@
         </div>
         <div v-else class="flex flex-col gap-4 mt-6">
             <ActionOverview :status="status" :startedAt="startedAt" :finishedAt="finishedAt"></ActionOverview>
-            <div class="flex flex-col gap-y-6 my-8 border-l-4 ml-4 pl-10 border-blue-800">
+            <div class="flex flex-col gap-y-6 mt-6 mb-8 border-l-4 ml-4 pl-10 border-blue-800">
                 <div v-for="(item, index) in commands"
                      class="flex flex-row relative w-full"
                      @mouseover="highlight(item, true)"

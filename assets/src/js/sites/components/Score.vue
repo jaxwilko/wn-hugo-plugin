@@ -88,14 +88,14 @@ export default {
         },
         colour() {
             if (this.displayScore >= 90) {
-                return "#0cce6b"
+                return "#0cce6b";
             }
 
             if (this.displayScore >= 50) {
-                return "#ffa400"
+                return "#ffa400";
             }
 
-            return "#ff4e42"
+            return "#ff4e42";
         },
     },
     watch: {

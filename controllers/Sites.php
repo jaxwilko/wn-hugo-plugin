@@ -2,10 +2,11 @@
 
 namespace JaxWilko\Hugo\Controllers;
 
-use BackendMenu;
+use Backend\Facades\BackendMenu;
 use Backend\Classes\Controller;
 use Carbon\Carbon;
 use JaxWilko\Hugo\Models\SiteUrl;
+use Winter\Storm\Support\Facades\Config;
 use Winter\Storm\Support\Facades\DB;
 
 /**
@@ -36,6 +37,10 @@ class Sites extends Controller
             'assets/src/css/jaxwilko-hugo.css',
             'assets/src/js/jaxwilko-hugo-sites.js'
         ], 'jaxwilko.hugo');
+
+        if (!Config::get('jaxwilko.hugo::collapse_menu', true)) {
+            BackendMenu::setContext('Jaxwilko.Hugo', 'hugo.sites');
+        }
     }
 
     public function update($recordId = null, $context = null)

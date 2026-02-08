@@ -36,10 +36,9 @@ fields:
 
 tabs:
     cssClass: 'master-area hugo-app actions-app'
+    icons:
+        'Actions': 'icon-robot'
     fields:
-#        results:
-#            type: reportresults
-#            tab: 'Tests'
         results:
             type: relationmanager
-            tab: 'Tests'
+            tab: 'Actions'

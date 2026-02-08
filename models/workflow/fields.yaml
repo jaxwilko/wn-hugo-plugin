@@ -13,6 +13,8 @@ fields:
 
 tabs:
     cssClass: master-area
+    icons:
+        'Details': 'icon-circle-info'
     fields:
         strategy:
             label: 'Run Strategy'

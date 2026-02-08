@@ -5,9 +5,11 @@ namespace JaxWilko\Hugo;
 use Backend;
 use Backend\Classes\Controller;
 use Backend\Models\UserRole;
+use JaxWilko\Hugo\ReportWidgets\HugoReport;
 use System\Classes\PluginBase;
 use System\Classes\PluginManager;
 use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
 
 /**
  * Hugo Plugin Information File
@@ -39,6 +41,12 @@ class Plugin extends PluginBase
         ) {
             Controller::extend(function (Controller $controller) {
                 $controller->addCss('plugins/jaxwilko/hugo/assets/src/css/backend.css');
+            });
+        }
+
+        if (Config::get('jaxwilko.hugo::hide_media', false)) {
+            Event::listen('backend.menu.extendItems', function ($manager) {
+                $manager->removeMainMenuItem('Winter.Backend', 'media');
             });
         }
 
@@ -85,6 +93,13 @@ class Plugin extends PluginBase
             ->withoutOverlapping();
     }
 
+    public function registerReportWidgets(): array
+    {
+        return [
+            HugoReport::class => 'HugoReportWidget',
+        ];
+    }
+
     public function registerMailLayouts(): array
     {
         return [
@@ -120,34 +135,63 @@ class Plugin extends PluginBase
      */
     public function registerNavigation(): array
     {
-        return [
-            'hugo' => [
-                'label'       => 'jaxwilko.hugo::lang.plugin.name',
-                'url'         => Backend::url('jaxwilko/hugo/sites'),
-                'icon'        => 'icon-leaf',
-                'iconSvg'     => 'plugins/jaxwilko/hugo/assets/img/hugo.svg',
-                'permissions' => ['jaxwilko.hugo.*'],
-                'order'       => 500,
-                'sideMenu'    => [
-                    'sites' => [
-                        'label'       => 'Sites',
-                        'icon'        => 'icon-sitemap',
-                        'url'         => Backend::url('jaxwilko/hugo/sites'),
-                        'permissions' => ['jaxwilko.hugo.sites']
-                    ],
-                    'actions' => [
-                        'label' => 'Actions',
-                        'icon' => 'icon-code',
-                        'url' => Backend::url('jaxwilko/hugo/actions'),
-                        'permissions' => ['jaxwilko.hugo.sites']
-                    ],
-                    'workflows' => [
-                        'label' => 'Workflows',
-                        'icon' => 'icon-cubes',
-                        'url' => Backend::url('jaxwilko/hugo/workflows'),
-                        'permissions' => ['jaxwilko.hugo.sites']
-                    ],
+        if (Config::get('jaxwilko.hugo::collapse_menu', true)) {
+            return [
+                'hugo' => [
+                    'label'       => 'jaxwilko.hugo::lang.plugin.name',
+                    'url'         => Backend::url('jaxwilko/hugo/sites'),
+                    'iconSvg'     => 'plugins/jaxwilko/hugo/assets/img/hugo.svg',
+                    'permissions' => ['jaxwilko.hugo.*'],
+                    'order'       => 500,
+                    'sideMenu'    => [
+                        'sites' => [
+                            'label' => 'Sites',
+                            'icon' => 'icon-sitemap',
+                            'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/site.svg',
+                            'url' => Backend::url('jaxwilko/hugo/sites'),
+                            'permissions' => ['jaxwilko.hugo.sites']
+                        ],
+                        'actions' => [
+                            'label' => 'Actions',
+                            'icon' => 'icon-robot',
+                            'url' => Backend::url('jaxwilko/hugo/actions'),
+                            'permissions' => ['jaxwilko.hugo.sites']
+                        ],
+                        'workflows' => [
+                            'label' => 'Workflows',
+                            'icon' => 'icon-cubes',
+                            'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/workflow.svg',
+                            'url' => Backend::url('jaxwilko/hugo/workflows'),
+                            'permissions' => ['jaxwilko.hugo.sites']
+                        ],
+                    ]
                 ]
+            ];
+        }
+
+        return [
+            'hugo.sites' => [
+                'label' => 'Sites',
+                'icon' => 'icon-sitemap',
+                'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/site.svg',
+                'url' => Backend::url('jaxwilko/hugo/sites'),
+                'permissions' => ['jaxwilko.hugo.sites'],
+                'order' => 500,
+            ],
+            'hugo.actions' => [
+                'label' => 'Actions',
+                'icon' => 'icon-robot',
+                'url' => Backend::url('jaxwilko/hugo/actions'),
+                'permissions' => ['jaxwilko.hugo.sites'],
+                'order' => 500,
+            ],
+            'hugo.workflows' => [
+                'label' => 'Workflows',
+                'icon' => 'icon-cubes',
+                'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/workflow.svg',
+                'url' => Backend::url('jaxwilko/hugo/workflows'),
+                'permissions' => ['jaxwilko.hugo.sites'],
+                'order' => 500,
             ],
         ];
     }

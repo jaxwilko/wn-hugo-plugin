@@ -13,7 +13,7 @@
             </HugoPanel>
         </div>
 
-        <div class="flex justify-between gap-4">
+        <div class="flex flex-col xl:flex-row justify-between gap-4">
             <HugoPanel>
                 <ApexChart v-if="chartData.chartDetails" :options="chartData.chartDetails"></ApexChart>
             </HugoPanel>

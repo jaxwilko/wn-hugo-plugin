@@ -17,6 +17,12 @@ columns:
         path: $/jaxwilko/hugo/models/action/_status.htm
         searchable: true
         sortable: true
+    _link_btn:
+        label: 'Edit Action'
+        type: partial
+        valueFrom: action_id
+        searchable: false
+        sortable: false
     _view_btn:
         label: 'View'
         type: partial

@@ -10,6 +10,7 @@ export default {
         './components/**/*.{htm,php}',
         './controllers/**/*.{htm,php}',
         './formwidgets/**/*.{htm,php}',
+        './reportwidgets/**/*.{htm,php}',
         './widgets/**/*.{htm,php}',
     ],
     // plugins: [forms],

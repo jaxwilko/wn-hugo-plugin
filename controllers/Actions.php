@@ -3,11 +3,13 @@
 namespace JaxWilko\Hugo\Controllers;
 
 use Backend\Classes\Controller;
+use Backend\Facades\BackendMenu;
 use Backend\FormWidgets\Repeater;
 use JaxWilko\Hugo\Classes\Automation\AutomationEngine;
 use JaxWilko\Hugo\Classes\Automation\HugoWebDriver;
 use JaxWilko\Hugo\Classes\Url;
 use Winter\Storm\Exception\ApplicationException;
+use Winter\Storm\Support\Facades\Config;
 
 class Actions extends Controller
 {
@@ -29,6 +31,10 @@ class Actions extends Controller
         Repeater::extend(function (Repeater $repeater) {
             $repeater->prependViewPath('$/jaxwilko/hugo/controllers/actions/overrides/repeater');
         });
+
+        if (!Config::get('jaxwilko.hugo::collapse_menu', true)) {
+            BackendMenu::setContext('Jaxwilko.Hugo', 'hugo.actions');
+        }
     }
 
     public function create(): void

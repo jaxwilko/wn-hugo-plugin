@@ -14,6 +14,18 @@
     margin: 5px 5px 5px 0;
 }
 
+#layout-sidenav-2 .text-sm {
+    font-size: .925rem;
+}
+
+#layout-sidenav-2 .w-5 {
+    width: 1.5rem;
+}
+
+#layout-sidenav-2 .h-5 {
+    height: 1.5rem;
+}
+
 nav.sidemenu-item-child ul.sidemenu-item-child-menu > li > a {
     padding: 10px;
     margin: 5px 0 5px 15px;
@@ -37,15 +49,15 @@ nav[aria-label="Sidebar"]::-webkit-scrollbar {
     height: 7px;
 }
 nav[aria-label="Sidebar"]::-webkit-scrollbar-track, nav[aria-label="Sidebar"]::-webkit-scrollbar-corner {
-    background: #065f46;
+    background: #0751bd;
 }
 
 nav[aria-label="Sidebar"]::-webkit-scrollbar-thumb {
-    background: #ccda84;
+    background: #021e49;
     border-radius: 4px;
 }
 nav[aria-label="Sidebar"]::-webkit-scrollbar-thumb:hover {
-    background: #ccda84;
+    background: #042d6c;
 }
 
 /* LOGO FIX */
@@ -73,8 +85,8 @@ nav[aria-label="Sidebar"] > .flex.items-center.mb-4.h-16.shrink-0 {
 }
 
 .layout-sidemenu.layout-sidemenu-inline .sidemenu-item:not(:last-of-type) {
-    padding-bottom: 5px;
-    margin-bottom: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
     border-bottom: 1px solid #0947a2;
 }
 
@@ -86,10 +98,18 @@ nav[aria-label="Sidebar"] > .flex.items-center.mb-4.h-16.shrink-0 {
     background-color: #0d428c !important;
 }
 
+.sidemenu-item > div > a {
+    margin-bottom: 5px !important;
+}
+
 .sidemenu li.active a {
     background-color: #08377a !important;
 }
 
 .hover\:bg-gray-700:hover {
     background-color: #0d4da6 !important;
+}
+
+#layout-sidenav-1 .md\:hidden a:hover {
+    color: #fff!important;
 }

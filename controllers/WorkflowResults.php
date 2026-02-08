@@ -3,9 +3,8 @@
 namespace JaxWilko\Hugo\Controllers;
 
 use Backend\Classes\Controller;
-use jaxwilko\hugo\classes\automation\AutomationEngine;
-use JaxWilko\Hugo\Classes\Automation\HugoWebDriver;
-use JaxWilko\Hugo\Classes\Url;
+use Backend\Facades\BackendMenu;
+use Winter\Storm\Support\Facades\Config;
 
 class WorkflowResults extends Controller
 {
@@ -23,6 +22,10 @@ class WorkflowResults extends Controller
             'assets/src/css/jaxwilko-hugo.css',
             'assets/src/js/jaxwilko-hugo-actions.js'
         ], 'jaxwilko.hugo');
+
+        if (!Config::get('jaxwilko.hugo::collapse_menu', true)) {
+            BackendMenu::setContext('Jaxwilko.Hugo', 'hugo.workflows');
+        }
     }
 
     public function onActionReview($recordId = null, $context = null): array

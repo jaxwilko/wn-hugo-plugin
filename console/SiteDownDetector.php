@@ -2,15 +2,12 @@
 
 namespace JaxWilko\Hugo\Console;
 
-use Backend\Models\User;
-use Illuminate\Support\Facades\Log;
 use JaxWilko\Hugo\Classes\Health\HealthChecker;
 use JaxWilko\Hugo\Classes\Notify;
 use JaxWilko\Hugo\Models\Site;
 use JaxWilko\Hugo\Traits\HasHugoProgressBar;
 use System\Models\EventLog;
 use Winter\Storm\Console\Command;
-use Winter\Storm\Support\Facades\Mail;
 
 class SiteDownDetector extends Command
 {
@@ -28,7 +25,7 @@ class SiteDownDetector extends Command
 
     /**
      * Execute the console command.
-     * @return void
+     * @return int
      */
     public function handle(): int
     {

@@ -1,9 +1,7 @@
 <?php
 
 namespace JaxWilko\Hugo\Console;
-
-use Cron\CronExpression;
-use JaxWilko\Hugo\Models\Workflow;
+;
 use JaxWilko\Hugo\Models\WorkflowSchedule;
 use JaxWilko\Hugo\Models\WorkflowResult;
 use Winter\Storm\Console\Command;

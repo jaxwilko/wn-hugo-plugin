@@ -1,0 +1,31 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+tabs:
+    icons:
+        'Reporting': 'icon-share-from-square'
+    fields:
+        _reporting_section:
+            label: Manage user reporting
+            comment: Configure these settings to allow for reporting to people without user accounts.
+            type: section
+            tab: Reporting
+        reporting:
+            label: false
+            type: repeater
+            tab: Reporting
+            form:
+                fields:
+                    name:
+                        label: Name
+                        type: text
+                        span: left
+                    sites:
+                        label: Sites
+                        type: checkboxlist
+                        span: right
+                    email:
+                        label: Email
+                        type: email
+                        span: left

@@ -2,16 +2,18 @@
 
 namespace JaxWilko\Hugo\Traits;
 
+use Winter\Storm\Database\Collection;
+
 trait HasHugoProgressBar
 {
     protected int $progressBarSize = 30;
 
-    public function progressBar(array $items, ?string $label, callable $callback): void
+    public function progressBar(Collection|array $items, ?string $label, callable $callback): void
     {
         echo "\033[?25l"; // hide cursor
 
         $count = count($items);
-        $items = array_values($items);
+        $items = is_array($items) ? array_values($items) : $items;
         $max = 0;
 
         foreach ($items as $index => $item) {

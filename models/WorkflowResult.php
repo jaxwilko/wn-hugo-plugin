@@ -7,6 +7,7 @@ use Backend\Models\User;
 use JaxWilko\Hugo\Casts\Serialize;
 use JaxWilko\Hugo\Classes\automation\HugoWebDriver;
 use JaxWilko\Hugo\Classes\automation\AutomationEngine;
+use JaxWilko\Hugo\Classes\Notify;
 use Model;
 use Winter\Storm\Support\Facades\Mail;
 
@@ -99,62 +100,7 @@ class WorkflowResult extends Model
 
     public function notify(): static
     {
-        $report = [];
-        foreach ($this->results as $result) {
-            if ($this->status === 0 && $result->action->notification === 'okay') {
-                $report[$result->id] = $result;
-            }
-            if ($this->status > 0 && $result->action->notification === 'fail') {
-                $report[$result->id] = $result;
-            }
-        }
-
-        if (empty($report)) {
-            return $this;
-        }
-
-        $string = '<table style="text-align: left;"><thead><tr><th>Action</th><th>Result</th></tr></thead><tbody>';
-        foreach ($this->results as $result) {
-            $string .= sprintf(
-                '<tr><td style="padding-right: 15px;">%s</td><td style="color: %s;">%s</td></tr>',
-                $result->action->name,
-                $result->getStatusColour(),
-                $result->getStatusLabel()
-            );
-            if (isset($report[$result->id]) && ($message = $report[$result->id]->getNotificationMessage())) {
-                $string .= sprintf('
-                    <tr><th colspan="2">Message</th></tr>
-                    <tr><td colspan="2" class="code" style="padding: 10px; background: #cecece">%s</td></tr>
-                ', $message);
-            }
-        }
-        $string .= '</tbody></table>';
-
-        $config = [
-            'title'     => 'Workflow ' . ($this->status > 0 ? 'Failed' : 'Passed'),
-            'heading'   => 'Workflow has reported a ' . ($this->status > 0 ? 'failure' : 'success') . '!',
-            'text'      => $string,
-            'footer'    => 'Use the following links to find out more:',
-            'buttons'   => [
-                [
-                    'text' => 'Hugo',
-                    'href' => config('app.url'),
-                ],
-                [
-                    'text' => 'Report',
-                    'href' => Backend::url('jaxwilko/hugo/workflowresults/update/' . $this->id),
-                    'colour' => '#E91E63'
-                ]
-            ]
-        ];
-
-        Mail::send('jaxwilko.hugo::mail.notification', $config, function ($message) use ($config) {
-            foreach (User::all() as $user) {
-                $message->to($user->email, $user->full_name);
-            }
-            $message->subject($config['title']);
-        });
-
+        Notify::workflow($this);
         return $this;
     }
 

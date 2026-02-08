@@ -8,6 +8,7 @@ use Backend\Models\UserRole;
 use JaxWilko\Hugo\ReportWidgets\HugoReport;
 use System\Classes\PluginBase;
 use System\Classes\PluginManager;
+use System\Classes\SettingsManager;
 use Winter\Storm\Support\Facades\Config;
 use Winter\Storm\Support\Facades\Event;
 
@@ -111,6 +112,20 @@ class Plugin extends PluginBase
     {
         return [
             'logo'  => 'jaxwilko.hugo::partials.logo-base64',
+        ];
+    }
+
+    public function registerSettings()
+    {
+        return [
+            'settings' => [
+                'label' => 'Hugo settings',
+                'description' => 'Customize settings for Hugo.',
+                'icon' => 'icon-robot',
+                'class' => \JaxWilko\Hugo\Models\Settings::class,
+                'category' => SettingsManager::CATEGORY_SYSTEM,
+                'permissions' => ['sharps.data.settings']
+            ]
         ];
     }
 

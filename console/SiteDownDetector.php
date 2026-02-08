@@ -5,13 +5,17 @@ namespace JaxWilko\Hugo\Console;
 use Backend\Models\User;
 use Illuminate\Support\Facades\Log;
 use JaxWilko\Hugo\Classes\Health\HealthChecker;
+use JaxWilko\Hugo\Classes\Notify;
 use JaxWilko\Hugo\Models\Site;
+use JaxWilko\Hugo\Traits\HasHugoProgressBar;
 use System\Models\EventLog;
 use Winter\Storm\Console\Command;
 use Winter\Storm\Support\Facades\Mail;
 
 class SiteDownDetector extends Command
 {
+    use HasHugoProgressBar;
+
     /**
      * @var string The name and signature of this command.
      */
@@ -26,19 +30,19 @@ class SiteDownDetector extends Command
      * Execute the console command.
      * @return void
      */
-    public function handle()
+    public function handle(): int
     {
         $sites = Site::where('health_testing', true)->get();
 
-        $this->withProgressBar($sites, function (Site $site) {
+        $this->progressBar($sites, 'base_url', function (Site $site) {
             try {
-                if ($siteDown = HealthChecker::run($site)) {
+                if (HealthChecker::run($site)) {
                     $site->update([
                         'is_down' => true,
                     ]);
 
                     $this->components->error('Sending downtime alert for ' . $site->name);
-                    $this->sendDowntimeEmail($site);
+                    Notify::downAlert($site);
                     return;
                 }
 
@@ -47,9 +51,8 @@ class SiteDownDetector extends Command
                         'is_down' => false,
                     ]);
                     $this->components->info('Sending uptime alert for ' . $site->name);
-                    $this->sendUptimeEmail($site);
+                    Notify::upAlert($site);
                 }
-
             } catch (\Throwable $e) {
                 EventLog::addException($e);
                 return;
@@ -57,57 +60,7 @@ class SiteDownDetector extends Command
         });
 
         $this->output->newLine();
-    }
 
-    public function sendDowntimeEmail(Site $site): void
-    {
-        $this->send([
-            'title'     => 'Health Check Down Alert',
-            'heading'   => sprintf('%s is showing as DOWN!', $site->name),
-            'text'      => 'The site is currently showing as down, this has been the case since our last check.',
-            'footer'    => 'The following links may be of use:',
-            'buttons'   => [
-                [
-                    'text' => 'Hugo',
-                    'href' => config('app.url'),
-                ],
-                [
-                    'text' => parse_url($site->base_url, PHP_URL_HOST),
-                    'href' => $site->base_url,
-                    'colour' => '#E91E63'
-                ]
-            ]
-        ]);
-    }
-
-    public function sendUptimeEmail(Site $site): void
-    {
-        $this->send([
-            'title'     => 'Health Check Up Alert',
-            'heading'   => sprintf('%s is showing as UP!', $site->name),
-            'text'      => 'The site is currently showing as up, this has been the case since our last check.',
-            'footer'    => 'The following links may be of use:',
-            'buttons'   => [
-                [
-                    'text' => 'Hugo',
-                    'href' => config('app.url'),
-                ],
-                [
-                    'text' => parse_url($site->base_url, PHP_URL_HOST),
-                    'href' => $site->base_url,
-                    'colour' => '#4CAF50'
-                ]
-            ]
-        ]);
-    }
-
-    protected function send(array $config): void
-    {
-        Mail::send('jaxwilko.hugo::mail.notification', $config, function ($message) use ($config) {
-            foreach (User::all() as $user) {
-                $message->to($user->email, $user->full_name);
-            }
-            $message->subject($config['title']);
-        });
+        return 0;
     }
 }

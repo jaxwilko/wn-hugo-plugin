@@ -66,7 +66,7 @@ class Notify
             ];
         }
 
-        foreach (Settings::get('reporting') as $report) {
+        foreach (Settings::get('reporting', []) as $report) {
             if (array_intersect($report['sites'], $sites)) {
                 $users[] = [
                     'email' => $report['email'],
@@ -146,7 +146,7 @@ class Notify
             ];
         }
 
-        foreach (Settings::get('reporting') as $report) {
+        foreach (Settings::get('reporting', []) as $report) {
             if (in_array($site->id, $report['sites'])) {
                 $users[] = [
                     'email' => $report['email'],

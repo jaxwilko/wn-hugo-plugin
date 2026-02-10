@@ -135,7 +135,7 @@ class LighthouseReport extends Model
 
     public function getAssetPath(string $path = ''): string
     {
-        $path = storage_path(sprintf('app/lighthouse/%d', $this->id)) . ($path ? '/' . ltrim($path, '/') : '');
+        $path = storage_path(sprintf('app/hugo/lighthouse/%d', $this->id)) . ($path ? '/' . ltrim($path, '/') : '');
 
         if ($glob = File::glob($path . '*')) {
             return $glob[0];

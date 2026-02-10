@@ -129,7 +129,7 @@ class Lighthouse
             'report' => $this->trimReport($this->report),
         ]));
 
-        $reportAssetDir = storage_path('app/lighthouse/' . $report->id);
+        $reportAssetDir = storage_path('app/hugo/lighthouse/' . $report->id);
 
         if (!File::isDirectory($reportAssetDir)) {
             File::makeDirectory($reportAssetDir . '/timeline', 0755, true);

@@ -35,6 +35,13 @@ class Plugin extends PluginBase
      */
     public function register(): void
     {
+        $this->registerBackendCustomization()
+            ->registerMirrorExtension()
+            ->registerCommands();
+    }
+
+    public function registerBackendCustomization(): static
+    {
         if (
             PluginManager::instance()->hasPlugin('Winter.TailwindUI')
             && $this->app->runningInBackend()
@@ -51,10 +58,19 @@ class Plugin extends PluginBase
             });
         }
 
-        $this->registerCommands();
+        return $this;
     }
 
-    public function registerCommands(): void
+    public function registerMirrorExtension(): static
+    {
+        Event::listen('system.console.mirror.extendPaths', function (object $paths) {
+            $paths->directories[] = 'storage/app/hugo';
+        });
+
+        return $this;
+    }
+
+    public function registerCommands(): static
     {
         $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\LighthouseProcess::class);
         $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\SiteDownDetector::class);
@@ -65,6 +81,8 @@ class Plugin extends PluginBase
         $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\WorkflowProcess::class);
         $this->registerConsoleCommand('hugo.install', \JaxWilko\Hugo\Console\HugoInstall::class);
         $this->registerConsoleCommand('hugo.install-chrome', \JaxWilko\Hugo\Console\InstallChrome::class);
+
+        return $this;
     }
 
     public function registerSchedule($schedule): void

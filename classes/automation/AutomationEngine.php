@@ -4,7 +4,6 @@ namespace jaxwilko\hugo\classes\automation;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\WebDriverWait;
 use JaxWilko\Hugo\Classes\Automation\Actions\CommandResult;
 use jaxwilko\hugo\classes\automation\actions\CompoundActionResult;
 use JaxWilko\Hugo\Classes\Automation\Actions\Contracts\ActionResultInterface;
@@ -393,7 +392,7 @@ class AutomationEngine
     public function screenshot(string $label): ActionResultInterface
     {
         $stub = sprintf(
-            'app%shugo%stests%s%s',
+            'app%shugo%sactions%s%s',
             DIRECTORY_SEPARATOR,
             DIRECTORY_SEPARATOR,
             DIRECTORY_SEPARATOR,

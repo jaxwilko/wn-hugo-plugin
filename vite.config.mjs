@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import yaml from '@rollup/plugin-yaml'
-import basicSsl from '@vitejs/plugin-basic-ssl';
 
 export default defineConfig({
     build: {

@@ -46,7 +46,7 @@ class WorkflowSchedule extends Command
                 case 'cron':
                     $cron = new CronExpression($workflow->cron);
                     if ($cron->isDue()) {
-                        $workflow->scheduled()->save(new WorkflowSchedule([
+                        $workflow->scheduled()->save(new WorkflowScheduleModel([
                             'status' => 'pending'
                         ]));
                     }

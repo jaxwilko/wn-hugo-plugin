@@ -53,7 +53,7 @@ class Lighthouse
             if ($process->getExitCode() > 0) {
                 $output = $process->getOutput();
                 preg_match('/"runtimeError"\s*:\s*(\{[\s\S]*?\n\s*\})/', $output, $matches);
-                $error = json_decode($matches[1], JSON_OBJECT_AS_ARRAY) ?? [];
+                $error = !empty($matches[1]) ? (json_decode($matches[1], JSON_OBJECT_AS_ARRAY) ?? []) : [];
                 $error['title'] = $process->getErrorOutput();
                 throw new \RuntimeException(json_encode($error));
             }

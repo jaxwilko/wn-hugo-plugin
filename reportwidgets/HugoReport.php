@@ -93,6 +93,17 @@ class HugoReport extends ReportWidgetBase
 
         $this->vars['actions'] = $this->properties;
 
+        $activeSites = array_map(
+            fn ($k) => (int) str_after($k, 'site_'),
+            array_keys(
+                array_filter(
+                    $this->properties,
+                    fn ($v, $k) => str_starts_with($k, 'site_') && $v,
+                    ARRAY_FILTER_USE_BOTH
+                )
+            )
+        );
+
         $this->vars['sites'] = Site::select([
             'jaxwilko_hugo_sites.id',
             'jaxwilko_hugo_sites.base_url',
@@ -102,21 +113,14 @@ class HugoReport extends ReportWidgetBase
         ])
             ->join('jaxwilko_hugo_site_urls', 'jaxwilko_hugo_sites.id', '=', 'jaxwilko_hugo_site_urls.site_id')
             ->join('jaxwilko_hugo_lighthouse_reports', 'jaxwilko_hugo_site_urls.id', '=', 'jaxwilko_hugo_lighthouse_reports.url_id')
-            ->whereIn(
-                'jaxwilko_hugo_sites.id',
-                array_map(
-                    fn ($k) => (int) str_after($k, 'site_'),
-                    array_keys(
-                        array_filter(
-                            $this->properties,
-                            fn ($v, $k) => str_starts_with($k, 'site_') && $v,
-                            ARRAY_FILTER_USE_BOTH
-                        )
-                    )
-                )
-            )
+            ->whereIn('jaxwilko_hugo_sites.id', $activeSites)
             ->with(['image'])
-            ->groupBy('jaxwilko_hugo_sites.id')
+            ->groupBy(
+                'jaxwilko_hugo_sites.id',
+                'jaxwilko_hugo_sites.base_url',
+                'jaxwilko_hugo_sites.name',
+                'jaxwilko_hugo_sites.is_down'
+            )
             ->get()
             ->toArray();
 
@@ -124,21 +128,25 @@ class HugoReport extends ReportWidgetBase
             return;
         }
 
-        $this->vars['actions'] = Site::select([
-            'jaxwilko_hugo_sites.id AS site_id',
-            'jaxwilko_hugo_actions.name',
-            DB::raw('max(jaxwilko_hugo_action_results.id) AS action_id'),
-            'jaxwilko_hugo_action_results.status',
-            'jaxwilko_hugo_action_results.workflow_result_id',
-            'jaxwilko_hugo_action_results.created_at',
-        ])
+        $latestResults = DB::table('jaxwilko_hugo_action_results')
+            ->select('action_id', DB::raw('MAX(id) as max_id'))
+            ->groupBy('action_id');
+
+        $this->vars['actions'] = Site::query()
             ->join('jaxwilko_hugo_actions', 'jaxwilko_hugo_sites.id', '=', 'jaxwilko_hugo_actions.site_id')
-            ->join('jaxwilko_hugo_action_results', 'jaxwilko_hugo_actions.id', '=', 'jaxwilko_hugo_action_results.action_id')
-            ->whereNotIn(
-                'jaxwilko_hugo_sites.id',
-                array_filter(array_map(fn ($i) => !is_numeric($i) ? null : (int) $i, $this->property('exclude_sites', []) ?? []))
-            )
-            ->groupBy('jaxwilko_hugo_action_results.action_id')
+            ->joinSub($latestResults, 'latest', function ($join) {
+                $join->on('jaxwilko_hugo_actions.id', '=', 'latest.action_id');
+            })
+            ->join('jaxwilko_hugo_action_results', 'jaxwilko_hugo_action_results.id', '=', 'latest.max_id')
+            ->select([
+                'jaxwilko_hugo_sites.id as site_id',
+                'jaxwilko_hugo_actions.name',
+                'jaxwilko_hugo_action_results.id as action_id',
+                'jaxwilko_hugo_action_results.status',
+                'jaxwilko_hugo_action_results.workflow_result_id',
+                'jaxwilko_hugo_action_results.created_at',
+            ])
+            ->whereIn('jaxwilko_hugo_sites.id', $activeSites)
             ->orderBy('jaxwilko_hugo_action_results.id', 'DESC')
             ->get()
             ->toArray();

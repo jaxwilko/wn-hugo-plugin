@@ -27,7 +27,7 @@ return new class extends Migration
             $table->float('performance_cumulative_layout_shift', 3);
             $table->float('performance_speed_index', 3);
 
-            $table->text('report')->nullable();
+            $table->longText('report')->nullable();
 
             $table->timestamps();
 

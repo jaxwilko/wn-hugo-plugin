@@ -2,9 +2,11 @@
 
 namespace JaxWilko\Hugo\Console;
 
+use Carbon\Carbon;
 use JaxWilko\Hugo\Classes\Health\HealthChecker;
 use JaxWilko\Hugo\Classes\Notify;
 use JaxWilko\Hugo\Models\Site;
+use JaxWilko\Hugo\Models\SiteDown;
 use JaxWilko\Hugo\Traits\HasHugoProgressBar;
 use System\Models\EventLog;
 use Winter\Storm\Console\Command;
@@ -33,21 +35,30 @@ class SiteDownDetector extends Command
 
         $this->progressBar($sites, 'base_url', function (Site $site) {
             try {
-                if (HealthChecker::run($site)) {
+                $info = HealthChecker::run($site);
+
+                if ($info && !$site->is_down) {
+                    $site->downs()->save(new SiteDown($info));
                     $site->update([
                         'is_down' => true,
                     ]);
-
-                    $this->components->error('Sending downtime alert for ' . $site->name);
+                    $this->components->error(PHP_EOL . 'Sending down alert for ' . $site->name);
                     Notify::downAlert($site);
                     return;
                 }
 
-                if ($site->is_down) {
+                if (!$info && $site->is_down) {
+                    $site->downs()->whereNull('up_at')->get()->each(function (SiteDown $down) {
+                        $down->update([
+                            'up_at' => Carbon::now()
+                        ]);
+                    });
+
                     $site->update([
                         'is_down' => false,
                     ]);
-                    $this->components->info('Sending uptime alert for ' . $site->name);
+
+                    $this->components->info(PHP_EOL . 'Sending up alert for ' . $site->name);
                     Notify::upAlert($site);
                 }
             } catch (\Throwable $e) {

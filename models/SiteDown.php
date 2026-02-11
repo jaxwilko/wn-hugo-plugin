@@ -21,24 +21,28 @@ class SiteDown extends Model
      * @var array Fillable fields
      */
     protected $fillable = [
+        'site_id',
         'status_code',
         'primary_ip',
-        'http_version',
-        'protocol',
-        'content_length',
-        'size_download',
-        'total_time',
-        'ssl_serial_number',
-        'ssl_start_date',
-        'ssl_expire_date',
+        'response_headers',
+        'response_body',
+        'certinfo',
+        'down_at',
+        'up_at',
     ];
 
     /**
      * @var array Attributes to be cast to Argon (Carbon) instances
      */
     protected $dates = [
+        'down_at',
+        'up_at',
         'created_at',
         'updated_at',
+    ];
+
+    protected $jsonable = [
+        'certinfo',
     ];
 
     /**
@@ -63,8 +67,12 @@ class SiteDown extends Model
         return $this->status_code;
     }
 
-    public function healthy(): bool
+    public function getDurationAttribute(): string
     {
-        return $this->status_code === 200;
+        if (!$this->up_at) {
+            return '';
+        }
+
+        return $this->up_at->diffForHumans($this->down_at, true);
     }
 }

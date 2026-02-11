@@ -97,11 +97,11 @@ class Site extends Model
         }
 
         $records = $this->downs()->select([
-            DB::raw('DATE(created_at) as created_at'),
+            DB::raw('DATE(created_at) as created_at_date'),
             'status_code',
             DB::raw('COUNT(*) as count'),
         ])
-            ->groupBy('created_at', 'status_code')
+            ->groupBy('created_at_date')
             ->orderBy('created_at')
             ->limit(10)
             ->get();
@@ -134,7 +134,7 @@ class Site extends Model
 
         foreach ($records as $record) {
             $data['series'][0]['data'][] = [
-                'x' => $record->created_at->timestamp * 1000,
+                'x' => strtotime($record->created_at_date) * 1000,
                 'y' => $record->count,
                 'fillColor' => '#ff4e42',
                 'strokeColor' => '#C23829'

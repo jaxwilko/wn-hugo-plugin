@@ -119,6 +119,13 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerFormWidgets(): array
+    {
+        return [
+            FormWidgets\JsonViewer::class => 'jsonviewer',
+        ];
+    }
+
     public function registerMailLayouts(): array
     {
         return [

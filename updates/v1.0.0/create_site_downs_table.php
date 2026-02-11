@@ -2,8 +2,8 @@
 
 namespace Winter\User\Updates;
 
-use Schema;
 use Winter\Storm\Database\Updates\Migration;
+use Winter\Storm\Support\Facades\Schema;
 
 class CreateHealthChecksTable extends Migration
 {
@@ -15,14 +15,11 @@ class CreateHealthChecksTable extends Migration
             $table->integer('site_id')->unsigned();
             $table->integer('status_code');
             $table->string('primary_ip');
-            $table->integer('http_version');
-            $table->integer('protocol');
-            $table->integer('content_length');
-            $table->float('size_download');
-            $table->float('total_time');
-            $table->string('ssl_serial_number');
-            $table->dateTime('ssl_start_date');
-            $table->dateTime('ssl_expire_date');
+            $table->longText('response_headers');
+            $table->longText('response_body');
+            $table->longText('certinfo');
+            $table->dateTime('down_at');
+            $table->dateTime('up_at')->nullable();
             $table->timestamps();
 
             $table->foreign('site_id')->references('id')->on('jaxwilko_hugo_sites');

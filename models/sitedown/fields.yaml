@@ -3,6 +3,53 @@
 # ===================================
 
 fields:
-    id:
-        label: 'jaxwilko.hugo::lang.models.general.id'
-        disabled: true
+    down_at:
+        label: 'Down At'
+        type: text
+        span: auto
+        readOnly: true
+    up_at:
+        label: 'Down At'
+        type: text
+        span: auto
+        readOnly: true
+    _duration:
+        label: 'Outage Duration'
+        span: full
+        readOnly: true
+    status_code:
+        label: 'Status Code'
+        type: text
+        span: auto
+        readOnly: true
+    primary_ip:
+        label: 'Primary IP'
+        type: text
+        span: auto
+        readOnly: true
+tabs:
+    icons:
+        'Headers': 'icon-heading'
+        'Body': 'icon-code'
+        'Cert Info': 'icon-award'
+    fields:
+        response_headers:
+            label: ''
+            type: textarea
+            size: giant
+            span: full
+            readOnly: true
+            tab: 'Headers'
+        response_body:
+            label: ''
+            type: textarea
+            size: giant
+            span: full
+            readOnly: true
+            tab: 'Body'
+        certinfo:
+            label: ''
+            type: jsonviewer
+            span: full
+            readOnly: true
+            tab: 'Cert Info'

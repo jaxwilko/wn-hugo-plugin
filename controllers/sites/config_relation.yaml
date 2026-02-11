@@ -17,13 +17,13 @@ urls:
 downs:
     label: 'Outages'
     view:
-        list: $/jaxwilko/hugo/controllers/sites/healthchecks/columns.yaml
+        list: $/jaxwilko/hugo/models/sitedown/columns.yaml
         toolbarButtons: []
         recordsPerPage: 15
         showSearch: false
     manage:
-        list: $/jaxwilko/hugo/controllers/sites/healthchecks/columns.yaml
-        form: $/jaxwilko/hugo/controllers/sites/healthchecks/fields.yaml
+        list: $/jaxwilko/hugo/models/sitedown/columns.yaml
+        form: $/jaxwilko/hugo/models/sitedown/fields.yaml
         recordsPerPage: 15
         showSearch: true
 

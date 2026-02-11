@@ -25,17 +25,14 @@ secondaryTabs:
             type: fileupload
             span: full
             imageWidth: 140
-            required: false
         performance_testing@update:
             label: 'Enable Performance Testing'
             type: switch
             span: full
-            required: true
         health_testing@update:
             label: 'Enable Health Testing'
             type: switch
             span: full
-            required: true
 
 tabs:
     cssClass: master-area
@@ -48,9 +45,17 @@ tabs:
         _urls@update:
             tab: 'Lighthouse'
             type: partial
+            trigger:
+                action: show
+                condition: checked
+                field: performance_testing
         _downs@update:
             tab: 'Outages'
             type: partial
+            trigger:
+                action: show
+                condition: checked
+                field: health_testing
         _actions@update:
             tab: 'Actions'
             type: partial
@@ -65,11 +70,9 @@ tabs:
             label: 'Enable Performance Testing'
             type: switch
             span: right
-            required: true
             tab: 'Settings'
         health_testing:
             label: 'Enable Health Testing'
             type: switch
             span: right
-            required: true
             tab: 'Settings'

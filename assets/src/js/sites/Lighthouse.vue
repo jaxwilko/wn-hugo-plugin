@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pb-1">
         <div v-if="loading">
             <HugoLoading></HugoLoading>
         </div>
@@ -7,12 +7,19 @@
             <span class="text-red-600">Could not load lighthouse</span>
         </div>
         <div v-else-if="viewReport">
+            <div class="flex md:hidden mb-6">
+                <div @click="selected = null" class="cursor-pointer select-none size-12 ml-auto bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                    </svg>
+                </div>
+            </div>
             <div class="flex justify-between">
                 <div class="flex gap-5">
                     <HugoMark><span class="font-bold">Target:</span> {{url.target}}</HugoMark>
                     <HugoMark><span class="font-bold">Report:</span> {{viewReport.human_created_at}}</HugoMark>
                 </div>
-                <div @click="selected = null" class="cursor-pointer select-none size-12 bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center flex justify-center ml-auto">
+                <div @click="selected = null" class="hidden md:flex cursor-pointer select-none size-12 bg-blue-100 hover:bg-blue-200 transition-all duration-300 rounded-2xl items-center justify-center ml-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                     </svg>
@@ -24,7 +31,7 @@
             </HugoPanel>
         </div>
         <div v-else-if="Object.keys(reports).length" class="flex flex-col gap-4">
-            <div class="flex justify-between">
+            <div class="flex flex-col md:flex-row gap-4 justify-between">
                 <span class="bg-blue-100/60 rounded-xl p-3"><span class="font-bold">Target:</span> {{url.target}}</span>
                 <select v-model="averageMode" class="w-auto">
                     <option value="sevenDay">Seven Day Averages</option>
@@ -34,7 +41,7 @@
             <HugoPanel class="pb-8">
                 <HeadlineScores :report="averages"></HeadlineScores>
             </HugoPanel>
-            <div class="flex flex-row w-full mx-auto gap-4">
+            <div class="flex flex-col xl:flex-row w-full mx-auto gap-4">
                 <HugoPanel>
                     <div class="font-bold">Score Chart</div>
                     <ApexChart :options="chartData.chartDetails"></ApexChart>
@@ -46,7 +53,7 @@
             </div>
             <HugoPanel class="mb-6">
                 <div class="-mt-4 mb-3 overflow-x-auto">
-                    <table class="table table-responsive max-w-full border-separate border-spacing-y-3">
+                    <table class="table table-responsive max-w-full border-transparent border-separate border-spacing-y-3">
                         <thead>
                             <tr>
                                 <th class="border-none pb-2">Timestamp</th>

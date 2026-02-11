@@ -1,26 +1,26 @@
 <template>
     <div>
         <HeadlineScores :report="lighthouse"></HeadlineScores>
-        <div class="flex flex-col mx-20">
+        <div class="flex flex-col mx-4 md:mx-20">
             <div class="my-8 border-t border-blue-200"></div>
-            <div class="flex flex-row">
+            <div class="flex flex-col md:flex-row">
                 <div class="w-full flex flex-col mx-auto">
                     <Score :score="lighthouse.score_performance" size="xl"></Score>
                     <span class="font-bold text-xl mt-3 mx-auto">Performance</span>
                 </div>
-                <div class="w-full flex mx-auto">
+                <div class="w-full flex mx-auto mt-4 md:mt-0">
                     <LightboxImage :src="lighthouse.final_image"
                                    :fullsize-src="lighthouse.full_page_image"
                                    alt="Lighthouse final image"
-                                   class="ml-auto"
+                                   class="mx-auto md:ml-auto"
                     ></LightboxImage>
                 </div>
             </div>
             <div class="border-t border-blue-200 pt-8 mt-8">
-                <div class="w-full flex flex-row gap-2">
+                <div class="w-full flex flex-row gap-2 overflow-x-auto">
                     <div v-for="snapshot in timeline">
-                        <LightboxImage :src="snapshot.src" :alt="snapshot.alt" :group="timeline"></LightboxImage>
                         <span>{{snapshot.label}}</span>
+                        <LightboxImage :src="snapshot.src" :alt="snapshot.alt" :group="timeline"></LightboxImage>
                     </div>
                 </div>
             </div>

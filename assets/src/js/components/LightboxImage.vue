@@ -90,7 +90,6 @@ export default {
             this.open = true;
             document.body.classList.add('overflow-hidden');
             window.addEventListener('keydown', this.onKeydown);
-            console.log(this.group);
         },
         closeLightbox() {
             this.open = false;

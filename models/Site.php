@@ -101,7 +101,7 @@ class Site extends Model
             'status_code',
             DB::raw('COUNT(*) as count'),
         ])
-            ->groupBy('created_at_date')
+            ->groupBy('created_at_date', 'status_code')
             ->orderBy('created_at')
             ->limit(10)
             ->get();

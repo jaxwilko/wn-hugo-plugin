@@ -126,13 +126,6 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerMailPartials(): array
-    {
-        return [
-            'logo'  => 'jaxwilko.hugo::partials.logo-base64',
-        ];
-    }
-
     public function registerSettings()
     {
         return [

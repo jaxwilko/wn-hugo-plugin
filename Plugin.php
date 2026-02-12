@@ -107,7 +107,7 @@ class Plugin extends PluginBase
             ->cron('30 7,19 * * *')
             ->withoutOverlapping();
 
-        $schedule->command('hugo:clean')
+        $schedule->command('hugo:clear')
             ->dailyAt('00:30')
             ->withoutOverlapping();
     }

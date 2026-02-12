@@ -15,7 +15,9 @@ class LighthouseProcess extends Command
     /**
      * @var string The name and signature of this command.
      */
-    protected $signature = 'hugo:lighthouse';
+    protected $signature = 'hugo:lighthouse
+        {--f|filter= : Only run on targets matching the pattern}
+    ';
 
     /**
      * @var string The console command description.
@@ -33,8 +35,23 @@ class LighthouseProcess extends Command
 
         foreach ($sites as $site) {
             foreach ($site->urls as $url) {
-                $urls[] = $url;
+                if (!$this->option('filter')) {
+                    $urls[] = $url;
+                    continue;
+                }
+
+                if (
+                    $this->option('filter') === $url->target
+                    || preg_match('/' . trim($this->option('filter'), '/') . '/', $url->target)
+                ) {
+                    $urls[] = $url;
+                }
             }
+        }
+
+        if (empty($urls)) {
+            $this->components->warn('No urls found to test.');
+            return;
         }
 
         $this->progressBar($urls, 'target', function ($url) {

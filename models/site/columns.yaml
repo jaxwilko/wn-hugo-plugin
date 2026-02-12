@@ -22,6 +22,12 @@ columns:
         label: 'Status'
         type: partial
         sortable: true
+    performance_testing:
+        label: 'Performance Monitoring'
+        type: switch
+    health_testing:
+        label: 'Health Monitoring'
+        type: switch
     created_at:
         label: 'jaxwilko.hugo::lang.models.general.created_at'
         type: datetime

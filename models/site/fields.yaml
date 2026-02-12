@@ -26,11 +26,11 @@ secondaryTabs:
             span: full
             imageWidth: 140
         performance_testing@update:
-            label: 'Enable Performance Testing'
+            label: 'Enable Performance Monitoring'
             type: switch
             span: full
         health_testing@update:
-            label: 'Enable Health Testing'
+            label: 'Enable Health Monitoring'
             type: switch
             span: full
 
@@ -67,12 +67,12 @@ tabs:
             required: false
             tab: 'Settings'
         performance_testing:
-            label: 'Enable Performance Testing'
+            label: 'Enable Performance Monitoring'
             type: switch
             span: right
             tab: 'Settings'
         health_testing:
-            label: 'Enable Health Testing'
+            label: 'Enable Health Monitoring'
             type: switch
             span: right
             tab: 'Settings'

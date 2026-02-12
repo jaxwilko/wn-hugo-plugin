@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-4">
+    <div class="max-w-[1350px] mx-auto mb-6">
         <div class="flex mb-4">
             <HugoPanel>
                 <div class="flex justify-between pb-4">

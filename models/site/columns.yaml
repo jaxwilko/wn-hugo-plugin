@@ -25,17 +25,21 @@ columns:
     performance_testing:
         label: 'Performance Monitoring'
         type: switch
+        sortable: true
+        invisible: true
     health_testing:
         label: 'Health Monitoring'
         type: switch
+        sortable: true
+        invisible: true
     created_at:
         label: 'jaxwilko.hugo::lang.models.general.created_at'
         type: datetime
         searchable: true
         sortable: true
-        invisible: true
     updated_at:
         label: 'jaxwilko.hugo::lang.models.general.updated_at'
         type: datetime
         searchable: true
         sortable: true
+        invisible: true

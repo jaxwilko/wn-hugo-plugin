@@ -131,6 +131,10 @@ class SiteUrl extends Model
             'chartDetails' => [
                 'chart' => [
                     'type' => 'line',
+                    'zoom' => [
+                        'enabled' => true,
+                        'allowMouseWheelZoom' => false,
+                    ],
                     'animations' => [
                         'speed' => 300,
                         'animateGradually' => [
@@ -202,6 +206,10 @@ class SiteUrl extends Model
             'chartPerformance' => [
                 'chart' => [
                     'type' => 'bar',
+                    'zoom' => [
+                        'enabled' => true,
+                        'allowMouseWheelZoom' => false,
+                    ],
                     'animations' => [
                         'speed' => 300,
                         'animateGradually' => [

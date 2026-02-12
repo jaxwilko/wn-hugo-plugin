@@ -109,6 +109,10 @@ class Site extends Model
         $data = [
             'chart' => [
                 'type' => 'bar',
+                'zoom' => [
+                    'enabled' => true,
+                    'allowMouseWheelZoom' => false,
+                ],
                 'height' => 300,
                 'animations' => [
                     'speed' => 300,

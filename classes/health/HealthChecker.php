@@ -40,6 +40,7 @@ class HealthChecker
             CURLOPT_CERTINFO => true,
             CURLOPT_HEADER => true,
             CURLOPT_TIMEOUT => 15,
+            CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_USERAGENT => UserAgent::getRandom()
         ]);
 

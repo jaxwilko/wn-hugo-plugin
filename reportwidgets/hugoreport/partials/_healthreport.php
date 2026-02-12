@@ -6,8 +6,8 @@
             <div class="flex flex-col max-w-full overflow-x-auto">
                 <?php foreach ($sites as $index => $site): ?>
                     <div class="flex flex-row gap-8 <?= $index < count($sites) - 1 ? 'border-b-2 border-gray-200 mb-6 pb-6' : '' ?>">
-                        <div class="whitespace-nowrap w-[200px] mr-auto">
-                            <span class="text-lg font-bold uppercase text-gray-600"><a href="<?= \Backend\Facades\Backend::url('jaxwilko/hugo/sites/update/' . $site['id']) ?>"><?= e($site['name']) ?></a></span>
+                        <div class="whitespace-nowrap w-[125px] mr-auto">
+                            <span class="text-lg font-bold uppercase text-gray-600 truncate"><a href="<?= \Backend\Facades\Backend::url('jaxwilko/hugo/sites/update/' . $site['id']) ?>"><?= e($site['name']) ?></a></span>
                             <div class="w-[125px] rounded-2xl overflow-hidden my-2">
                                 <a href="<?= \Backend\Facades\Backend::url('jaxwilko/hugo/sites/update/' . $site['id']) ?>">
                                     <img src="<?= e($site['image']['path']) ?>" alt="<?= e($site['name']) ?>" class="transition-transform duration-300 transform hover:scale-110">

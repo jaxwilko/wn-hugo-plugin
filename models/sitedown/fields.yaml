@@ -9,7 +9,7 @@ fields:
         span: auto
         readOnly: true
     up_at:
-        label: 'Down At'
+        label: 'Up At'
         type: text
         span: auto
         readOnly: true

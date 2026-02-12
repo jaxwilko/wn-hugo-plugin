@@ -3,6 +3,7 @@
 namespace JaxWilko\Hugo\ReportWidgets;
 
 use Backend\Classes\ReportWidgetBase;
+use Carbon\Carbon;
 use Exception;
 use JaxWilko\Hugo\Models\Site;
 use JaxWilko\Hugo\Models\SiteUrl;
@@ -32,18 +33,6 @@ class HugoReport extends ReportWidgetBase
                 'validationPattern' => '^.+$',
                 'validationMessage' => 'backend::lang.dashboard.widget_title_error',
             ],
-        ];
-
-        Site::all()->each(function (Site $site) use (&$properties) {
-            $properties['site_' . $site->id] = [
-                'title'             => 'Display "' . $site->name . '"',
-                'default'           => true,
-                'type'              => 'checkbox',
-            ];
-        });
-
-        return [
-            ...$properties,
             'performance' => [
                 'title'             => 'Display Performance',
                 'default'           => true,
@@ -55,6 +44,16 @@ class HugoReport extends ReportWidgetBase
                 'type'              => 'checkbox',
             ],
         ];
+
+        Site::all()->each(function (Site $site) use (&$properties) {
+            $properties['site_' . $site->id] = [
+                'title'             => 'Enable site "' . $site->name . '"',
+                'default'           => true,
+                'type'              => 'checkbox',
+            ];
+        });
+
+        return $properties;
     }
 
     /**
@@ -112,7 +111,10 @@ class HugoReport extends ReportWidgetBase
             SiteUrl::getAveragesSelect()
         ])
             ->join('jaxwilko_hugo_site_urls', 'jaxwilko_hugo_sites.id', '=', 'jaxwilko_hugo_site_urls.site_id')
-            ->join('jaxwilko_hugo_lighthouse_reports', 'jaxwilko_hugo_site_urls.id', '=', 'jaxwilko_hugo_lighthouse_reports.url_id')
+            ->join('jaxwilko_hugo_lighthouse_reports', function ($join) {
+                $join->on('jaxwilko_hugo_site_urls.id', '=', 'jaxwilko_hugo_lighthouse_reports.url_id')
+                    ->whereDate('jaxwilko_hugo_lighthouse_reports.created_at', '>', Carbon::now()->subDays(7));
+            })
             ->whereIn('jaxwilko_hugo_sites.id', $activeSites)
             ->with(['image'])
             ->groupBy(

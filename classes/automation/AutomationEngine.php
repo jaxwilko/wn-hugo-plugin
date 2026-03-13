@@ -83,8 +83,8 @@ class AutomationEngine
             // Add screenshots for nested paths
             if ($item['_group'] === 'ifStatement') {
                 $item['condition'] = $this->addScreenshotCommands($item['condition']);
-                $item['then'] = $this->addScreenshotCommands($item['then']);
-                $item['else'] = $this->addScreenshotCommands($item['else']);
+                $item['then'] = $this->addScreenshotCommands($item['then'] ?? []);
+                $item['else'] = $this->addScreenshotCommands($item['else'] ?? []);
             }
 
             if ($item['_group'] === 'set') {
@@ -301,6 +301,18 @@ class AutomationEngine
     public function nav(string $url): ActionResultInterface
     {
         $this->scroll(0, 0);
+
+        $isUrl = filter_var($url, FILTER_VALIDATE_URL);
+
+        if (!$isUrl && !str_starts_with($url, '/')) {
+            return new ActionResult(static::STATUS_GENERAL_ERROR, $url . ' is not a valid URL');
+        }
+
+        if (!$isUrl) {
+            $parts = parse_url($this->webDriver->getCurrentURL());
+            $url = $parts['scheme'] . '://' . $parts['host'] . $url;
+        }
+
         $this->webDriver->get($url);
 
         return new ActionResult(static::STATUS_OKAY);
@@ -572,7 +584,7 @@ class AutomationEngine
     public function visible(string $selector): ActionResultInterface
     {
         return $this->exec(sprintf('
-            var elem = document.querySelector("%s");
+            var elem = document.querySelector(`%s`);
             return elem ? !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length) : false;
         ', $selector));
     }

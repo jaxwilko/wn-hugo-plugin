@@ -62,9 +62,9 @@
                     </div>
                 </div>
             </div>
-            <div v-if="action.screenshot?.result?.value?.path || action?.result.value?.path" class="tw-w-full md:w-1/2 bg-cover bg-center min-h-[175px]" :style="`background-image: url('${this.storageUrl}${action._group === 'screenshot' ? action?.result.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}')`">
+            <div v-if="action.screenshot?.result?.value?.path || action?.result?.value?.path" class="tw-w-full md:w-1/2 bg-cover bg-center min-h-[175px]" :style="`background-image: url('${this.storageUrl}${action._group === 'screenshot' ? action?.result.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}')`">
                 <LightboxImage :invisible="true"
-                               :src="`${this.storageUrl}${action._group === 'screenshot' ? action?.result.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}`"
+                               :src="`${this.storageUrl}${action._group === 'screenshot' ? action?.result?.value?.path.substring(4) : action.screenshot?.result?.value?.path.substring(4)}`"
                                :alt="`${config.name} at ${action?.result?.timestamp ? `${(action?.result?.timestamp - startedAt).toFixed(2)}s` : null}`"
                                :group="screenshots"
                 ></LightboxImage>

@@ -42,7 +42,7 @@ export const getScreenshots = (actions, startedAt, storageUrl) => {
     const screenshots = [];
     actions.forEach((action) => {
         const src = action._group === 'screenshot'
-            ? action?.result.value?.path.substring(4)
+            ? action?.result?.value?.path.substring(4)
             : action.screenshot?.result?.value?.path.substring(4)
 
         if (!src) {

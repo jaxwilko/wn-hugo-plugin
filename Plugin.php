@@ -142,7 +142,7 @@ class Plugin extends PluginBase
                 'icon' => 'icon-robot',
                 'class' => \JaxWilko\Hugo\Models\Settings::class,
                 'category' => SettingsManager::CATEGORY_SYSTEM,
-                'permissions' => ['sharps.data.settings']
+                'permissions' => ['jaxwilko.hugo.settings']
             ]
         ];
     }
@@ -155,9 +155,19 @@ class Plugin extends PluginBase
                 'label' => 'Access sites',
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
             ],
-            'jaxwilko.hugo.scripts' => [
+            'jaxwilko.hugo.actions' => [
                 'tab'   => 'Hugo',
-                'label' => 'Access tests',
+                'label' => 'Access actions',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+            'jaxwilko.hugo.workflows' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access workflows',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+            'jaxwilko.hugo.settings' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access settings',
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
             ],
         ];
@@ -188,14 +198,14 @@ class Plugin extends PluginBase
                             'label' => 'Actions',
                             'icon' => 'icon-robot',
                             'url' => Backend::url('jaxwilko/hugo/actions'),
-                            'permissions' => ['jaxwilko.hugo.sites']
+                            'permissions' => ['jaxwilko.hugo.actions']
                         ],
                         'workflows' => [
                             'label' => 'Workflows',
                             'icon' => 'icon-cubes',
                             'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/workflow.svg',
                             'url' => Backend::url('jaxwilko/hugo/workflows'),
-                            'permissions' => ['jaxwilko.hugo.sites']
+                            'permissions' => ['jaxwilko.hugo.workflows']
                         ],
                     ]
                 ]
@@ -215,7 +225,7 @@ class Plugin extends PluginBase
                 'label' => 'Actions',
                 'icon' => 'icon-robot',
                 'url' => Backend::url('jaxwilko/hugo/actions'),
-                'permissions' => ['jaxwilko.hugo.sites'],
+                'permissions' => ['jaxwilko.hugo.actions'],
                 'order' => 500,
             ],
             'hugo.workflows' => [
@@ -223,7 +233,7 @@ class Plugin extends PluginBase
                 'icon' => 'icon-cubes',
                 'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/workflow.svg',
                 'url' => Backend::url('jaxwilko/hugo/workflows'),
-                'permissions' => ['jaxwilko.hugo.sites'],
+                'permissions' => ['jaxwilko.hugo.workflows'],
                 'order' => 500,
             ],
         ];

@@ -32,6 +32,13 @@ results:
         toolbarButtons: []
         recordsPerPage: 15
         recordUrl: /jaxwilko/hugo/workflowresults/update/:id
+        filter:
+            scopes:
+                failed:
+                    label: Hide Okay
+                    type: checkbox
+                    conditions: status <> 0
+
     manage:
         list: $/jaxwilko/hugo/models/workflowresult/columns.yaml
         form: $/jaxwilko/hugo/models/workflowresult/fields.yaml

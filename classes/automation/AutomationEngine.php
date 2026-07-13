@@ -557,7 +557,7 @@ class AutomationEngine
     {
         $logs = $this->webDriver->manage()->getLog('browser');
 
-        $this->log(json_encode($logs, JSON_PRETTY_PRINT));
+        $this->log(new LogEntry(json_encode($logs, JSON_PRETTY_PRINT)));
 
         $status = static::STATUS_OKAY;
         foreach ($logs as $log) {

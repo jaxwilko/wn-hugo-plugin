@@ -186,7 +186,7 @@ class AutomationEngine
 
     protected function log(LogItemInterface|string $message, mixed ...$args): static
     {
-        $this->log[] = $message instanceof Screenshot || $message instanceof CommandResult
+        $this->log[] = $message instanceof Screenshot || $message instanceof CommandResult || $message instanceof LogEntry
             ? $message
             : new LogEntry(sprintf($message, ...$args));
 

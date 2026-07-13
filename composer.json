@@ -13,6 +13,7 @@
     ],
     "require": {
         "ext-curl": "*",
+        "ext-zip": "*",
         "php-webdriver/webdriver": "^1.14"
     }
 }

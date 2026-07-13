@@ -1,0 +1,42 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: 'ID'
+        searchable: true
+        sortable: true
+        invisible: true
+    down_at:
+        label: 'Down At'
+        searchable: true
+        sortable: true
+    up_at:
+        label: 'Up At'
+        searchable: true
+        sortable: true
+    duration:
+        label: 'Outage Duration'
+        searchable: false
+        sortable: false
+    status_code:
+        label: 'Status Code'
+        searchable: true
+        sortable: false
+    primary_ip:
+        label: 'Primary IP'
+        type: text
+        sortable: false
+    created_at:
+        label: 'Created At'
+        type: datetime
+        searchable: true
+        sortable: true
+        invisible: true
+    updated_at:
+        label: 'Updated At'
+        type: datetime
+        searchable: true
+        sortable: true
+        invisible: true

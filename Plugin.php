@@ -1,8 +1,16 @@
-<?php namespace JaxWilko\Hugo;
+<?php
+
+namespace JaxWilko\Hugo;
 
 use Backend;
+use Backend\Classes\Controller;
 use Backend\Models\UserRole;
+use JaxWilko\Hugo\ReportWidgets\HugoReport;
 use System\Classes\PluginBase;
+use System\Classes\PluginManager;
+use System\Classes\SettingsManager;
+use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
 
 /**
  * Hugo Plugin Information File
@@ -27,31 +35,118 @@ class Plugin extends PluginBase
      */
     public function register(): void
     {
-        $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\HugoLighthouse::class);
-        $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\HugoHealth::class);
-        $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
-        $this->registerConsoleCommand('hugo.clear', \JaxWilko\Hugo\Console\HugoClear::class);
-
-        if (env('HUGO_EXPERIMENTAL')) {
-            $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
-            $this->registerConsoleCommand('hugo.engine.gen', \JaxWilko\Hugo\Console\GenerateEngineInterface::class);
-        }
+        $this->registerBackendCustomization()
+            ->registerMirrorExtension()
+            ->registerCommands();
     }
 
-    public function registerFormWidgets()
+    public function registerBackendCustomization(): static
+    {
+        if (
+            PluginManager::instance()->hasPlugin('Winter.TailwindUI')
+            && $this->app->runningInBackend()
+            && Config::get('jaxwilko.hugo::apply_styles', false)
+        ) {
+            Controller::extend(function (Controller $controller) {
+                $controller->addCss('plugins/jaxwilko/hugo/assets/src/css/backend.css');
+            });
+        }
+
+        if (Config::get('jaxwilko.hugo::hide_media', false)) {
+            Event::listen('backend.menu.extendItems', function ($manager) {
+                $manager->removeMainMenuItem('Winter.Backend', 'media');
+            });
+        }
+
+        return $this;
+    }
+
+    public function registerMirrorExtension(): static
+    {
+        Event::listen('system.console.mirror.extendPaths', function (object $paths) {
+            $paths->directories[] = 'storage/app/hugo';
+        });
+
+        return $this;
+    }
+
+    public function registerCommands(): static
+    {
+        $this->registerConsoleCommand('hugo.lighthouse', \JaxWilko\Hugo\Console\LighthouseProcess::class);
+        $this->registerConsoleCommand('hugo.health', \JaxWilko\Hugo\Console\SiteDownDetector::class);
+        $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
+        $this->registerConsoleCommand('hugo.clear', \JaxWilko\Hugo\Console\HugoClear::class);
+        $this->registerConsoleCommand('hugo.script', \JaxWilko\Hugo\Console\HugoScript::class);
+        $this->registerConsoleCommand('hugo.schedule', \JaxWilko\Hugo\Console\WorkflowSchedule::class);
+        $this->registerConsoleCommand('hugo.process', \JaxWilko\Hugo\Console\WorkflowProcess::class);
+        $this->registerConsoleCommand('hugo.install', \JaxWilko\Hugo\Console\HugoInstall::class);
+        $this->registerConsoleCommand('hugo.install-chrome', \JaxWilko\Hugo\Console\InstallChrome::class);
+
+        return $this;
+    }
+
+    public function registerSchedule($schedule): void
+    {
+        if (!Config::get('jaxwilko.hugo::config.enable_scheduler', false)) {
+            return;
+        }
+
+        $schedule->command('hugo:workflow-schedule')
+            ->everyMinute()
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:workflow-process')
+            ->everyMinute()
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:down-detector')
+            ->cron('*/2 * * * *')
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:lighthouse')
+            ->cron('30 7,19 * * *')
+            ->withoutOverlapping();
+
+        $schedule->command('hugo:clear')
+            ->dailyAt('00:30')
+            ->withoutOverlapping();
+    }
+
+    public function registerReportWidgets(): array
     {
         return [
-            \JaxWilko\Hugo\FormWidgets\LighthouseResults::class => 'lighthouseresults'
+            HugoReport::class => 'HugoReportWidget',
         ];
     }
 
-    public function registerMailLayouts()
+    public function registerFormWidgets(): array
+    {
+        return [
+            FormWidgets\JsonViewer::class => 'jsonviewer',
+        ];
+    }
+
+    public function registerMailLayouts(): array
     {
         return [
             'hugo' => 'jaxwilko.hugo::mail.layout-default',
         ];
     }
-    
+
+    public function registerSettings()
+    {
+        return [
+            'settings' => [
+                'label' => 'Hugo settings',
+                'description' => 'Customize settings for Hugo.',
+                'icon' => 'icon-robot',
+                'class' => \JaxWilko\Hugo\Models\Settings::class,
+                'category' => SettingsManager::CATEGORY_SYSTEM,
+                'permissions' => ['jaxwilko.hugo.settings']
+            ]
+        ];
+    }
+
     public function registerPermissions(): array
     {
         return [
@@ -60,9 +155,19 @@ class Plugin extends PluginBase
                 'label' => 'Access sites',
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
             ],
-            'jaxwilko.hugo.scripts' => [
+            'jaxwilko.hugo.actions' => [
                 'tab'   => 'Hugo',
-                'label' => 'Access scripts',
+                'label' => 'Access actions',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+            'jaxwilko.hugo.workflows' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access workflows',
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+            ],
+            'jaxwilko.hugo.settings' => [
+                'tab'   => 'Hugo',
+                'label' => 'Access settings',
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
             ],
         ];
@@ -73,34 +178,64 @@ class Plugin extends PluginBase
      */
     public function registerNavigation(): array
     {
-        $menu = [
-            'hugo' => [
-                'label'       => 'jaxwilko.hugo::lang.plugin.name',
-                'url'         => Backend::url('jaxwilko/hugo/sites'),
-                'icon'        => 'icon-leaf',
-                'iconSvg'     => 'plugins/jaxwilko/hugo/assets/img/hugo.svg',
-                'permissions' => ['jaxwilko.hugo.*'],
-                'order'       => 500,
-                'sideMenu'    => [
-                    'sites' => [
-                        'label'       => 'Sites',
-                        'icon'        => 'icon-cubes',
-                        'url'         => Backend::url('jaxwilko/hugo/sites'),
-                        'permissions' => ['jaxwilko.hugo.sites']
-                    ],
+        if (Config::get('jaxwilko.hugo::collapse_menu', true)) {
+            return [
+                'hugo' => [
+                    'label'       => 'jaxwilko.hugo::lang.plugin.name',
+                    'url'         => Backend::url('jaxwilko/hugo/sites'),
+                    'iconSvg'     => 'plugins/jaxwilko/hugo/assets/img/hugo.svg',
+                    'permissions' => ['jaxwilko.hugo.*'],
+                    'order'       => 500,
+                    'sideMenu'    => [
+                        'sites' => [
+                            'label' => 'Sites',
+                            'icon' => 'icon-sitemap',
+                            'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/site.svg',
+                            'url' => Backend::url('jaxwilko/hugo/sites'),
+                            'permissions' => ['jaxwilko.hugo.sites']
+                        ],
+                        'actions' => [
+                            'label' => 'Actions',
+                            'icon' => 'icon-robot',
+                            'url' => Backend::url('jaxwilko/hugo/actions'),
+                            'permissions' => ['jaxwilko.hugo.actions']
+                        ],
+                        'workflows' => [
+                            'label' => 'Workflows',
+                            'icon' => 'icon-cubes',
+                            'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/workflow.svg',
+                            'url' => Backend::url('jaxwilko/hugo/workflows'),
+                            'permissions' => ['jaxwilko.hugo.workflows']
+                        ],
+                    ]
                 ]
-            ],
-        ];
-
-        if (env('HUGO_EXPERIMENTAL')) {
-            $menu['hugo']['sideMenu']['scripts'] = [
-                'label' => 'Scripts',
-                'icon' => 'icon-code',
-                'url' => Backend::url('jaxwilko/hugo/scripts'),
-                'permissions' => ['jaxwilko.hugo.scripts']
             ];
         }
 
-        return $menu;
+        return [
+            'hugo.sites' => [
+                'label' => 'Sites',
+                'icon' => 'icon-sitemap',
+                'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/site.svg',
+                'url' => Backend::url('jaxwilko/hugo/sites'),
+                'permissions' => ['jaxwilko.hugo.sites'],
+                'order' => 500,
+            ],
+            'hugo.actions' => [
+                'label' => 'Actions',
+                'icon' => 'icon-robot',
+                'url' => Backend::url('jaxwilko/hugo/actions'),
+                'permissions' => ['jaxwilko.hugo.actions'],
+                'order' => 500,
+            ],
+            'hugo.workflows' => [
+                'label' => 'Workflows',
+                'icon' => 'icon-cubes',
+                'iconSvg' => 'plugins/jaxwilko/hugo/assets/img/icons/workflow.svg',
+                'url' => Backend::url('jaxwilko/hugo/workflows'),
+                'permissions' => ['jaxwilko.hugo.workflows'],
+                'order' => 500,
+            ],
+        ];
     }
 }

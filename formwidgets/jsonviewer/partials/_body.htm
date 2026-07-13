@@ -1,0 +1,51 @@
+<pre id="<?= $this->getId() ?>"></pre>
+<script>
+    document.getElementById('<?= $this->getId() ?>').innerHTML = ((json) => {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            let c = 'number';
+            if (/^"/.test(match)) {
+                c = (/:$/.test(match)) ? 'key' : 'string';
+            } else if (/true|false/.test(match)) {
+                c = 'boolean';
+            } else if (/null/.test(match)) {
+                c = 'null';
+            }
+            return c === 'key'
+                ? `<span class="${c}">${match.replace(':', '')}</span>:`
+                : `<span class="${c}">${match}</span>`;
+        });
+    })(`<?= json_encode($this->model->{$this->valueFrom}, JSON_PRETTY_PRINT) ?>`);
+</script>
+<style>
+    pre#<?= $this->getId() ?> {
+        max-height: 78.8vh;
+        padding: 15px;
+        background: rgb(236 240 241);
+        color: #151515;
+        border: 1px solid rgb(236 240 241);
+        border-radius: 8px;
+        box-shadow: 0px 4px 9px 0px #ccc;
+        overflow: scroll;
+    }
+    pre .string { color: #19ad2f; }
+    pre .number { color: #e8af00; }
+    pre .boolean { color: #1798e1; }
+    pre .null { color: #2e35c0; }
+    pre .key { color: #ee2d4a; }
+    pre::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    pre::-webkit-scrollbar-track, pre::-webkit-scrollbar-corner {
+        background: rgb(236 240 241);
+    }
+    pre::-webkit-scrollbar-thumb {
+        background: rgba(141, 141, 141, 0.60);
+        border-radius: 4px;
+    }
+    pre::-webkit-scrollbar-thumb:hover {
+        background: rgba(141, 141, 141, 0.40);
+        cursor: pointer;
+    }
+</style>

@@ -3,12 +3,7 @@
 # ===================================
 
 fields:
-    image:
-        label: 'Site Logo'
-        type: fileupload
-        span: right
-        imageWidth: 140
-        required: false
+
     name:
         label: 'Site Name'
         type: text
@@ -17,28 +12,67 @@ fields:
     base_url:
         label: 'Site Base Url'
         type: text
-        span: left
+        span: right
         required: true
-    performance_testing:
-        label: 'Enable Performance Testing'
-        type: switch
-        span: left
-        required: true
-    health_testing:
-        label: 'Enable Health Testing'
-        type: switch
-        span: left
-        required: true
+    _toolbar:
+        type: partial
+        path: ~/modules/backend/behaviors/formcontroller/views/update/fancy/_toolbar.php
+
+secondaryTabs:
+    fields:
+        image@update:
+            label: 'Site Logo'
+            type: fileupload
+            span: full
+            imageWidth: 140
+        performance_testing@update:
+            label: 'Enable Performance Monitoring'
+            type: switch
+            span: full
+        health_testing@update:
+            label: 'Enable Health Monitoring'
+            type: switch
+            span: full
 
 tabs:
+    cssClass: master-area
+    icons:
+        'Lighthouse': 'icon-lightbulb-o'
+        'Outages': 'icon-triangle-exclamation'
+        'Actions': 'icon-robot'
+        'Settings': 'icon-cog'
     fields:
         _urls@update:
             tab: 'Lighthouse'
             type: partial
-        _healthCheckGraph@update:
-            label: Last 7 Day Health Checks
-            tab: 'Health Checks'
+            trigger:
+                action: show
+                condition: checked
+                field: performance_testing
+        _downs@update:
+            tab: 'Outages'
             type: partial
-        _healthChecks@update:
-            tab: 'Health Checks'
+            trigger:
+                action: show
+                condition: checked
+                field: health_testing
+        _actions@update:
+            tab: 'Actions'
             type: partial
+        image:
+            label: 'Site Logo'
+            type: fileupload
+            span: left
+            imageWidth: 140
+            required: false
+            tab: 'Settings'
+        performance_testing:
+            label: 'Enable Performance Monitoring'
+            type: switch
+            span: right
+            tab: 'Settings'
+        health_testing:
+            label: 'Enable Health Monitoring'
+            type: switch
+            span: right
+            tab: 'Settings'

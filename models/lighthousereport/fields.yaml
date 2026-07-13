@@ -3,10 +3,10 @@
 # ===================================
 
 fields:
-    performance:
+    score_performance:
         label: 'Performance'
         type: partial
-        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_score.php
+        path: $/jaxwilko/hugo/controllers/sites/lighthouseurl/_big_score.php
         span: auto
     updated_at:
         label: 'Timestamp'

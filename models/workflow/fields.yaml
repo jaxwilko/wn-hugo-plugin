@@ -1,0 +1,84 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: 'jaxwilko.hugo::lang.models.general.name'
+        type: text
+
+    toolbar:
+        label: false
+        type: partial
+
+tabs:
+    cssClass: master-area
+    icons:
+        'Details': 'icon-circle-info'
+    fields:
+        strategy:
+            label: 'Run Strategy'
+            type: dropdown
+            span: left
+            tab: 'Details'
+            options:
+                manual: 'Manual'
+                cron: 'Schedule'
+                webhook: 'Webhook'
+
+        cron:
+            label: 'Schedule'
+            type: text
+            span: right
+            placeholder: '5 4 * * *'
+            tab: 'Details'
+            trigger:
+                action: show
+                field: strategy
+                condition: value[cron]
+
+        _webhook:
+            label: 'Webhook URL'
+            type: text
+            readOnly: true
+            span: right
+            tab: 'Details'
+            trigger:
+                action: show
+                field: strategy
+                condition: value[webhook]
+
+        _scheduleButton@update:
+            type: partial
+            value: 'eeee'
+            span: right
+            tab: 'Details'
+            trigger:
+                action: show
+                field: strategy
+                condition: value[manual]
+
+        _showSchedule@update:
+            label: 'Show Schedule'
+            type: checkbox
+            default: on
+            tab: 'Details'
+
+        _scheduled@update:
+            label: 'Schedule'
+            type: partial
+            tab: 'Details'
+            trigger:
+                action: show
+                field: _showSchedule
+                condition: checked
+
+        actions@update:
+            label: 'Actions'
+            type: relation
+            tab: 'Details'
+
+        _results@update:
+            label: Results
+            type: partial
+            tab: 'Details'

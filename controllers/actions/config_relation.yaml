@@ -1,0 +1,27 @@
+workflows:
+    label: 'Workflows'
+    view:
+        list: $/jaxwilko/hugo/controllers/action/columns.yaml
+        toolbarButtons:
+            create: "Create"
+            delete: "Delete"
+        recordsPerPage: 15
+        showSearch: true
+    manage:
+        list: $/jaxwilko/hugo/controllers/action/columns.yaml
+        form: $/jaxwilko/hugo/controllers/action/fields.yaml
+        recordsPerPage: 15
+        showSearch: true
+
+results:
+    label: 'Results'
+    view:
+        list: $/jaxwilko/hugo/models/actionresult/columns.yaml
+        toolbarButtons: []
+        recordsPerPage: 15
+        showSearch: false
+    manage:
+        list: $/jaxwilko/hugo/models/actionresult/columns.yaml
+        form: $/jaxwilko/hugo/models/actionresult/fields.yaml
+        recordsPerPage: 15
+        showSearch: true

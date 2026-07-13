@@ -1,0 +1,44 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    id:
+        label: ID
+        type: text
+        span: full
+        disabled: true
+
+    _spacer_a:
+        label: false
+        type: section
+        cssClass: invisible
+        disabled: true
+        span: full
+
+    _status_label:
+        label: Status
+        type: text
+        span: left
+        disabled: true
+    updated_at:
+        label: 'Completed At'
+        type: text
+        disabled: true
+        span: right
+
+    _spacer_b:
+        label: false
+        type: section
+        cssClass: invisible
+        disabled: true
+        span: full
+
+tabs:
+    cssClass: 'master-area hugo-app actions-app'
+    icons:
+        'Actions': 'icon-robot'
+    fields:
+        results:
+            type: relationmanager
+            tab: 'Actions'

@@ -1,0 +1,13 @@
+results:
+    label: 'Action Results'
+    view:
+        list: $/jaxwilko/hugo/models/actionresult/columns.yaml
+        toolbarButtons: []
+        recordsPerPage: 15
+        showSearch: false
+        recordOnClick:
+    manage:
+        list: $/jaxwilko/hugo/models/actionresult/columns.yaml
+        form: $/jaxwilko/hugo/models/actionresult/fields.yaml
+        recordsPerPage: 15
+        showSearch: true

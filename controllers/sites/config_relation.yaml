@@ -7,23 +7,36 @@ urls:
             delete: "Delete"
         recordsPerPage: 15
         showSearch: true
+        recordOnClick:
     manage:
         list: $/jaxwilko/hugo/controllers/sites/lighthouseurl/columns.yaml
         form: $/jaxwilko/hugo/controllers/sites/lighthouseurl/fields.yaml
         recordsPerPage: 15
         showSearch: true
 
-healthChecks:
-    label: 'Health Checks'
+downs:
+    label: 'Outages'
     view:
-        list: $/jaxwilko/hugo/controllers/sites/healthchecks/columns.yaml
-        toolbarButtons:
-            create: "Create"
-            delete: "Delete"
+        list: $/jaxwilko/hugo/models/sitedown/columns.yaml
+        toolbarButtons: []
         recordsPerPage: 15
-        showSearch: true
+        showSearch: false
     manage:
-        list: $/jaxwilko/hugo/controllers/sites/healthchecks/columns.yaml
-        form: $/jaxwilko/hugo/controllers/sites/healthchecks/fields.yaml
+        list: $/jaxwilko/hugo/models/sitedown/columns.yaml
+        form: $/jaxwilko/hugo/models/sitedown/fields.yaml
         recordsPerPage: 15
         showSearch: true
+
+actions:
+    label: 'Actions'
+    view:
+        list: $/jaxwilko/hugo/controllers/sites/actions/columns.yaml
+        recordUrl: jaxwilko/hugo/actions/update/:id
+        toolbarButtons: []
+        toolbarPartial: 'actions_relation_toolbar'
+        recordsPerPage: 15
+    manage:
+        list: $/jaxwilko/hugo/controllers/sites/actions/columns.yaml
+        form: $/jaxwilko/hugo/controllers/sites/actions/fields.yaml
+        recordsPerPage: 15
+

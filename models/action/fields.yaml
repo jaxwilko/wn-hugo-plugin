@@ -1,0 +1,100 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: 'Name'
+        type: text
+        required: true
+        span: auto
+
+    url:
+        label: 'Url'
+        type: text
+        required: true
+        placeholder: '/example/test'
+        span: auto
+
+    toolbar:
+        label: false
+        type: partial
+
+tabs:
+    cssClass: master-area
+    icons:
+        'Action Instructions': 'icon-robot'
+        'Manage': 'icon-cog'
+    fields:
+        config:
+            type: repeater
+            groups: ~/plugins/jaxwilko/hugo/models/action/action-commands.yaml
+            required: true
+            tab: 'Action Instructions'
+        _titleConfig:
+            label: 'Action Config'
+            type: section
+            span: full
+            tab: 'Manage'
+        site:
+            label: 'jaxwilko.hugo::lang.models.site.label'
+            type: relation
+            span: auto
+            required: true
+            tab: 'Manage'
+        priority:
+            label: 'Priority'
+            span: auto
+            type: dropdown
+            options:
+                1: 1
+                2: 2
+                3: 3
+                4: 4
+                5: 5
+            default: 3
+            comment: 'Lower numbers are processed first'
+            tab: 'Manage'
+        auto_screenshot:
+            label: 'Auto Screenshot'
+            span: auto
+            type: checkbox
+            default: 1
+            comment: 'Automatically capture a screenshot of the browser after each command is executed'
+            tab: 'Manage'
+        _section_workflows:
+            label: 'Workflows'
+            type: section
+            tab: 'Manage'
+        workflows:
+            label: false
+            type: relation
+            tab: 'Manage'
+        _section_notification:
+            label: 'Notification Info'
+            type: section
+            tab: 'Manage'
+        notification:
+            label: 'Notification'
+            span: full
+            type: dropdown
+            options:
+                disabled: Disabled
+                fail: Notify on Failure
+                okay: Notify on Okay
+            default: fail
+            comment: 'Select when notifications should be sent'
+            tab: 'Manage'
+        notification_message:
+            label: 'Notification Message'
+            span: full
+            type: textarea
+            commentAbove: 'This custom message can include additional info for the notification, variables defined in the action can be used as `$VAR_NAME`'
+            tab: 'Manage'
+            trigger:
+                action: show
+                field: notification
+                condition: value[fail][okay]
+#        results:
+#            type: partial
+#            tab: 'Results'

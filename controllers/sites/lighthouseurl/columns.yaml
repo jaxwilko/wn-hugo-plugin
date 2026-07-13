@@ -6,10 +6,22 @@ columns:
     url:
         label: 'Url'
         searchable: true
-    _sevenDayAverages:
-        label: Last 7 Day Averages
+    _averages:
+        label: 7 Day Averages
         type: partial
-        path: '~/plugins/jaxwilko/hugo/controllers/sites/__averages.php'
+        searchable: false
+        sortable: false
+    _update_btn:
+        label: 'Update'
+        type: partial
+        valueFrom: id
+        searchable: false
+        sortable: false
+    _view_btn:
+        label: 'View'
+        type: partial
+        valueFrom: id
+        searchable: false
         sortable: false
     created_at:
         label: 'jaxwilko.hugo::lang.models.general.created_at'
@@ -22,3 +34,4 @@ columns:
         type: datetime
         searchable: true
         sortable: true
+        invisible: true

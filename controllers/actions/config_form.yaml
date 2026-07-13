@@ -1,0 +1,33 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: 'jaxwilko.hugo::lang.models.action.label'
+
+# Model Form Field configuration
+form: $/jaxwilko/hugo/models/action/fields.yaml
+
+# Model Class name
+modelClass: JaxWilko\Hugo\Models\Action
+
+# Default redirect location
+defaultRedirect: jaxwilko/hugo/actions
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: jaxwilko/hugo/actions/update/:id
+    redirectClose: jaxwilko/hugo/actions
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: jaxwilko/hugo/actions
+    redirectClose: jaxwilko/hugo/actions
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title
+
+formLayout: fancy

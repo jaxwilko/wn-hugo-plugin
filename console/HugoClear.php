@@ -3,20 +3,13 @@
 namespace JaxWilko\Hugo\Console;
 
 use Carbon\Carbon;
-use JaxWilko\Hugo\Models\HealthCheck;
+use JaxWilko\Hugo\Models\SiteDown;
 use JaxWilko\Hugo\Models\LighthouseReport;
-use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\LighthouseUrl;
-use Log;
+use JaxWilko\Hugo\Models\WorkflowResult;
 use Winter\Storm\Console\Command;
 
 class HugoClear extends Command
 {
-    /**
-     * @var string The console command name.
-     */
-    protected static $defaultName = 'hugo:clear';
-
     /**
      * @var string The name and signature of this command.
      */
@@ -38,7 +31,10 @@ class HugoClear extends Command
             ->get()
             ->each(fn (LighthouseReport $report) => $report->deleteImages());
 
+        WorkflowResult::whereDate('created_at', '<', Carbon::now()->subMonths(2))
+            ->delete();
+
         // Clear old health checks
-        HealthCheck::whereDate('created_at', '<', Carbon::now()->subMonths(3))->delete();
+        SiteDown::whereDate('created_at', '<', Carbon::now()->subMonths(3))->delete();
     }
 }

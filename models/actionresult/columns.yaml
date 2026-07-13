@@ -1,0 +1,41 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: 'jaxwilko.hugo::lang.models.general.id'
+        searchable: true
+        sortable: true
+    action[name]:
+        label: 'Action'
+        searchable: true
+        sortable: true
+    status:
+        label: Status
+        type: partial
+        path: $/jaxwilko/hugo/models/action/_status.htm
+        searchable: true
+        sortable: true
+    _link_btn:
+        label: 'Edit Action'
+        type: partial
+        valueFrom: action_id
+        searchable: false
+        sortable: false
+    _view_btn:
+        label: 'View'
+        type: partial
+        valueFrom: id
+        searchable: false
+        sortable: false
+    created_at:
+        label: 'jaxwilko.hugo::lang.models.general.created_at'
+        type: datetime
+        searchable: true
+        sortable: true
+        invisible: true
+    updated_at:
+        label: 'jaxwilko.hugo::lang.models.general.updated_at'
+        type: datetime
+        searchable: true

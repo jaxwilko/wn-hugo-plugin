@@ -1,10 +1,11 @@
 <?php namespace JaxWilko\Hugo\Console;
 
+use jaxwilko\hugo\classes\automation\AutomationEngine;
 use JaxWilko\Hugo\Classes\Script\HugoWebDriver;
 use JaxWilko\Hugo\Classes\Script\ScriptEngine;
 use JaxWilko\Hugo\Models\Site;
-use JaxWilko\Hugo\Models\LighthouseUrl;
-use JaxWilko\Hugo\Models\Script;
+use JaxWilko\Hugo\Models\SiteUrl;
+use JaxWilko\Hugo\Models\Action;
 use Log;
 use Winter\Storm\Console\Command;
 
@@ -31,13 +32,33 @@ class HugoScript extends Command
      */
     public function handle()
     {
-        $script = Script::find(1);
+        $test = Action::find(1);
 
-        $result = ScriptEngine::init(HugoWebDriver::make())
-            ->run($script->target, $script->script);
+        try {
+            $engine = AutomationEngine::init($webDriver = \JaxWilko\Hugo\Classes\Automation\HugoWebDriver::make())
+                ->run($test->target, $test->config);
+
+            $resultConfig = $engine->getConfig();
+
+            $result = [
+                'status' => $engine->getExit(),
+                'result' => $resultConfig,
+                'log' => $engine->getLog()
+            ];
+        } catch (\Throwable $e) {
+            if (isset($webDriver)) {
+                $webDriver->quit();
+            }
+
+            throw $e;
+        } finally {
+            if (isset($webDriver)) {
+                $webDriver->quit();
+            }
+        }
 
         // Handle result
 
-        dd($result);
+        var_dump($result);
     }
 }
